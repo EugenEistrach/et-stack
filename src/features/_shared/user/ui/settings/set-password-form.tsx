@@ -19,8 +19,8 @@ import {
 	FormControl,
 	FormMessage,
 } from '@/components/ui/form'
-import PasswordInput from '@/components/ui/input'
 import { LoadingButton } from '@/components/ui/loading-button'
+import PasswordInput from '@/components/ui/password-input'
 import { usePasswordSetRequestMutation } from '@/features/_shared/user/api/auth.api'
 
 const setPasswordSchema = z.object({
@@ -72,7 +72,7 @@ export function SetPasswordForm() {
 					</form>
 				</Form>
 			</CardContent>
-			<CardFooter className="flex justify-end bg-muted/50 pt-6">
+			<CardFooter className="bg-muted/50 flex justify-end pt-6">
 				<LoadingButton
 					type="submit"
 					form="set-password-form"

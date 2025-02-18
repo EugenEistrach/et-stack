@@ -14,8 +14,9 @@ import {
 	FormControl,
 	FormMessage,
 } from '@/components/ui/form'
-import PasswordInput, { Input } from '@/components/ui/input'
+import { Input } from '@/components/ui/input'
 import { LoadingButton } from '@/components/ui/loading-button'
+import PasswordInput from '@/components/ui/password-input'
 import {
 	useEmailSignInMutation,
 	useSocialSignInMutation,
@@ -72,7 +73,7 @@ export function LoginForm() {
 	return (
 		<Card className="w-full max-w-md">
 			<CardHeader>
-				<div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+				<div className="bg-primary/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full">
 					<DatabaseZap />
 				</div>
 				<CardTitle className="text-center text-2xl font-bold">Login</CardTitle>
@@ -84,7 +85,7 @@ export function LoginForm() {
 					</span>
 					<Link
 						to="/register"
-						className="font-medium text-primary hover:underline"
+						className="text-primary font-medium hover:underline"
 					>
 						Create Account
 					</Link>
@@ -109,7 +110,7 @@ export function LoginForm() {
 							<div className="w-full border-t border-gray-300" />
 						</div>
 						<div className="relative flex justify-center text-sm">
-							<span className="bg-card px-2 text-muted-foreground">
+							<span className="bg-card text-muted-foreground px-2">
 								Or login with email and password
 							</span>
 						</div>
@@ -145,7 +146,7 @@ export function LoginForm() {
 										<FormLabel>Password</FormLabel>
 										<Link
 											to="/reset-password"
-											className="text-sm font-medium text-primary hover:underline"
+											className="text-primary text-sm font-medium hover:underline"
 										>
 											Forgot password?
 										</Link>

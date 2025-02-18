@@ -14,8 +14,9 @@ import {
 	FormControl,
 	FormMessage,
 } from '@/components/ui/form'
-import PasswordInput, { Input } from '@/components/ui/input'
+import { Input } from '@/components/ui/input'
 import { LoadingButton } from '@/components/ui/loading-button'
+import PasswordInput from '@/components/ui/password-input'
 import {
 	useEmailSignUpMutation,
 	useSocialSignInMutation,
@@ -60,7 +61,7 @@ export function RegisterForm() {
 		<Card className="w-full max-w-md">
 			<CardHeader>
 				<div className="mx-auto mb-4 flex flex-col items-center justify-center gap-2">
-					<div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+					<div className="bg-primary/10 flex h-12 w-12 items-center justify-center rounded-full">
 						<DatabaseZap />
 					</div>
 				</div>
@@ -75,7 +76,7 @@ export function RegisterForm() {
 					</span>
 					<Link
 						to="/login"
-						className="font-medium text-primary hover:underline"
+						className="text-primary font-medium hover:underline"
 					>
 						Sign in
 					</Link>
@@ -101,7 +102,7 @@ export function RegisterForm() {
 							<div className="w-full border-t border-gray-300" />
 						</div>
 						<div className="relative flex justify-center text-sm">
-							<span className="bg-card px-2 text-muted-foreground">
+							<span className="bg-card text-muted-foreground px-2">
 								Or create an account with email
 							</span>
 						</div>

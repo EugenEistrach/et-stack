@@ -2,7 +2,7 @@ import { type FileStorage, type ListResult } from '@mjackson/file-storage'
 import { eq } from 'drizzle-orm'
 import { db } from '@/drizzle/db'
 import { FileTable } from '@/drizzle/schemas/files-schema'
-import { cuid } from '@/lib/shared/utils'
+import { cuid } from '@/lib/utils'
 
 export class SQLiteFileStorage implements FileStorage {
 	private userId: string

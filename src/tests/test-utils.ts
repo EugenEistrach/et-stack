@@ -4,7 +4,7 @@ import { UniqueEnforcer } from 'enforce-unique'
 
 import { SessionTable, UserTable } from '@/drizzle/schemas/auth-schema'
 import { OnboardingInfoTable } from '@/drizzle/schemas/onboarding-schema'
-import { cuid, wait } from '@/lib/shared/utils'
+import { cuid, wait } from '@/lib/utils'
 import { testDb } from '@/tests/setup/test-db'
 const uniqueUsernameEnforcer = new UniqueEnforcer()
 

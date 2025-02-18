@@ -1,9 +1,10 @@
 import { type LucideProps, Loader2 } from 'lucide-react'
 import * as React from 'react'
 
-import { Button, type ButtonProps } from './button'
+import { Button } from './button'
 
-export interface LoadingButtonProps extends ButtonProps {
+export interface LoadingButtonProps
+	extends React.ComponentProps<typeof Button> {
 	loading: boolean
 	Icon: React.ComponentType<LucideProps & React.HTMLAttributes<SVGElement>>
 	iconPosition?: 'left' | 'right'

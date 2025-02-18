@@ -1,6 +1,6 @@
 import { sql } from 'drizzle-orm'
 import { text, customType } from 'drizzle-orm/sqlite-core'
-import { cuid } from '@/lib/shared/utils'
+import { cuid } from '@/lib/utils'
 
 export const dateString = customType<{
 	data: string

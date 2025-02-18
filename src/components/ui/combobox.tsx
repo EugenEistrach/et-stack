@@ -5,7 +5,7 @@ import { X } from 'lucide-react'
 import * as React from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Command, CommandGroup, CommandItem } from '@/components/ui/command'
-import { cn } from '@/lib/shared/utils'
+import { cn } from '@/lib/utils'
 
 type Option = {
 	label: string
@@ -67,17 +67,17 @@ export function Combobox({
 			onKeyDown={handleKeyDown}
 			className={cn('overflow-visible bg-transparent', className)}
 		>
-			<div className="group rounded-md border border-input px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+			<div className="group border-input ring-offset-background focus-within:ring-ring rounded-md border px-3 py-2 text-sm focus-within:ring-2 focus-within:ring-offset-2">
 				<div className="flex flex-wrap gap-1">
 					{value.map((item) => (
 						<Badge
 							key={item}
 							variant="secondary"
-							className="rounded hover:bg-secondary"
+							className="hover:bg-secondary rounded"
 						>
 							{item}
 							<button
-								className="ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
+								className="ring-offset-background focus:ring-ring ml-1 rounded-full outline-hidden focus:ring-2 focus:ring-offset-2"
 								onKeyDown={(e) => {
 									if (e.key === 'Enter') {
 										handleUnselect(item)
@@ -89,7 +89,7 @@ export function Combobox({
 								}}
 								onClick={() => handleUnselect(item)}
 							>
-								<X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
+								<X className="text-muted-foreground hover:text-foreground h-3 w-3" />
 							</button>
 						</Badge>
 					))}
@@ -103,13 +103,13 @@ export function Combobox({
 						onBlur={() => setOpen(false)}
 						onFocus={() => setOpen(true)}
 						placeholder="Select items..."
-						className="flex-1 bg-transparent outline-none placeholder:text-muted-foreground"
+						className="placeholder:text-muted-foreground flex-1 bg-transparent outline-hidden"
 					/>
 				</div>
 			</div>
 			<div className="relative mt-2">
 				{open && (
-					<div className="absolute top-0 z-10 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
+					<div className="bg-popover text-popover-foreground animate-in absolute top-0 z-10 w-full rounded-md border shadow-md outline-hidden">
 						<CommandGroup className="h-full overflow-auto">
 							{options.map((option) => (
 								<CommandItem

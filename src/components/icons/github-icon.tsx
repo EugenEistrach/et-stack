@@ -1,4 +1,4 @@
-import { cn } from '@/lib/shared/utils'
+import { cn } from '@/lib/utils'
 
 export const GithubIcon = ({ className }: { className?: string }) => (
 	<svg

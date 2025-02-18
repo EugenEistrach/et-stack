@@ -14,8 +14,9 @@ import {
 	FormControl,
 	FormMessage,
 } from '@/components/ui/form'
-import PasswordInput, { Input } from '@/components/ui/input'
+import { Input } from '@/components/ui/input'
 import { LoadingButton } from '@/components/ui/loading-button'
+import PasswordInput from '@/components/ui/password-input'
 import {
 	usePasswordResetMutation,
 	usePasswordResetRequestMutation,
@@ -33,7 +34,7 @@ function ResetPasswordSuccess() {
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="space-y-6">
-				<div className="space-y-4 text-center text-sm text-muted-foreground">
+				<div className="text-muted-foreground space-y-4 text-center text-sm">
 					<p>
 						We've sent password reset instructions to your email address. Please
 						check your inbox and follow the instructions to reset your password.
@@ -91,7 +92,7 @@ function NewPasswordForm({ token }: { token: string }) {
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="space-y-6">
-					<p className="text-center text-sm text-muted-foreground">
+					<p className="text-muted-foreground text-center text-sm">
 						Your password has been successfully reset. You can now log in with
 						your new password.
 					</p>
@@ -107,7 +108,7 @@ function NewPasswordForm({ token }: { token: string }) {
 	return (
 		<Card className="w-full max-w-md">
 			<CardHeader>
-				<div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+				<div className="bg-primary/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full">
 					<KeyRound className="h-6 w-6" />
 				</div>
 				<CardTitle className="text-center text-2xl font-bold">
@@ -115,7 +116,7 @@ function NewPasswordForm({ token }: { token: string }) {
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="space-y-4">
-				<p className="text-center text-sm text-muted-foreground">
+				<p className="text-muted-foreground text-center text-sm">
 					Please enter your new password below.
 				</p>
 				<Form {...form}>
@@ -179,7 +180,7 @@ export function ResetPasswordForm() {
 	return (
 		<Card className="w-full max-w-md">
 			<CardHeader>
-				<div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+				<div className="bg-primary/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full">
 					<DatabaseZap className="h-6 w-6" />
 				</div>
 				<CardTitle className="text-center text-2xl font-bold">
@@ -187,7 +188,7 @@ export function ResetPasswordForm() {
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="space-y-4">
-				<p className="text-center text-sm text-muted-foreground">
+				<p className="text-muted-foreground text-center text-sm">
 					Enter your email address and we'll send you instructions to reset your
 					password.
 				</p>

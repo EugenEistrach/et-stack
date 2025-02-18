@@ -1,6 +1,6 @@
 import { Copy, Check } from 'lucide-react'
 import React, { useState, useCallback } from 'react'
-import { cn } from '@/lib/shared/utils'
+import { cn } from '@/lib/utils'
 
 interface CopyToClipboardProps {
 	children: React.ReactNode
@@ -47,7 +47,7 @@ export function CopyToClipboard({
 				) : (
 					<>
 						<span className="group-hover:hidden">{symbol}</span>
-						<Copy className="hidden h-4 w-4 text-muted-foreground group-hover:block" />
+						<Copy className="text-muted-foreground hidden h-4 w-4 group-hover:block" />
 					</>
 				)}
 			</span>
