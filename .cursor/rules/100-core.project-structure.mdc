@@ -1,0 +1,57 @@
+---
+description: Project structure and organization guidelines
+globs:
+---
+
+guidelines:
+  tech_stack:
+    core:
+      - React 19
+      - TypeScript
+      - TanStack (Router, Query, Start)
+      - SQLite/Turso with Drizzle ORM
+    tooling:
+      - pnpm
+      - Better-auth with GitHub SSO
+      - react-hook-form
+      - TailwindCSS 4 with shadcn/ui
+      - trigger.dev
+      - Fly.io
+      - zod
+
+examples:
+  structure: |
+    src/
+    ├── components/     # Shared UI components
+    ├── drizzle/       # Database schemas and migrations
+    ├── features/      # Feature-specific code
+    │   └── feature-name/
+    │       ├── api/        # API layer (server functions + React Query)
+    │       ├── domain/     # Business logic + DB operations
+    │       ├── emails/     # Email templates (react-email)
+    │       ├── hooks/      # React hooks
+    │       ├── ui/         # UI components
+    │       ├── utils/      # Utility functions
+    │       ├── stories/    # Storybook stories
+    │       ├── tests/      # Unit tests
+    │       └── types/      # TypeScript types
+    ├── hooks/         # Shared hooks
+    ├── lib/           # Core utilities
+    │   ├── client/     # Client-side core
+    │   └── server/     # Server-side core
+    ├── routes/        # Route components
+    ├── styles/        # Global styles
+    └── tests/         # Test setup
+
+key_points:
+  organization:
+    - Feature-based structure
+    - Clear separation of concerns
+    - Consistent directory structure
+    - Core utilities in lib/
+
+  features:
+    - Self-contained modules
+    - Standard directory structure
+    - Clear responsibility separation
+    - Reusable patterns

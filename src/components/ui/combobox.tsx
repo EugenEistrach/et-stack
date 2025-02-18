@@ -122,7 +122,6 @@ export function Combobox({
 							{creatable &&
 								inputValue &&
 								!options.some((opt) => opt.value === inputValue) && (
-									// eslint-disable-next-line i18next/no-literal-string
 									<CommandItem onSelect={() => handleSelect(inputValue)}>
 										Create "{inputValue}"
 									</CommandItem>

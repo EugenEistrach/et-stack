@@ -1,11 +1,9 @@
-import { createFileRoute, Outlet } from '@tanstack/react-router'
-import * as m from '@/lib/paraglide/messages'
-
+import { createFileRoute, Outlet } from '@tanstack/react-router';
 export const Route = createFileRoute('/dashboard/settings')({
-	loader: () => {
-		return {
-			crumb: m.round_silly_cowfish_pride(),
-		}
-	},
-	component: () => <Outlet />,
-})
+  loader: () => {
+    return {
+      crumb: "Settings"
+    };
+  },
+  component: () => <Outlet />
+});

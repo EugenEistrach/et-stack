@@ -1,0 +1,77 @@
+---
+description: Database schema creation and management guidelines
+globs: src/drizzle/**/*
+---
+
+guidelines:
+  structure:
+    schemas_dir: src/drizzle/schemas/
+    key_files:
+      _exports: Exports all schemas for drizzle-kit
+      schema: Combines all tables into single schema object
+      feature: Individual feature schemas as [feature]-schema.ts
+
+  naming:
+    tables: lowercase_with_underscores
+    schema_files: kebab-case-schema.ts
+    table_exports: PascalCase with Table suffix
+    type_exports: PascalCase without suffix
+
+  patterns:
+    - Always use textId() for primary keys
+    - Include dateTableFields for timestamps
+    - Define relations in schema.ts
+    - Use text fields with enums
+
+examples:
+  new_schema: |
+    import { sqliteTable } from 'drizzle-orm/sqlite-core'
+    import { dateTableFields, textId } from '@/drizzle/table-fields'
+
+    export const FeatureTable = sqliteTable('feature_name', {
+      id: textId(),
+      // ... other fields
+      ...dateTableFields,
+    })
+
+    export type Feature = typeof FeatureTable.$inferSelect
+
+  field_types: |
+    // Date/Timestamp
+    createdAt: t.integer({ mode: 'timestamp' })
+      .notNull()
+      .default(sql`(strftime('%s', 'now'))`),
+
+    // Boolean
+    isActive: t.integer({ mode: 'boolean' })
+      .notNull()
+      .default(sql`0`),
+
+    // Enum
+    status: t.text({ enum: ['ACTIVE', 'INACTIVE'] }).notNull()
+
+  relations: |
+    // Foreign key
+    userId: t.text().references(() => UserTable.id),
+
+    // Relations definition
+    export const tableRelations = relations(Table, ({ one, many }) => ({
+      posts: many(PostTable),
+      user: one(UserTable, {
+        fields: [Table.userId],
+        references: [UserTable.id],
+      }),
+    }))
+
+key_points:
+  setup:
+    - Create feature schema file
+    - Add to _exports.ts
+    - Add to schema.ts with relations
+    - Run pnpm db:generate after changes
+
+  patterns:
+    - Use textId for PKs
+    - Include date fields
+    - Define relations
+    - Use proper field types

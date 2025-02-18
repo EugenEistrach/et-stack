@@ -112,20 +112,7 @@ async function cloneAndSetupLocalProject() {
 			await fs.remove(path.join(projectDir, 'src/trigger'))
 			await fs.remove(path.join(projectDir, 'pnpm-workspace.yaml'))
 
-			// update locale files
-			const messagesDir = path.join(projectDir, 'messages')
-			const localeFiles = ['en.json', 'de.json']
-
 			await fs.remove(path.join(projectDir, '.github/workflows/deploy.yml'))
-
-			for (const file of localeFiles) {
-				const filePath = path.join(messagesDir, file)
-				if (fs.existsSync(filePath)) {
-					const content = await fs.readFile(filePath, 'utf8')
-					const updatedContent = content.replace(/et-stack/g, appDisplayName)
-					await fs.writeFile(filePath, updatedContent, 'utf8')
-				}
-			}
 		},
 	})
 

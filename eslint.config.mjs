@@ -3,26 +3,13 @@ import * as tanstackQuery from '@tanstack/eslint-plugin-query'
 import pluginRouter from '@tanstack/eslint-plugin-router'
 import gitignore from 'eslint-config-flat-gitignore'
 import pluginBoundaries from 'eslint-plugin-boundaries'
-import i18next from 'eslint-plugin-i18next'
-
-import { enforceServerFnPrefix } from './lint-rules/enforce-server-fn-prefix.mjs'
-import { loggerErrorFormat } from './lint-rules/logger-error-format.mjs'
-import { noExplicitReturnType } from './lint-rules/no-explicit-return-type.mjs'
-import { noRelativeImports } from './lint-rules/no-relative-imports.mjs'
-import { paraglideMissingImport } from './lint-rules/paraglide-missing-import.mjs'
+import reactPlugin from 'eslint-plugin-react'
 
 export default [
-	{
-		ignores: ['**/paraglide/**/*'],
-	},
 	...defaultConfig,
 	{
 		files: ['**/*.{js,jsx,ts,tsx}'],
 		ignores: ['**/stories/**/*', '**/*.stories.tsx'],
-		...i18next.configs['flat/recommended'],
-		rules: {
-			'i18next/no-literal-string': 'warn',
-		},
 	},
 	gitignore(),
 	...pluginRouter.configs['flat/recommended'],
@@ -39,20 +26,13 @@ export default [
 	{
 		files: ['**/*.{js,jsx,ts,tsx}'],
 		plugins: {
-			custom: {
-				rules: {
-					'enforce-server-fn-prefix': enforceServerFnPrefix,
-					'paraglide-missing-import': paraglideMissingImport,
-					'logger-error-format': loggerErrorFormat,
-					'no-explicit-return-type': noExplicitReturnType,
-				},
-			},
+			react: reactPlugin,
 		},
 		rules: {
-			'custom/enforce-server-fn-prefix': 'error',
-			'custom/paraglide-missing-import': 'error',
-			'custom/logger-error-format': 'error',
-			'custom/no-explicit-return-type': 'error',
+			'react/jsx-curly-brace-presence': [
+				'error',
+				{ props: 'never', children: 'never' },
+			],
 		},
 	},
 	{
@@ -182,19 +162,6 @@ export default [
 			'import/resolver': {
 				typescript: {},
 			},
-		},
-	},
-	{
-		files: ['**/*.{js,jsx,ts,tsx}'],
-		plugins: {
-			'no-relative-imports': {
-				rules: {
-					'no-relative-imports': noRelativeImports,
-				},
-			},
-		},
-		rules: {
-			'no-relative-imports/no-relative-imports': 'error',
 		},
 	},
 	{

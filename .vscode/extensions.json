@@ -1,7 +1,6 @@
 {
 	"recommendations": [
 		"inlang.vs-code-extension",
-		"arktypeio.arkdark",
 		"dbaeumer.vscode-eslint",
 		"ms-playwright.playwright",
 		"vitest.explorer",

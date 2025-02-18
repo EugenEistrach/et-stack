@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { Check } from 'lucide-react'
-
 import { Button } from '@/components/ui/button'
 import {
 	Card,
@@ -11,15 +10,11 @@ import {
 	CardTitle,
 } from '@/components/ui/card'
 import { useOptionalAuth } from '@/features/_shared/user/api/auth.api'
-import * as m from '@/lib/paraglide/messages'
-
 export const Route = createFileRoute('/_marketing/')({
 	component: LandingPage,
 })
-
 function LandingPage() {
 	const auth = useOptionalAuth()
-
 	return (
 		<>
 			<section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
@@ -27,19 +22,19 @@ function LandingPage() {
 					<div className="flex flex-col items-center space-y-4 text-center">
 						<div className="space-y-2">
 							<h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
-								{m.bald_topical_skate_scold()}
+								Boost Your Productivity
 							</h1>
 							<p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-								{m.vexed_wacky_mantis_earn()}
+								Streamline your workflow with our powerful tools
 							</p>
 						</div>
 						<div className="space-x-4">
 							<Button asChild>
 								<Link to={auth?.user ? '/dashboard' : '/login'}>
-									{auth?.user ? m.proud_cool_gopher_amaze() : m.smart_plane_florian_startle()}
+									{auth?.user ? 'Go to App' : 'Get Started'}
 								</Link>
 							</Button>
-							<Button variant="outline">{m.crisp_weird_grebe_blend()}</Button>
+							<Button variant="outline">Learn More</Button>
 						</div>
 					</div>
 				</div>
@@ -50,55 +45,60 @@ function LandingPage() {
 			>
 				<div className="container px-4 md:px-6">
 					<h2 className="mb-12 text-center text-3xl font-bold tracking-tighter sm:text-5xl">
-						{m.left_true_buzzard_dream()}
+						Features
 					</h2>
 					<div className="grid gap-6 lg:grid-cols-3 lg:gap-12">
 						<Card>
 							<CardHeader>
-								<CardTitle>{m.weak_major_capybara_learn()}</CardTitle>
+								<CardTitle>Tanstack Ecosystem</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<p>{m.dark_seemly_jackdaw_bake()}</p>
+								<p>
+									Leverage Tanstack Start, Router, and Query for a seamless
+									development experience
+								</p>
 							</CardContent>
 						</Card>
 						<Card>
 							<CardHeader>
-								<CardTitle>{m.loose_seemly_lemming_sew()}</CardTitle>
+								<CardTitle>Modern UI</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<p>{m.odd_due_javelina_hush()}</p>
+								<p>
+									Beautiful, responsive designs with Shadcn UI and Tailwind CSS,
+									including Light & Dark mode
+								</p>
 							</CardContent>
 						</Card>
 						<Card>
 							<CardHeader>
-								<CardTitle>{m.late_chunky_termite_jolt()}</CardTitle>
+								<CardTitle>Advanced Authentication</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<p>{m.brave_royal_tortoise_rest()}</p>
+								<p>
+									SSO with GitHub and Discord, RBAC, and simple onboarding flow
+								</p>
 							</CardContent>
 						</Card>
 						<Card>
 							<CardHeader>
-								<CardTitle>{m.each_tired_turtle_climb()}</CardTitle>
+								<CardTitle>Robust Data Management</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<p>{m.trite_next_polecat_bask()}</p>
+								<p>
+									SQLite database with Drizzle ORM for efficient data handling
+								</p>
 							</CardContent>
 						</Card>
 						<Card>
 							<CardHeader>
-								<CardTitle>{m.soft_wide_chipmunk_flip()}</CardTitle>
+								<CardTitle>Background Processing</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<p>{m.new_zesty_shrike_support()}</p>
-							</CardContent>
-						</Card>
-						<Card>
-							<CardHeader>
-								<CardTitle>{m.mushy_noble_cheetah_create()}</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<p>{m.bright_pretty_eel_catch()}</p>
+								<p>
+									Cron jobs & background tasks with BullMQ for enhanced
+									performance
+								</p>
 							</CardContent>
 						</Card>
 					</div>
@@ -107,103 +107,97 @@ function LandingPage() {
 			<section id="pricing" className="w-full py-12 md:py-24 lg:py-32">
 				<div className="container px-4 md:px-6">
 					<h2 className="mb-12 text-center text-3xl font-bold tracking-tighter sm:text-5xl">
-						{m.dizzy_many_liger_lock()}
+						Pricing
 					</h2>
 					<div className="grid gap-6 lg:grid-cols-3 lg:gap-12">
 						<Card className="flex flex-col">
 							<CardHeader>
-								<CardTitle>{m.mushy_many_myna_reside()}</CardTitle>
-								<CardDescription>
-									{m.sad_soft_coyote_sprout()}
-								</CardDescription>
+								<CardTitle>Starter</CardTitle>
+								<CardDescription>Perfect for small projects</CardDescription>
 							</CardHeader>
 							<CardContent className="flex-1">
-								<p className="text-4xl font-bold">{m.white_calm_seahorse_pride()}</p>
+								<p className="text-4xl font-bold">$9/month</p>
 								<ul className="mt-4 space-y-2">
 									<li className="flex items-center">
 										<Check className="mr-2 h-4 w-4 text-green-500" />
-										{m.new_loud_bird_arrive()}
+										Up to 5 users
 									</li>
 									<li className="flex items-center">
 										<Check className="mr-2 h-4 w-4 text-green-500" />
-										{m.key_caring_chipmunk_link()}
+										Basic analytics
 									</li>
 									<li className="flex items-center">
 										<Check className="mr-2 h-4 w-4 text-green-500" />
-										{m.away_gray_turkey_launch()}
+										24/7 support
 									</li>
 								</ul>
 							</CardContent>
 							<CardFooter>
-								<Button className="w-full">{m.weary_large_carp_aspire()}</Button>
+								<Button className="w-full">Choose Plan</Button>
 							</CardFooter>
 						</Card>
 						<Card className="flex flex-col">
 							<CardHeader>
-								<CardTitle>{m.crazy_grassy_eagle_intend()}</CardTitle>
-								<CardDescription>{m.proof_fun_snake_quell()}</CardDescription>
+								<CardTitle>Pro</CardTitle>
+								<CardDescription>For growing businesses</CardDescription>
 							</CardHeader>
 							<CardContent className="flex-1">
-								<p className="text-4xl font-bold">{m.ok_spicy_hornet_leap()}</p>
+								<p className="text-4xl font-bold">$29/month</p>
 								<ul className="mt-4 space-y-2">
 									<li className="flex items-center">
 										<Check className="mr-2 h-4 w-4 text-green-500" />
-										{m.home_broad_pig_prosper()}
+										Up to 20 users
 									</li>
 									<li className="flex items-center">
 										<Check className="mr-2 h-4 w-4 text-green-500" />
-										{m.tired_proud_puffin_enjoy()}
+										Advanced analytics
 									</li>
 									<li className="flex items-center">
 										<Check className="mr-2 h-4 w-4 text-green-500" />
-										{m.weary_vexed_gopher_dine()}
+										Priority support
 									</li>
 									<li className="flex items-center">
 										<Check className="mr-2 h-4 w-4 text-green-500" />
-										{m.fun_neat_loris_quell()}
+										Custom integrations
 									</li>
 								</ul>
 							</CardContent>
 							<CardFooter>
-								<Button className="w-full">{m.weary_large_carp_aspire()}</Button>
+								<Button className="w-full">Choose Plan</Button>
 							</CardFooter>
 						</Card>
 						<Card className="flex flex-col">
 							<CardHeader>
-								<CardTitle>{m.awful_suave_dove_walk()}</CardTitle>
-								<CardDescription>
-									{m.fluffy_tense_angelfish_hunt()}
-								</CardDescription>
+								<CardTitle>Enterprise</CardTitle>
+								<CardDescription>For large-scale operations</CardDescription>
 							</CardHeader>
 							<CardContent className="flex-1">
-								<p className="text-4xl font-bold">
-									{m.vexed_next_slug_build()}
-								</p>
+								<p className="text-4xl font-bold">Custom pricing</p>
 								<ul className="mt-4 space-y-2">
 									<li className="flex items-center">
 										<Check className="mr-2 h-4 w-4 text-green-500" />
-										{m.weary_dull_marmot_bloom()}
+										Unlimited users
 									</li>
 									<li className="flex items-center">
 										<Check className="mr-2 h-4 w-4 text-green-500" />
-										{m.kind_candid_canary_devour()}
+										Full analytics suite
 									</li>
 									<li className="flex items-center">
 										<Check className="mr-2 h-4 w-4 text-green-500" />
-										{m.basic_tired_turtle_dial()}
+										24/7 premium support
 									</li>
 									<li className="flex items-center">
 										<Check className="mr-2 h-4 w-4 text-green-500" />
-										{m.equal_white_lemur_bend()}
+										Custom development
 									</li>
 									<li className="flex items-center">
 										<Check className="mr-2 h-4 w-4 text-green-500" />
-										{m.agent_spicy_clownfish_pat()}
+										Dedicated account manager
 									</li>
 								</ul>
 							</CardContent>
 							<CardFooter>
-								<Button className="w-full">{m.weary_large_carp_aspire()}</Button>
+								<Button className="w-full">Choose Plan</Button>
 							</CardFooter>
 						</Card>
 					</div>
@@ -214,16 +208,16 @@ function LandingPage() {
 					<div className="flex flex-col items-center space-y-4 text-center">
 						<div className="space-y-2">
 							<h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-								{m.vivid_low_flea_scoop()}
+								Ready to get started?
 							</h2>
 							<p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-								{m.simple_bland_jaguar_view()}
+								Sign up now and boost your productivity
 							</p>
 						</div>
 						<div className="space-x-4">
 							<Button asChild>
 								<Link to={auth?.user ? '/dashboard' : '/login'}>
-									{auth?.user ? m.proud_cool_gopher_amaze() : m.smart_plane_florian_startle()}
+									{auth?.user ? 'Go to App' : 'Get Started'}
 								</Link>
 							</Button>
 						</div>

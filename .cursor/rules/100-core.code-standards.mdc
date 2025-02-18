@@ -1,0 +1,76 @@
+---
+description: TypeScript code style and functional programming patterns
+globs: *.ts,*.tsx
+---
+
+guidelines:
+  code_style:
+    - Write concise, technical TypeScript code
+    - Use functional and declarative patterns
+    - Avoid classes and OOP patterns
+    - Follow Write Everything Twice principle over premature abstraction
+    - Use descriptive variable names with auxiliary verbs (isLoading, hasError)
+
+  typescript:
+    - Use TypeScript for all code
+    - Prefer types over interfaces for consistency
+    - Avoid non-strippable TypeScript features:
+      - No enums (use const objects with 'as const')
+      - No namespaces (use modules)
+    - Use absolute imports with @/ prefix
+    - Keep types simple and straightforward
+
+examples:
+  variable_naming: |
+    // Good
+    const isLoading = true
+    const hasError = false
+    const shouldRefetch = true
+    const wasSuccessful = false
+
+  const_over_typescript_features: |
+    // Bad - using TypeScript-only feature
+    enum Status {
+      PENDING,
+      SUCCESS,
+      ERROR
+    }
+
+    // Good - using strippable JavaScript
+    const Status = {
+      PENDING: 'PENDING',
+      SUCCESS: 'SUCCESS',
+      ERROR: 'ERROR'
+    } as const
+
+    type Status = typeof Status[keyof typeof Status]
+
+  type_definition: |
+    // Good - simple type
+    type User = {
+      id: string
+      name: string
+      email: string
+    }
+
+    // Good - union type
+    type Status = 'pending' | 'success' | 'error'
+
+    // Good - extending types
+    type AdminUser = User & {
+      permissions: string[]
+    }
+
+key_points:
+  style:
+    - Functional over OOP
+    - Descriptive naming
+    - Avoid premature abstraction
+    - Write concise, focused code
+
+  typescript:
+    - Full TypeScript coverage
+    - Types over interfaces
+    - Avoid non-strippable features (enums, namespaces, decorators)
+    - Keep types simple and clear
+    - Absolute imports

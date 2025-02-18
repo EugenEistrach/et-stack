@@ -1,0 +1,68 @@
+---
+description: Storybook guidelines and instructions
+globs: src/**/*.stories.tsx
+---
+
+guidelines:
+  core:
+    - Create stories only for distinct, meaningful states
+    - Keep controls simple with just type and description
+    - Use autodocs for documentation
+    - Keep mock data realistic but minimal
+
+  story_states:
+    - Default state
+    - Loading state
+    - Error state
+    - Empty state
+    - Interactive variants
+
+  controls:
+    - Always include control/action and description
+    - Use appropriate control types (text, boolean, select)
+    - Set control: false for render-only props
+    - Use actions for event handlers
+
+examples:
+  basic_story: |
+    const meta = {
+      title: 'Category/Component',
+      component: YourComponent,
+      tags: ['autodocs'],
+      parameters: {
+        layout: 'centered', // or 'padded' for larger components
+      },
+      argTypes: {
+        text: {
+          control: 'text',
+          description: 'Clear description of what this prop does',
+        },
+        onClick: {
+          action: 'clicked',
+          description: 'Called when component is clicked',
+        },
+        isEnabled: {
+          control: 'boolean',
+          description: 'Whether the component is enabled',
+        },
+      },
+    } satisfies Meta<typeof YourComponent>
+
+    export const Default: Story = {
+      args: {
+        text: 'Default State',
+      },
+    }
+
+key_points:
+  stories:
+    - Quality over quantity
+    - Only distinct states
+    - Avoid redundant stories
+    - Use controls over separate stories
+
+  documentation:
+    - Use autodocs tag
+    - Clear prop descriptions
+    - Minimal component descriptions
+    - Realistic mock data

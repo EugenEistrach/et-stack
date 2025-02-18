@@ -16,36 +16,8 @@ vi.mock('@/lib/server/env.server', async (importOriginal) => {
 		// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 		(await importOriginal()) as typeof import('@/lib/server/env.server')
 
-	const requiredItems =
-		'required' in mod.environmentSchema.json &&
-		mod.environmentSchema.json['required'] instanceof Array
-			? mod.environmentSchema.json['required']
-			: []
-
-	const optionalItems =
-		'optional' in mod.environmentSchema.json &&
-		mod.environmentSchema.json['optional'] instanceof Array
-			? mod.environmentSchema.json['optional']
-			: []
-
-	const envKeys: string[] = []
-
-	requiredItems.forEach((item) => {
-		if (
-			typeof item === 'object' &&
-			item !== null &&
-			'key' in item &&
-			'value' in item
-		) {
-			envKeys.push(item['key'] as string)
-		}
-	})
-
-	optionalItems.forEach((item) => {
-		if (typeof item === 'object' && item !== null && 'key' in item) {
-			envKeys.push(item['key'] as string)
-		}
-	})
+	// Get all keys from the schema shape
+	const envKeys = Object.keys(mod.environmentSchema.shape)
 
 	// Create initial mock object with all current values
 	const initialMock = envKeys.reduce(

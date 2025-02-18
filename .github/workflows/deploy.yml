@@ -64,9 +64,6 @@ jobs:
         if: matrix.check == 'test'
         run: pnpm test:e2e:install
 
-      - name: 🌐 Build paraglide
-        run: pnpm build:paraglide
-
       - name: 📄 Setup env file
         if: matrix.check == 'test'
         run: cp .env.example .env
@@ -114,9 +111,6 @@ jobs:
 
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile --prefer-offline
-
-      - name: 🌐 Build paraglide
-        run: pnpm build:paraglide
 
       - name: 🎭 Install Playwright browsers
         run: pnpm test:e2e:install

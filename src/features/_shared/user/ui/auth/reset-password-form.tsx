@@ -1,9 +1,9 @@
-import { arktypeResolver } from '@hookform/resolvers/arktype'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Link, useSearch } from '@tanstack/react-router'
-import { type } from 'arktype'
 import { CheckCircle2, DatabaseZap, KeyRound, Send } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
+import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -20,7 +20,6 @@ import {
 	usePasswordResetMutation,
 	usePasswordResetRequestMutation,
 } from '@/features/_shared/user/api/auth.api'
-import * as m from '@/lib/paraglide/messages'
 
 function ResetPasswordSuccess() {
 	return (
@@ -30,17 +29,22 @@ function ResetPasswordSuccess() {
 					<CheckCircle2 className="h-6 w-6" />
 				</div>
 				<CardTitle className="text-center text-2xl font-bold">
-					{m.curly_knotty_iguana_cut()}
+					Check Your Email
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="space-y-6">
 				<div className="space-y-4 text-center text-sm text-muted-foreground">
-					<p>{m.helpful_each_dolphin_tend()}</p>
-					<p className="text-xs">{m.grassy_orange_wren_dial()}</p>
+					<p>
+						We've sent password reset instructions to your email address. Please
+						check your inbox and follow the instructions to reset your password.
+					</p>
+					<p className="text-xs">
+						If you don't see the email, please check your spam folder.
+					</p>
 				</div>
 				<div className="flex justify-center">
 					<Button asChild variant="link">
-						<Link to="/login">{m.trite_east_alligator_grin()}</Link>
+						<Link to="/login">Return to Login</Link>
 					</Button>
 				</div>
 			</CardContent>
@@ -48,34 +52,33 @@ function ResetPasswordSuccess() {
 	)
 }
 
-const resetPasswordSchema = type({
-	email: 'string.email >= 1',
+const resetPasswordSchema = z.object({
+	email: z.string().min(1, 'Email is required').email('Invalid email format'),
 })
 
-const newPasswordSchema = type({
-	password: 'string >= 8',
+const newPasswordSchema = z.object({
+	password: z.string().min(8, 'Password must be at least 8 characters'),
 })
 
 function NewPasswordForm({ token }: { token: string }) {
 	const form = useForm({
-		resolver: arktypeResolver(newPasswordSchema),
+		resolver: zodResolver(newPasswordSchema),
 		defaultValues: {
 			password: '',
 		},
 	})
-
 	const {
 		mutate: resetPassword,
 		isPending,
 		isSuccess: isResetPasswordSuccess,
 	} = usePasswordResetMutation()
-
 	const isResetPasswordPending = useSpinDelay(isPending)
-
 	async function onSubmit(values: { password: string }) {
-		resetPassword({ token, password: values.password })
+		resetPassword({
+			token,
+			password: values.password,
+		})
 	}
-
 	if (isResetPasswordSuccess) {
 		return (
 			<Card className="w-full max-w-md">
@@ -84,23 +87,23 @@ function NewPasswordForm({ token }: { token: string }) {
 						<CheckCircle2 className="h-6 w-6" />
 					</div>
 					<CardTitle className="text-center text-2xl font-bold">
-						{m.polite_fine_sawfish_hike()}
+						Password Reset Successful
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="space-y-6">
 					<p className="text-center text-sm text-muted-foreground">
-						{m.wise_sound_tiger_dream()}
+						Your password has been successfully reset. You can now log in with
+						your new password.
 					</p>
 					<div className="flex justify-center">
 						<Button asChild>
-							<Link to="/login">{m.full_many_meerkat_lock()}</Link>
+							<Link to="/login">Go to Login</Link>
 						</Button>
 					</div>
 				</CardContent>
 			</Card>
 		)
 	}
-
 	return (
 		<Card className="w-full max-w-md">
 			<CardHeader>
@@ -108,12 +111,12 @@ function NewPasswordForm({ token }: { token: string }) {
 					<KeyRound className="h-6 w-6" />
 				</div>
 				<CardTitle className="text-center text-2xl font-bold">
-					{m.dirty_quick_vole_flow()}
+					Create New Password
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="space-y-4">
 				<p className="text-center text-sm text-muted-foreground">
-					{m.cozy_funny_nils_revive()}
+					Please enter your new password below.
 				</p>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -122,12 +125,9 @@ function NewPasswordForm({ token }: { token: string }) {
 							name="password"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>{m.bald_brief_otter_swim()}</FormLabel>
+									<FormLabel>Password</FormLabel>
 									<FormControl>
-										<PasswordInput
-											placeholder={m.factual_bold_lamb_arise()}
-											{...field}
-										/>
+										<PasswordInput placeholder="Create a password" {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -141,7 +141,7 @@ function NewPasswordForm({ token }: { token: string }) {
 								loading={isResetPasswordPending}
 								Icon={Send}
 							>
-								{m.slow_mad_donkey_ripple()}
+								Reset Password
 							</LoadingButton>
 						</div>
 					</form>
@@ -152,35 +152,30 @@ function NewPasswordForm({ token }: { token: string }) {
 }
 
 export function ResetPasswordForm() {
-	const search = useSearch({ from: '/_auth/reset-password' })
-
+	const search = useSearch({
+		from: '/_auth/reset-password',
+	})
 	const form = useForm({
-		resolver: arktypeResolver(resetPasswordSchema),
+		resolver: zodResolver(resetPasswordSchema),
 		defaultValues: {
 			email: '',
 		},
 	})
-
 	const {
 		mutate: requestPasswordReset,
 		isPending,
 		isSuccess: isRequestPasswordResetSuccess,
 	} = usePasswordResetRequestMutation()
-
 	const isRequestPasswordResetPending = useSpinDelay(isPending)
-
 	async function onSubmit(values: { email: string }) {
 		requestPasswordReset(values)
 	}
-
 	if (search.token) {
 		return <NewPasswordForm token={search.token} />
 	}
-
 	if (isRequestPasswordResetSuccess) {
 		return <ResetPasswordSuccess />
 	}
-
 	return (
 		<Card className="w-full max-w-md">
 			<CardHeader>
@@ -188,12 +183,13 @@ export function ResetPasswordForm() {
 					<DatabaseZap className="h-6 w-6" />
 				</div>
 				<CardTitle className="text-center text-2xl font-bold">
-					{m.inner_fine_osprey_clip()}
+					Reset Password
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="space-y-4">
 				<p className="text-center text-sm text-muted-foreground">
-					{m.dull_mushy_barbel_trip()}
+					Enter your email address and we'll send you instructions to reset your
+					password.
 				</p>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -202,15 +198,15 @@ export function ResetPasswordForm() {
 							name="email"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>{m.tame_next_lobster_succeed()}</FormLabel>
+									<FormLabel>Email</FormLabel>
 									<FormControl>
 										<Input
 											type="email"
-											placeholder={m.curly_fair_racoon_honor()}
+											placeholder="Enter your email"
 											{...field}
 										/>
 									</FormControl>
-									<FormMessage>{m.patchy_direct_ocelot_burn()}</FormMessage>
+									<FormMessage>Please enter a valid email address</FormMessage>
 								</FormItem>
 							)}
 						/>
@@ -221,14 +217,14 @@ export function ResetPasswordForm() {
 								loading={isRequestPasswordResetPending}
 								Icon={KeyRound}
 							>
-								{m.house_arable_haddock_rest()}
+								Send Reset Instructions
 							</LoadingButton>
 						</div>
 					</form>
 				</Form>
 				<div className="flex justify-center">
 					<Button asChild variant="link">
-						<Link to="/login">{m.maroon_empty_jackal_boost()}</Link>
+						<Link to="/login">Back to Login</Link>
 					</Button>
 				</div>
 			</CardContent>

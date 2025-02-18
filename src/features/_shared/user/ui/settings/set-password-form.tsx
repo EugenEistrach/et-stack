@@ -1,8 +1,8 @@
-import { arktypeResolver } from '@hookform/resolvers/arktype'
-import { type } from 'arktype'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Save } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
+import { z } from 'zod'
 import {
 	Card,
 	CardHeader,
@@ -21,38 +21,39 @@ import {
 } from '@/components/ui/form'
 import PasswordInput from '@/components/ui/input'
 import { LoadingButton } from '@/components/ui/loading-button'
-
 import { usePasswordSetRequestMutation } from '@/features/_shared/user/api/auth.api'
-import * as m from '@/lib/paraglide/messages'
+
+const setPasswordSchema = z.object({
+	newPassword: z.string().min(8, 'Password must be at least 8 characters'),
+})
 
 export function SetPasswordForm() {
 	const form = useForm({
-		resolver: arktypeResolver(
-			type({
-				newPassword: 'string >= 8',
-			}),
-		),
+		resolver: zodResolver(setPasswordSchema),
 		defaultValues: {
 			newPassword: '',
 		},
 	})
-
 	const passwordSetMutation = usePasswordSetRequestMutation()
 	const isPending = useSpinDelay(passwordSetMutation.isPending)
+
+	function onSubmit(values: z.infer<typeof setPasswordSchema>) {
+		passwordSetMutation.mutate(values)
+	}
 
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle>{m.fierce_happy_lion_roar()}</CardTitle>
-				<CardDescription>{m.quick_smart_tiger_leap()}</CardDescription>
+				<CardTitle>Create Password</CardTitle>
+				<CardDescription>
+					Set up a password to protect your account
+				</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<Form {...form}>
 					<form
 						id="set-password-form"
-						onSubmit={form.handleSubmit((values) =>
-							passwordSetMutation.mutate(values),
-						)}
+						onSubmit={form.handleSubmit(onSubmit)}
 						className="space-y-4"
 					>
 						<FormField
@@ -60,7 +61,7 @@ export function SetPasswordForm() {
 							name="newPassword"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>{m.blue_proud_swan_float()}</FormLabel>
+									<FormLabel>New Password</FormLabel>
 									<FormControl>
 										<PasswordInput {...field} />
 									</FormControl>
@@ -79,7 +80,7 @@ export function SetPasswordForm() {
 					loading={isPending}
 					Icon={Save}
 				>
-					{m.neat_quick_fox_dance()}
+					Set Password
 				</LoadingButton>
 			</CardFooter>
 		</Card>

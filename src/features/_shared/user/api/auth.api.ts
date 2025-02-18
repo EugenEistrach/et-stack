@@ -11,9 +11,9 @@ import {
 } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/start'
 import { getWebRequest } from '@tanstack/start/server'
-import { type } from 'arktype'
 import { createAuthClient } from 'better-auth/client'
 import { adminClient, organizationClient } from 'better-auth/client/plugins'
+import { z } from 'zod'
 
 import {
 	authServer,
@@ -242,8 +242,8 @@ export const $getSession = createServerFn({ method: 'GET' }).handler(
 
 export const $isEmailAvailable = createServerFn({ method: 'GET' })
 	.validator(
-		type({
-			'email?': 'string',
+		z.object({
+			email: z.string().optional(),
 		}),
 	)
 	.handler(async ({ data }) => {
@@ -263,8 +263,8 @@ export const $logout = createServerFn({ method: 'POST' }).handler(async () => {
 
 const $setUserPassword = createServerFn({ method: 'POST' })
 	.validator(
-		type({
-			newPassword: 'string >= 8',
+		z.object({
+			newPassword: z.string().min(8),
 		}),
 	)
 	.handler(async ({ data }) => {

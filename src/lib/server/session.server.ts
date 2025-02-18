@@ -32,4 +32,4 @@ class PreferenceCookie<T> {
 export const sidebarOpenCookie = new PreferenceCookie<boolean>(
 	'pref-sidebar-open',
 )
-export const themeCookie = new PreferenceCookie<string>('pref-theme')
+export const themeCookie = new PreferenceCookie<'light' | 'dark'>('pref-theme')

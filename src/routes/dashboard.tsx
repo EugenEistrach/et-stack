@@ -1,6 +1,5 @@
 import { createFileRoute, Link, Outlet, redirect } from '@tanstack/react-router'
 import { createServerFn, useServerFn } from '@tanstack/start'
-import { type } from 'arktype'
 import {
 	HomeIcon,
 	Box,
@@ -11,6 +10,7 @@ import {
 	UsersIcon,
 } from 'lucide-react'
 import { useState } from 'react'
+import { z } from 'zod'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Breadcrumbs } from '@/components/ui/breadcrumbs'
 import {
@@ -22,8 +22,6 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { LocaleSwitcher } from '@/components/ui/locale-switcher'
-
 import { NavLink } from '@/components/ui/nav-link'
 import { Separator } from '@/components/ui/separator'
 import {
@@ -42,23 +40,26 @@ import {
 	SidebarTrigger,
 	useSidebar,
 } from '@/components/ui/sidebar'
-
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { useAuth, $logout } from '@/features/_shared/user/api/auth.api'
 import { AdminOnly } from '@/features/_shared/user/ui/admin-only'
-import * as m from '@/lib/paraglide/messages'
 import { sidebarOpenCookie } from '@/lib/server/session.server'
-
-const $getSidebarState = createServerFn({ method: 'GET' }).handler(async () => {
+const $getSidebarState = createServerFn({
+	method: 'GET',
+}).handler(async () => {
 	return sidebarOpenCookie.get() ?? true
 })
-
-const $setSidebarState = createServerFn({ method: 'POST' })
-	.validator(type({ state: 'boolean' }))
+const $setSidebarState = createServerFn({
+	method: 'POST',
+})
+	.validator(
+		z.object({
+			state: z.boolean(),
+		}),
+	)
 	.handler(async ({ data: { state } }) => {
 		sidebarOpenCookie.set(state)
 	})
-
 export const Route = createFileRoute('/dashboard')({
 	beforeLoad: async ({ context, location }) => {
 		if (!context.auth) {
@@ -69,22 +70,20 @@ export const Route = createFileRoute('/dashboard')({
 				},
 			})
 		}
-
 		if (!context.auth.user.hasAccess) {
 			throw redirect({
 				to: '/approval-needed',
 			})
 		}
-
 		const [sidebarOpen] = await Promise.all([$getSidebarState()])
-
 		if (!context.auth.user.onboardingInfo) {
 			throw redirect({
 				to: '/onboarding',
-				search: { redirectTo: location.pathname },
+				search: {
+					redirectTo: location.pathname,
+				},
 			})
 		}
-
 		return {
 			defaultSidebarOpen: sidebarOpen,
 		}
@@ -96,16 +95,17 @@ export const Route = createFileRoute('/dashboard')({
 	},
 	component: DashboardLayout,
 })
-
 export default function DashboardLayout() {
 	const { defaultSidebarOpen } = Route.useLoaderData()
 	const [sidebarOpen, _setSidebarOpen] = useState(defaultSidebarOpen)
-
 	const setSidebarOpen = async (state: boolean) => {
 		_setSidebarOpen(state)
-		await $setSidebarState({ data: { state } })
+		await $setSidebarState({
+			data: {
+				state,
+			},
+		})
 	}
-
 	return (
 		<SidebarProvider open={sidebarOpen} onOpenChange={setSidebarOpen}>
 			<Sidebar collapsible="icon">
@@ -120,9 +120,7 @@ export default function DashboardLayout() {
 									<Box className="size-4 transition-all group-hover:scale-110" />
 								</div>
 								<div className="grid flex-1 text-left text-sm leading-tight">
-									<span className="truncate font-semibold">
-										{m.super_tired_kestrel_grip()}
-									</span>
+									<span className="truncate font-semibold">et-stack</span>
 								</div>
 							</SidebarMenuButton>
 						</SidebarMenuItem>
@@ -130,15 +128,10 @@ export default function DashboardLayout() {
 				</SidebarHeader>
 				<SidebarContent>
 					<SidebarGroup>
-						<SidebarGroupLabel>
-							{m.cozy_candid_beetle_grasp()}
-						</SidebarGroupLabel>
+						<SidebarGroupLabel>Main</SidebarGroupLabel>
 						<SidebarMenu>
 							<SidebarMenuItem>
-								<SidebarMenuButton
-									tooltip={m.moving_jumpy_hedgehog_empower()}
-									asChild
-								>
+								<SidebarMenuButton tooltip="Dashboard" asChild>
 									<NavLink
 										to="/dashboard"
 										activeOptions={{
@@ -146,7 +139,7 @@ export default function DashboardLayout() {
 										}}
 									>
 										<HomeIcon />
-										<span>{m.moving_jumpy_hedgehog_empower()}</span>
+										<span>Dashboard</span>
 									</NavLink>
 								</SidebarMenuButton>
 							</SidebarMenuItem>
@@ -154,26 +147,21 @@ export default function DashboardLayout() {
 					</SidebarGroup>
 					<AdminOnly>
 						<SidebarGroup>
-							<SidebarGroupLabel>
-								{m.crazy_round_samuel_endure()}
-							</SidebarGroupLabel>
+							<SidebarGroupLabel>Admin</SidebarGroupLabel>
 							<SidebarMenu>
 								<SidebarMenuItem>
-									<SidebarMenuButton
-										tooltip={m.level_topical_bumblebee_mop()}
-										asChild
-									>
+									<SidebarMenuButton tooltip="Users" asChild>
 										<NavLink to="/dashboard/admin/users">
 											<UsersIcon />
-											<span>{m.level_topical_bumblebee_mop()}</span>
+											<span>Users</span>
 										</NavLink>
 									</SidebarMenuButton>
 								</SidebarMenuItem>
 								<SidebarMenuItem>
-									<SidebarMenuButton tooltip={m.lime_light_mare_earn()} asChild>
+									<SidebarMenuButton tooltip="Uploads" asChild>
 										<NavLink to="/dashboard/admin/uploads">
 											<UploadIcon />
-											<span>{m.lime_light_mare_earn()}</span>
+											<span>Uploads</span>
 										</NavLink>
 									</SidebarMenuButton>
 								</SidebarMenuItem>
@@ -199,52 +187,43 @@ export default function DashboardLayout() {
 				</main>
 				<footer className="flex w-full shrink-0 flex-col items-center gap-2 border-t px-4 py-6 sm:flex-row md:px-6">
 					<p className="text-xs text-muted-foreground">
-						{m.these_tiny_oryx_nurture({
-							year: new Date().getFullYear(),
-							companyName: 'Company Name',
-						})}
+						{`© ${new Date().getFullYear()} ${'Company Name'}. All rights reserved.`}
 					</p>
 					<nav className="mr-4 flex items-center gap-4 sm:ml-auto sm:mr-6 sm:gap-6">
 						<Link to="/" className="text-xs underline-offset-4 hover:underline">
-							{m.arable_key_gibbon_work()}
+							Home
 						</Link>
 						<Link
 							className="text-xs underline-offset-4 hover:underline"
 							to="/terms"
 						>
-							{m.fresh_sea_marten_flop()}
+							Terms of Service
 						</Link>
 						<Link
 							className="text-xs underline-offset-4 hover:underline"
 							to="/privacy"
 						>
-							{m.lazy_stale_bobcat_flip()}
+							Privacy Policy
 						</Link>
 					</nav>
 					<ThemeToggle />
-					<LocaleSwitcher />
 				</footer>
 			</SidebarInset>
 		</SidebarProvider>
 	)
 }
-
 function UserMenu() {
 	const { isMobile } = useSidebar()
 	const { user } = useAuth()
-
 	const name = user.name || user.email.split('@')[0] || ''
 	const email = user.email
 	const image = user.image ?? ''
-
 	const shortName = name
 		.split(' ')
 		.map((n) => n[0])
 		.join('')
 		.toUpperCase()
-
 	const logout = useServerFn($logout)
-
 	return (
 		<SidebarMenu>
 			<SidebarMenuItem>
@@ -293,7 +272,7 @@ function UserMenu() {
 							<DropdownMenuItem asChild>
 								<Link to="/dashboard/settings">
 									<Settings />
-									{m.slimy_mushy_crab_read()}
+									Settings
 								</Link>
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
@@ -305,7 +284,7 @@ function UserMenu() {
 							}}
 						>
 							<LogOut />
-							{m.long_born_sparrow_spin()}
+							Sign out
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>

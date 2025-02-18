@@ -1,5 +1,4 @@
 /// <reference types="vinxi/types/server" />
-import Headers from '@mjackson/headers'
 
 import { getRouterManifest } from '@tanstack/start/router-manifest'
 import {
@@ -11,7 +10,7 @@ import { migrate } from 'drizzle-orm/libsql/migrator'
 import { db } from './drizzle/db'
 import { createRouter } from './router'
 import { env } from '@/lib/server/env.server'
-import { applyLanguage } from '@/lib/server/i18n.server'
+
 import { logger } from '@/lib/server/logger.server'
 
 import '@/lib/server/middleware.server'
@@ -37,27 +36,7 @@ try {
 const handler = createStartHandler({
 	createRouter,
 	getRouterManifest,
-})((ctx) => {
-	const language = applyLanguage(ctx.request)
-
-	logger.debug(
-		{ language, url: ctx.request.url },
-		'Language detected for request',
-	)
-
-	const responseHeaders = new Headers(ctx.responseHeaders)
-	responseHeaders.append('Set-Cookie', `lang=${language}; Path=/;`)
-
-	logger.trace(
-		{ language, url: ctx.request.url, method: ctx.request.method },
-		'Processing stream handler request',
-	)
-
-	return defaultStreamHandler({
-		...ctx,
-		responseHeaders,
-	})
-})
+})(defaultStreamHandler)
 
 logger.info('Server handler initialized successfully')
 

@@ -1,0 +1,73 @@
+---
+description: Routing guidelines for TanStack Router including route types, creation, and navigation patterns
+globs: src/routes/**/*.tsx
+---
+
+guidelines:
+  route_types:
+    public: src/routes/_marketing/ # Marketing/public pages
+    auth: src/routes/_auth/ # Authentication-related pages
+    dashboard: src/routes/dashboard/ # Protected pages requiring authentication
+    admin: src/routes/dashboard/admin/ # Protected pages requiring admin role
+
+  principles:
+    - Place routes in correct directory for proper protection
+    - Authorization is handled by parent layouts
+    - No explicit auth checks needed in route files
+
+examples:
+  basic_route: |
+    import { createFileRoute } from '@tanstack/react-router'
+
+    export const Route = createFileRoute('/your-path')({
+      loader: () => ({
+        crumb: "Your crumb"
+      }),
+      component: YourComponent,
+    })
+
+  dashboard_navigation: |
+    // In dashboard.tsx
+    import { YourIcon } from 'lucide-react'
+
+    <SidebarMenu>
+      <SidebarMenuItem>
+        <SidebarMenuButton tooltip={m.nav_label()} asChild>
+          <NavLink to="/dashboard/your-route">
+            <YourIcon />
+            <span>Your route</span>
+          </NavLink>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    </SidebarMenu>
+
+  nested_routes: |
+    // Parent: /dashboard/parent/index.tsx
+    export const Route = createFileRoute('/dashboard/parent')({
+      component: () => <Outlet />,
+    })
+
+    // Child: /dashboard/parent/child.tsx
+    export const Route = createFileRoute('/dashboard/parent/child')({
+      component: ChildComponent,
+    })
+
+  page_title: |
+    export const Route = createFileRoute('/your-path')({
+      head: () => ({
+        meta: [{ title: "some page title" }],
+      }),
+    })
+
+key_points:
+  structure:
+    - Public routes in _marketing
+    - Auth routes in _auth
+    - Protected routes in dashboard
+    - Admin routes in dashboard/admin
+
+  features:
+    - Automatic authorization
+    - Nested routing support
+    - Page titles via head
+    - Breadcrumb support

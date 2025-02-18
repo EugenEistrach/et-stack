@@ -1,65 +1,34 @@
-import { useQuery } from '@tanstack/react-query'
-import { XCircle } from 'lucide-react'
-import { useSpinDelay } from 'spin-delay'
-import { UAParser } from 'ua-parser-js'
-import {
-	Card,
-	CardHeader,
-	CardTitle,
-	CardDescription,
-	CardContent,
-} from '@/components/ui/card'
-import { LoadingButton } from '@/components/ui/loading-button'
-import { Skeleton } from '@/components/ui/skeleton'
-import {
-	Table,
-	TableHeader,
-	TableRow,
-	TableHead,
-	TableBody,
-	TableCell,
-} from '@/components/ui/table'
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from '@/components/ui/tooltip'
-import {
-	activeSessionsQueryOptions,
-	useSessionRevokeMutation,
-} from '@/features/_shared/user/api/auth.api'
-import * as m from '@/lib/paraglide/messages'
-
+import { useQuery } from '@tanstack/react-query';
+import { XCircle } from 'lucide-react';
+import { useSpinDelay } from 'spin-delay';
+import { UAParser } from 'ua-parser-js';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { LoadingButton } from '@/components/ui/loading-button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { activeSessionsQueryOptions, useSessionRevokeMutation } from '@/features/_shared/user/api/auth.api';
 function parseUserAgent(userAgent: string | null | undefined) {
-	if (!userAgent) {
-		return {
-			browser: m.blue_rapid_fox_dance(),
-			device: m.blue_rapid_fox_dance(),
-			raw: m.blue_rapid_fox_dance(),
-		}
-	}
-
-	const parser = new UAParser(userAgent)
-	const browser = parser.getBrowser()
-	const os = parser.getOS()
-	const device = parser.getDevice()
-
-	const deviceInfo =
-		device.vendor || device.model
-			? `${device.vendor || ''} ${device.model || ''}`.trim()
-			: os.name
-
-	return {
-		browser: `${browser.name || 'Unknown'} ${browser.version || ''}`.trim(),
-		device: deviceInfo || 'Unknown Device',
-		raw: userAgent,
-	}
+  if (!userAgent) {
+    return {
+      browser: "Device",
+      device: "Device",
+      raw: "Device"
+    };
+  }
+  const parser = new UAParser(userAgent);
+  const browser = parser.getBrowser();
+  const os = parser.getOS();
+  const device = parser.getDevice();
+  const deviceInfo = device.vendor || device.model ? `${device.vendor || ''} ${device.model || ''}`.trim() : os.name;
+  return {
+    browser: `${browser.name || 'Unknown'} ${browser.version || ''}`.trim(),
+    device: deviceInfo || 'Unknown Device',
+    raw: userAgent
+  };
 }
-
 function SessionRowSkeleton() {
-	return (
-		<TableRow>
+  return <TableRow>
 			<TableCell>
 				<div className="space-y-2">
 					<Skeleton className="h-4 w-[200px]" />
@@ -75,41 +44,36 @@ function SessionRowSkeleton() {
 			<TableCell className="text-right">
 				<Skeleton className="ml-auto h-8 w-8" />
 			</TableCell>
-		</TableRow>
-	)
+		</TableRow>;
 }
-
 export function ActiveSessionsCard() {
-	const { data: sessions, isLoading } = useQuery(activeSessionsQueryOptions())
-	const sessionRevokeMutation = useSessionRevokeMutation()
-	const isPending = useSpinDelay(sessionRevokeMutation.isPending)
-
-	return (
-		<Card>
+  const {
+    data: sessions,
+    isLoading
+  } = useQuery(activeSessionsQueryOptions());
+  const sessionRevokeMutation = useSessionRevokeMutation();
+  const isPending = useSpinDelay(sessionRevokeMutation.isPending);
+  return <Card>
 			<CardHeader>
-				<CardTitle>{m.round_safe_snake_swim()}</CardTitle>
-				<CardDescription>{m.warm_proud_hawk_soar()}</CardDescription>
+				<CardTitle>Active Sessions</CardTitle>
+				<CardDescription>Manage your active sessions across different devices and browsers</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<Table>
 					<TableHeader>
 						<TableRow>
-							<TableHead>{m.blue_rapid_fox_dance()}</TableHead>
-							<TableHead>{m.pink_wise_deer_float()}</TableHead>
-							<TableHead>{m.swift_proud_snake_soar()}</TableHead>
+							<TableHead>Device</TableHead>
+							<TableHead>IP Address</TableHead>
+							<TableHead>Last Active</TableHead>
 							<TableHead />
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{isLoading ? (
-							<>
+						{isLoading ? <>
 								<SessionRowSkeleton />
-							</>
-						) : (
-							sessions?.map((session) => {
-								const userAgentInfo = parseUserAgent(session.userAgent)
-								return (
-									<TableRow key={session.token}>
+							</> : sessions?.map(session => {
+            const userAgentInfo = parseUserAgent(session.userAgent);
+            return <TableRow key={session.token}>
 										<TableCell>
 											<TooltipProvider>
 												<Tooltip>
@@ -139,37 +103,20 @@ export function ActiveSessionsCard() {
 											<TooltipProvider>
 												<Tooltip delayDuration={50}>
 													<TooltipTrigger asChild>
-														<LoadingButton
-															variant="ghost"
-															size="icon"
-															className="text-destructive"
-															onClick={() =>
-																sessionRevokeMutation.mutate({
-																	token: session.token,
-																})
-															}
-															disabled={isPending}
-															loading={
-																isPending &&
-																sessionRevokeMutation.variables?.token ===
-																	session.token
-															}
-															Icon={XCircle}
-														></LoadingButton>
+														<LoadingButton variant="ghost" size="icon" className="text-destructive" onClick={() => sessionRevokeMutation.mutate({
+                        token: session.token
+                      })} disabled={isPending} loading={isPending && sessionRevokeMutation.variables?.token === session.token} Icon={XCircle}></LoadingButton>
 													</TooltipTrigger>
 													<TooltipContent>
-														{m.warm_rapid_snake_swim()}
+														Revoke Session
 													</TooltipContent>
 												</Tooltip>
 											</TooltipProvider>
 										</TableCell>
-									</TableRow>
-								)
-							})
-						)}
+									</TableRow>;
+          })}
 					</TableBody>
 				</Table>
 			</CardContent>
-		</Card>
-	)
+		</Card>;
 }

@@ -10,13 +10,10 @@ import { type OnboardingInfoTable } from '@/drizzle/schemas/onboarding-schema'
 import { getOnboardingInfo } from '@/features/_shared/user/domain/onboarding.server'
 import { ForgotPasswordEmail } from '@/features/_shared/user/emails/forgot-password.email'
 import { VerificationEmail } from '@/features/_shared/user/emails/verification.email'
-import * as m from '@/lib/paraglide/messages'
 import { sendEmail } from '@/lib/server/email.server'
 import { env } from '@/lib/server/env.server'
-import { applyLanguage } from '@/lib/server/i18n.server'
 
 export type OnboardingInfo = typeof OnboardingInfoTable.$inferSelect
-
 const github =
 	env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET
 		? {
@@ -24,7 +21,6 @@ const github =
 				clientSecret: env.GITHUB_CLIENT_SECRET,
 			}
 		: undefined
-
 export const authServer = betterAuth({
 	baseURL: env.APPLICATION_URL,
 	secret: env.SESSION_SECRET,
@@ -34,16 +30,11 @@ export const authServer = betterAuth({
 	emailAndPassword: {
 		enabled: true,
 		requireEmailVerification: true,
-
 		maxPasswordLength: 128,
-		sendResetPassword: async ({ user, url }, request) => {
-			// Seems the server handler does not scope the language properly for better auth.
-			// So we have to just do it again here for the emails to be localized
-			applyLanguage(request)
-
+		sendResetPassword: async ({ user, url }) => {
 			await sendEmail({
 				to: user.email,
-				subject: m.aqua_great_swan_blink(),
+				subject: 'Reset your password',
 				react: ForgotPasswordEmail({
 					resetLink: url,
 					userEmail: user.email,
@@ -53,12 +44,10 @@ export const authServer = betterAuth({
 	},
 	emailVerification: {
 		sendOnSignUp: true,
-		sendVerificationEmail: async ({ user, url }, request) => {
-			applyLanguage(request)
-
+		sendVerificationEmail: async ({ user, url }) => {
 			await sendEmail({
 				to: user.email,
-				subject: m.calm_rapid_panda_glow(),
+				subject: 'Verify Your Email',
 				react: VerificationEmail({
 					verificationLink: url.replace(
 						'callbackURL=/',
@@ -70,7 +59,9 @@ export const authServer = betterAuth({
 		},
 	},
 	socialProviders: {
-		...(github && { github }),
+		...(github && {
+			github,
+		}),
 	},
 	plugins: [admin(), organization()],
 	user: {
@@ -82,30 +73,23 @@ export const authServer = betterAuth({
 		},
 	},
 })
-
 export const getSession = async () => {
 	try {
 		const request = getWebRequest()
-
 		if (!request) {
 			throw new Error('Request not found')
 		}
-
 		const session = await authServer.api.getSession({
 			headers: request.headers,
 		})
-
 		if (!session || !session.user) {
 			return null
 		}
-
 		const hasAccess = env.ENABLE_ADMIN_APPROVAL
 			? session.user.role === 'admin' || session.user.hasAccess
 			: true
-
 		const onboardingInfo = await getOnboardingInfo(session.user.id)
 		const hasPassword = await userHasPassword(session.user.id)
-
 		return {
 			...session,
 			user: {
@@ -120,18 +104,15 @@ export const getSession = async () => {
 		return null
 	}
 }
-
 export const requireAuthSession = async (server = authServer) => {
 	const request = getWebRequest()
-
 	if (!request) {
 		throw new Error('Request not found')
 	}
-
-	const auth = await server.api.getSession({ headers: request.headers })
-
+	const auth = await server.api.getSession({
+		headers: request.headers,
+	})
 	const redirectToPath = new URL(request.url).pathname
-
 	if (!auth) {
 		throw redirect({
 			to: '/login',
@@ -140,57 +121,47 @@ export const requireAuthSession = async (server = authServer) => {
 			},
 		})
 	}
-
 	return auth
 }
-
 export const requireAdminSession = async (server = authServer) => {
 	const auth = await requireAuthSession(server)
-
 	if (auth.user.role !== 'admin') {
 		throw new Error('Unauthorized')
 	}
 }
-
 export async function requireApiKey(request: Request) {
 	if (!env.API_KEY) {
 		throw new Error('API key not set')
 	}
-
 	const apiKey = request.headers.get('Authorization')
-
 	if (!apiKey) {
 		throw new Error('Unauthorized')
 	}
-
 	if (apiKey !== env.API_KEY) {
 		throw new Error('Unauthorized')
 	}
 }
-
 export const requireAuthSessionApi = async (server = authServer) => {
 	const request = getWebRequest()
-
 	if (!request) {
 		throw new Error('Request not found')
 	}
-
-	const auth = await server.api.getSession({ headers: request.headers })
-
+	const auth = await server.api.getSession({
+		headers: request.headers,
+	})
 	if (!auth) {
-		throw new Response('Unauthorized', { status: 401 })
+		throw new Response('Unauthorized', {
+			status: 401,
+		})
 	}
-
 	return auth
 }
-
 export async function isEmailAvailable(email: string) {
 	const user = await db.query.user.findFirst({
 		where: eq(UserTable.email, email),
 	})
 	return !user
 }
-
 export async function userHasPassword(userId: string) {
 	const account = await db.query.account.findFirst({
 		where: and(
@@ -200,26 +171,20 @@ export async function userHasPassword(userId: string) {
 	})
 	return !!account
 }
-
 export async function setUserPassword({
 	newPassword,
 }: {
 	newPassword: string
 }) {
 	const request = getWebRequest()
-
 	if (!request) {
 		throw new Error('Request not found')
 	}
-
 	const auth = await requireAuthSessionApi(authServer)
-
 	const hasPassword = await userHasPassword(auth.user.id)
-
 	if (hasPassword) {
 		throw new Error('User already has a password. Can not set a new one.')
 	}
-
 	return authServer.api.setPassword({
 		headers: request.headers,
 		body: {

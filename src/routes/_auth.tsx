@@ -1,5 +1,4 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
-import { LocaleSwitcher } from '@/components/ui/locale-switcher'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 
 export const Route = createFileRoute('/_auth')({
@@ -15,7 +14,6 @@ function AuthLayout() {
 			<footer className="absolute bottom-0 right-0 p-4">
 				<div className="flex items-center gap-2">
 					<ThemeToggle />
-					<LocaleSwitcher />
 				</div>
 			</footer>
 		</div>

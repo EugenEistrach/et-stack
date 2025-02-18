@@ -1,13 +1,11 @@
 'use client'
 
 import { subscribeToSchemeChange } from '@epic-web/client-hints/color-scheme'
-
 import { useRouter } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/start'
-import { type } from 'arktype'
 import { Moon, Sun } from 'lucide-react'
 import { useEffect } from 'react'
-
+import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import {
 	DropdownMenu,
@@ -15,23 +13,33 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import * as m from '@/lib/paraglide/messages'
 import { themeCookie } from '@/lib/server/session.server'
 import { cn } from '@/lib/shared/utils'
 
-const $setTheme = createServerFn({ method: 'POST' })
-	.validator(type({ theme: "'light' | 'dark' | 'system'" }))
+const themeSchema = z.enum(['light', 'dark']).optional()
+
+const $setTheme = createServerFn({
+	method: 'POST',
+})
+	.validator(
+		z.object({
+			theme: themeSchema,
+		}),
+	)
 	.handler(async ({ data: { theme } }) => {
 		themeCookie.set(theme)
 	})
 
 export function ThemeToggle({ className }: { className?: string }) {
 	const router = useRouter()
-
 	useEffect(() => subscribeToSchemeChange(() => router.invalidate()), [router])
 
-	const setTheme = async (theme: 'light' | 'dark' | 'system') => {
-		await $setTheme({ data: { theme } })
+	const setTheme = async (theme: z.infer<typeof themeSchema>) => {
+		await $setTheme({
+			data: {
+				theme,
+			},
+		})
 		await router.invalidate()
 	}
 
@@ -41,18 +49,18 @@ export function ThemeToggle({ className }: { className?: string }) {
 				<Button variant="outline" size="icon" className={cn(className)}>
 					<Sun className="h-4 w-4" />
 					<Moon className="absolute h-4 w-4" />
-					<span className="sr-only">{m.brave_tidy_mouse_create()}</span>
+					<span className="sr-only">Toggle theme</span>
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">
 				<DropdownMenuItem onClick={() => setTheme('light')}>
-					{m.glad_odd_bat_chop()}
+					Light
 				</DropdownMenuItem>
 				<DropdownMenuItem onClick={() => setTheme('dark')}>
-					{m.spry_crazy_eagle_propel()}
+					Dark
 				</DropdownMenuItem>
-				<DropdownMenuItem onClick={() => setTheme('system')}>
-					{m.keen_helpful_coyote_urge()}
+				<DropdownMenuItem onClick={() => setTheme(undefined)}>
+					System
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>

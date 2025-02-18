@@ -1,9 +1,9 @@
-import { arktypeResolver } from '@hookform/resolvers/arktype'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Link, useNavigate, useSearch } from '@tanstack/react-router'
-import { type } from 'arktype'
 import { DatabaseZap, LockKeyholeOpen } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
+import { z } from 'zod'
 import { GithubIcon } from '@/components/icons/github-icon'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -20,76 +20,73 @@ import {
 	useEmailSignInMutation,
 	useSocialSignInMutation,
 } from '@/features/_shared/user/api/auth.api'
-import * as m from '@/lib/paraglide/messages'
 
-const loginFormSchema = type({
-	email: 'string >= 1 & string.email',
-	password: 'string >= 1',
+const loginFormSchema = z.object({
+	email: z.string().min(1, 'Email is required').email('Invalid email format'),
+	password: z.string().min(1, 'Password is required'),
 })
 
 export function LoginForm() {
 	const form = useForm({
-		resolver: arktypeResolver(loginFormSchema),
+		resolver: zodResolver(loginFormSchema),
 		defaultValues: {
 			email: '',
 			password: '',
 		},
 	})
-
 	const navigate = useNavigate()
-	const { redirectTo } = useSearch({ from: '/_auth/login' })
+	const { redirectTo } = useSearch({
+		from: '/_auth/login',
+	})
 	const { mutate: signIn, isPending: isEmailSignInPending } =
 		useEmailSignInMutation()
 	const { mutate: signInWithSocial, isPending: isSocialSignInPending } =
 		useSocialSignInMutation()
-
 	function onSubmit(values: { email: string; password: string }) {
 		void signIn(values, {
 			onSuccess: ([expectedError]) => {
 				if (expectedError === 'verification_required') {
 					void navigate({
 						to: '/verify-email',
-						search: { email: values.email },
+						search: {
+							email: values.email,
+						},
 					})
 				}
 			},
 			onError: () => {
 				form.setError('email', {
 					type: 'manual',
-					message: m.weary_civil_bird_aid(),
+					message: 'Invalid email or password',
 				})
 				form.setError('password', {
 					type: 'manual',
-					message: m.weary_civil_bird_aid(),
+					message: 'Invalid email or password',
 				})
 			},
 		})
 	}
-
 	const isAnySignInPending = useSpinDelay(
 		isEmailSignInPending || isSocialSignInPending,
 	)
-
 	return (
 		<Card className="w-full max-w-md">
 			<CardHeader>
 				<div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
 					<DatabaseZap />
 				</div>
-				<CardTitle className="text-center text-2xl font-bold">
-					{m.minor_trick_buzzard_foster()}
-				</CardTitle>
+				<CardTitle className="text-center text-2xl font-bold">Login</CardTitle>
 			</CardHeader>
 			<CardContent className="space-y-4">
 				<div className="text-center text-sm">
 					<span className="text-muted-foreground">
-						{m.kind_polite_moth_assure()}{' '}
+						{"Don't have an account?"}{' '}
 					</span>
 					<Link
 						to="/register"
 						className="font-medium text-primary hover:underline"
 					>
-						{m.least_raw_zebra_dine()}
+						Create Account
 					</Link>
 				</div>
 				<LoadingButton
@@ -104,9 +101,7 @@ export function LoginForm() {
 						})
 					}}
 				>
-					<span className="flex items-center">
-						{m.aloof_direct_worm_trim()}
-					</span>
+					<span className="flex items-center">GitHub</span>
 				</LoadingButton>
 				<Form {...form}>
 					<div className="relative my-6">
@@ -115,7 +110,7 @@ export function LoginForm() {
 						</div>
 						<div className="relative flex justify-center text-sm">
 							<span className="bg-card px-2 text-muted-foreground">
-								{m.cozy_icy_lark_dance()}
+								Or login with email and password
 							</span>
 						</div>
 					</div>
@@ -125,18 +120,18 @@ export function LoginForm() {
 							name="email"
 							render={({ field, fieldState }) => (
 								<FormItem>
-									<FormLabel>{m.proof_gaudy_turtle_climb()}</FormLabel>
+									<FormLabel>Email</FormLabel>
 									<FormControl>
 										<Input
 											type="email"
-											placeholder={m.lime_lazy_shrike_strive()}
+											placeholder="Enter your email"
 											{...field}
 										/>
 									</FormControl>
 									<FormMessage>
 										{fieldState.error?.type === 'manual'
 											? fieldState.error.message
-											: m.gray_brief_pug_jump()}
+											: 'This field is required'}
 									</FormMessage>
 								</FormItem>
 							)}
@@ -147,24 +142,24 @@ export function LoginForm() {
 							render={({ field, fieldState }) => (
 								<FormItem>
 									<div className="flex items-center justify-between">
-										<FormLabel>{m.zany_fit_owl_learn()}</FormLabel>
+										<FormLabel>Password</FormLabel>
 										<Link
 											to="/reset-password"
 											className="text-sm font-medium text-primary hover:underline"
 										>
-											{m.polite_safe_bear_hint()}
+											Forgot password?
 										</Link>
 									</div>
 									<FormControl>
 										<PasswordInput
-											placeholder={m.alert_grassy_moose_absorb()}
+											placeholder="Enter your password"
 											{...field}
 										/>
 									</FormControl>
 									<FormMessage>
 										{fieldState.error?.type === 'manual'
 											? fieldState.error.message
-											: m.gray_brief_pug_jump()}
+											: 'This field is required'}
 									</FormMessage>
 								</FormItem>
 							)}
@@ -177,7 +172,7 @@ export function LoginForm() {
 								Icon={LockKeyholeOpen}
 								iconPosition="right"
 							>
-								{m.jumpy_spry_snake_scoop()}
+								Login with Password
 							</LoadingButton>
 						</div>
 					</form>

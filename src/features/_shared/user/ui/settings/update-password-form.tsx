@@ -1,8 +1,8 @@
-import { arktypeResolver } from '@hookform/resolvers/arktype'
-import { type } from 'arktype'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Save } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
+import { z } from 'zod'
 import {
 	Card,
 	CardHeader,
@@ -21,40 +21,41 @@ import {
 } from '@/components/ui/form'
 import PasswordInput from '@/components/ui/input'
 import { LoadingButton } from '@/components/ui/loading-button'
-
 import { usePasswordUpdateMutation } from '@/features/_shared/user/api/auth.api'
-import * as m from '@/lib/paraglide/messages'
+
+const updatePasswordSchema = z.object({
+	currentPassword: z.string().min(8, 'Password must be at least 8 characters'),
+	newPassword: z.string().min(8, 'Password must be at least 8 characters'),
+})
 
 export function UpdatePasswordForm() {
 	const form = useForm({
-		resolver: arktypeResolver(
-			type({
-				currentPassword: 'string >= 8',
-				newPassword: 'string >= 8',
-			}),
-		),
+		resolver: zodResolver(updatePasswordSchema),
 		defaultValues: {
 			currentPassword: '',
 			newPassword: '',
 		},
 	})
-
 	const passwordUpdateMutation = usePasswordUpdateMutation()
 	const isPending = useSpinDelay(passwordUpdateMutation.isPending)
+
+	function onSubmit(values: z.infer<typeof updatePasswordSchema>) {
+		passwordUpdateMutation.mutate(values)
+	}
 
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle>{m.brave_wise_eagle_soar()}</CardTitle>
-				<CardDescription>{m.swift_calm_hawk_glide()}</CardDescription>
+				<CardTitle>Change Password</CardTitle>
+				<CardDescription>
+					Update your existing password to a new one
+				</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<Form {...form}>
 					<form
 						id="update-password-form"
-						onSubmit={form.handleSubmit((values) =>
-							passwordUpdateMutation.mutate(values),
-						)}
+						onSubmit={form.handleSubmit(onSubmit)}
 						className="space-y-4"
 					>
 						<FormField
@@ -62,7 +63,7 @@ export function UpdatePasswordForm() {
 							name="currentPassword"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>{m.warm_safe_deer_jump()}</FormLabel>
+									<FormLabel>Current Password</FormLabel>
 									<FormControl>
 										<PasswordInput {...field} />
 									</FormControl>
@@ -75,7 +76,7 @@ export function UpdatePasswordForm() {
 							name="newPassword"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>{m.blue_proud_swan_float()}</FormLabel>
+									<FormLabel>New Password</FormLabel>
 									<FormControl>
 										<PasswordInput {...field} />
 									</FormControl>
@@ -94,7 +95,7 @@ export function UpdatePasswordForm() {
 					loading={isPending}
 					Icon={Save}
 				>
-					{m.pink_spry_snake_hike()}
+					Save Changes
 				</LoadingButton>
 			</CardFooter>
 		</Card>

@@ -1,12 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { UsersList } from '@/features/admin/ui/users-list'
-import * as m from '@/lib/paraglide/messages'
-
+import { createFileRoute } from '@tanstack/react-router';
+import { UsersList } from '@/features/admin/ui/users-list';
 export const Route = createFileRoute('/dashboard/admin/users')({
-	loader: async () => {
-		return {
-			crumb: m.level_topical_bumblebee_mop(),
-		}
-	},
-	component: UsersList,
-})
+  loader: async () => {
+    return {
+      crumb: "Users"
+    };
+  },
+  component: UsersList
+});

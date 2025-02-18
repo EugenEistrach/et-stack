@@ -14,8 +14,6 @@ modern tooling and best practices.
 - 🔑 Modern authentication with [better-auth](https://better-auth.com)
 - 💾 Database integration with [Drizzle ORM](https://orm.drizzle.team)
 - 🎨 Beautiful UI with [shadcn/ui](https://ui.shadcn.com)
-- 🌍 Tree-shakeable i18n with
-  [Paraglide](https://inlang.com/m/gerre34r/library-inlang-paraglideJs)
 - 🧪 Comprehensive testing setup
 
 ## Tech Stack
@@ -28,9 +26,6 @@ modern tooling and best practices.
   - [TailwindCSS](https://tailwindcss.com) with
     [shadcn/ui](https://ui.shadcn.com)
   - [Better-auth](https://better-auth.com) with [GitHub](https://github.com)
-  - [Paraglide](https://inlang.com/m/gerre34r/library-inlang-paraglideJs) for
-    type-safe i18n
-  - [arktype](https://arktype.io) for type-safe validation
 
 - **Backend & Data**
 
@@ -72,7 +67,6 @@ This boilerplate uses a hybrid database approach:
 - [Validation Guidelines](.cursor/rules/validation.mdc) - Data validation
 - [Routing Guidelines](.cursor/rules/routing.mdc) - Route creation and
   navigation
-- [i18n Guide](.cursor/rules/i18n.mdc) - Internationalization
 - [Commit Conventions](.cursor/rules/commit-conventions.mdc) - Git practices
 
 ## License

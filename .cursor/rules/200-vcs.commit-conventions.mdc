@@ -1,0 +1,50 @@
+---
+description: Commit message format and type guidelines
+globs:
+---
+
+guidelines:
+  format: "<type>(<scope>): <subject>"
+  principles:
+    - Keep messages concise and clear
+    - Use imperative mood
+    - No period at end
+    - Start with capital letter
+    - Max 50 characters for subject
+
+  types:
+    feat: New features
+    fix: Bug fixes
+    docs: Documentation
+    style: Formatting
+    refactor: Code improvements
+    test: Test changes
+    chore: Maintenance
+
+examples:
+  basic: |
+    feat(auth): Add SSO support
+    fix(api): Handle timeout errors
+    docs: Update API docs
+    style: Format with prettier
+    refactor(db): Extract config
+    test: Add auth tests
+    chore(deps): Bump versions
+
+  breaking_change: |
+    feat(api)!: Change auth flow
+
+    BREAKING CHANGE: New token format
+
+key_points:
+  message:
+    - Use type prefixes
+    - Keep it brief
+    - Be descriptive
+    - Use scopes when relevant
+
+  style:
+    - Imperative mood
+    - No period
+    - Capital first letter
+    - Under 50 chars

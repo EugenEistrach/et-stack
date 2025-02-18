@@ -1,6 +1,6 @@
 import Headers from '@mjackson/headers'
 import { test as base } from '@playwright/test'
-import { setSignedCookie } from 'better-call'
+import { setSignedCookie } from 'better-auth'
 import { eq } from 'drizzle-orm'
 import { createUserAndSession, type UserOptions } from './test-utils'
 import { db } from '@/drizzle/db'

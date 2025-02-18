@@ -1,11 +1,11 @@
 import { logger, schemaTask } from '@trigger.dev/sdk/v3'
-import { type } from 'arktype'
+import { z } from 'zod'
 import { db } from '@/drizzle/db'
 import { UserTable } from '@/drizzle/schemas/auth-schema'
 
-const taskSchema = type({
-	email: 'string',
-	name: 'string',
+const taskSchema = z.object({
+	email: z.string(),
+	name: z.string(),
 })
 
 export const exaxpleTask = schemaTask({

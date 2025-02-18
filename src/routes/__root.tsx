@@ -1,11 +1,13 @@
 import { type QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
-import { Meta, Scripts } from '@tanstack/start'
-
+import {
+	createRootRouteWithContext,
+	HeadContent,
+	Outlet,
+	Scripts,
+} from '@tanstack/react-router'
 import filePondCss from 'filepond/dist/filepond.min.css?url'
 import * as React from 'react'
-
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { $getSession } from '@/features/_shared/user/api/auth.api'
@@ -14,10 +16,8 @@ import {
 	ClientHintChecker,
 } from '@/lib/client/client-hints.client'
 
-import { useLocale } from '@/lib/client/i18n.client'
-
+import { ThemeProvider } from '@/lib/client/theme.client'
 import { TimezoneContext } from '@/lib/client/timezone.client'
-import * as m from '@/lib/paraglide/messages'
 import appCss from '@/styles/globals.css?url'
 
 const TanStackRouterDevtools =
@@ -40,9 +40,7 @@ export const Route = createRootRouteWithContext<{
 			$getSession(),
 			$getHintsAndPrefs(),
 		])
-
 		const { hints, theme: selectedTheme } = hintsAndPrefs
-
 		if (!auth) {
 			return {
 				auth: null,
@@ -50,7 +48,6 @@ export const Route = createRootRouteWithContext<{
 				theme: selectedTheme ?? hints.colorScheme,
 			}
 		}
-
 		return {
 			auth,
 			hints,
@@ -58,7 +55,11 @@ export const Route = createRootRouteWithContext<{
 		}
 	},
 	loader: async ({ context }) => {
-		return { auth: context.auth, hints: context.hints, theme: context.theme }
+		return {
+			auth: context.auth,
+			hints: context.hints,
+			theme: context.theme,
+		}
 	},
 	head: () => ({
 		meta: [
@@ -70,14 +71,28 @@ export const Route = createRootRouteWithContext<{
 				content: 'width=device-width, initial-scale=1',
 			},
 			{
-				title: m.super_tired_kestrel_grip(),
+				title: 'et-stack',
 			},
 		],
 		links: [
-			{ rel: 'stylesheet', href: appCss },
-			{ rel: 'stylesheet', href: filePondCss },
-			{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-			{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+			{
+				rel: 'stylesheet',
+				href: appCss,
+			},
+			{
+				rel: 'stylesheet',
+				href: filePondCss,
+			},
+			{
+				rel: 'icon',
+				type: 'image/x-icon',
+				href: '/favicon.ico',
+			},
+			{
+				rel: 'icon',
+				type: 'image/svg+xml',
+				href: '/favicon.svg',
+			},
 
 			// {
 			// 	rel: 'preload',
@@ -92,7 +107,6 @@ export const Route = createRootRouteWithContext<{
 	}),
 	component: RootComponent,
 })
-
 function RootComponent() {
 	return (
 		<RootDocument>
@@ -100,24 +114,24 @@ function RootComponent() {
 		</RootDocument>
 	)
 }
-
 function RootDocument({ children }: { children: React.ReactNode }) {
 	const { hints, theme } = Route.useLoaderData()
-	const lang = useLocale()
+
 	return (
-		<html lang={lang}>
+		<html className="font-sans">
 			<head>
-				<Meta />
+				<HeadContent />
 			</head>
 			<body className={theme}>
 				<ClientHintChecker />
-				<TimezoneContext.Provider value={hints.timeZone}>
-					<TooltipProvider>
-						<div className="font-sans">{children}</div>
-
-						<Toaster />
-					</TooltipProvider>
-				</TimezoneContext.Provider>
+				<ThemeProvider theme={theme}>
+					<TimezoneContext.Provider value={hints.timeZone}>
+						<TooltipProvider>
+							<div>{children}</div>
+							<Toaster />
+						</TooltipProvider>
+					</TimezoneContext.Provider>
+				</ThemeProvider>
 				<TanStackRouterDevtools position="bottom-right" />
 				<ReactQueryDevtools buttonPosition="bottom-right" />
 				<Scripts />

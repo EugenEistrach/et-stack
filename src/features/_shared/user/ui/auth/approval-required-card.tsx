@@ -8,7 +8,6 @@ import {
 	CardTitle,
 } from '@/components/ui/card'
 import { useAuth } from '@/features/_shared/user/api/auth.api'
-import * as m from '@/lib/paraglide/messages'
 
 export function ApprovalRequiredCard() {
 	const { user } = useAuth()
@@ -19,20 +18,20 @@ export function ApprovalRequiredCard() {
 					<ClockIcon className="h-6 w-6 text-yellow-600" />
 				</div>
 				<CardTitle className="text-center text-2xl font-bold">
-					{m.sunny_tense_herring_bloom()}
+					Approval Required
 				</CardTitle>
 				<CardDescription className="text-center">
-					{m.zany_deft_cockroach_grace()}
+					Your account is pending administrator approval
 				</CardDescription>
 			</CardHeader>
 			<CardContent className="space-y-4 text-center">
 				<p className="text-sm text-muted-foreground">
-					{m.stock_sea_racoon_glow({ name: user.name || user.email })}
+					{`Hello ${user.name || user.email}! Your account has been created successfully, but requires administrator approval before you can access the application. Please check back later or contact your administrator.`}
 				</p>
 				<div className="flex justify-center gap-4">
 					<Button variant="outline" onClick={() => window.location.reload()}>
 						<RefreshCwIcon className="mr-2 h-4 w-4" />
-						{m.upper_teary_sawfish_amaze()}
+						Check Again
 					</Button>
 				</div>
 			</CardContent>

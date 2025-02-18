@@ -1,0 +1,49 @@
+---
+description: Component library guidelines - all shadcn components are pre-installed
+globs: *.tsx
+---
+
+guidelines:
+  core:
+    - All shadcn components are already installed
+    - Import from @/components/ui/[component-name]
+    - Style with Tailwind CSS
+    - Use cn() utility for class merging
+
+  workflow:
+    - No need to install components - all are pre-installed
+    - Import directly from @/components/ui
+    - Check existing components before creating new ones
+
+examples:
+  import: |
+    import { Button } from "@/components/ui/button"
+    import { Input } from "@/components/ui/input"
+
+  styling: |
+    import { cn } from "@/lib/utils"
+
+    <Button
+      className={cn(
+        "bg-primary",
+        className
+      )}
+    >
+      Click me
+    </Button>
+
+  installation: |
+    # You shouldn't need this - all components are installed
+    # Only as reference if needed:
+    pnpm dlx shadcn@latest add button
+
+key_points:
+  components:
+    - All shadcn components pre-installed
+    - Import from @/components/ui
+    - Check before creating new ones
+
+  styling:
+    - Use Tailwind CSS
+    - Merge classes with cn()
+    - Follow Shadcn patterns

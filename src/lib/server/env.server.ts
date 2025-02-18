@@ -1,39 +1,55 @@
-import { type } from 'arktype'
+import { z } from 'zod'
 
 // Schema definition
-export const environmentSchema = type({
-	'CI?': type('string >= 1').pipe((val) => val === 'true'),
-	'MOCKS?': type('string >= 1').pipe((val) => val === 'true'),
-	'NODE_ENV?': 'string >= 1',
-	APPLICATION_URL: 'string >= 1',
-	'TURSO_DATABASE_URL?': 'string',
-	'TURSO_AUTH_TOKEN?': 'string',
-	LOCAL_DATABASE_PATH: "string = 'db.sqlite'",
-	'GITHUB_CLIENT_ID?': 'string >= 1',
-	'GITHUB_CLIENT_SECRET?': 'string >= 1',
-	SESSION_SECRET: 'string >= 1',
-	'RESEND_API_KEY?': 'string >= 1',
-	'EMAIL_FROM?': 'string >= 1',
-	'ADMIN_USER_EMAILS?': type('string >= 1').pipe(
-		(val) => (val || '').split(',').map((s) => s.trim()),
-		type('string.email[]'),
-	),
-	'API_KEY?': 'string >= 1',
-	'ENABLE_ADMIN_APPROVAL?': type('string >= 1').pipe((val) => val === 'true'),
-	LOG_LEVEL: "string >= 1 = 'info'",
+export const environmentSchema = z.object({
+	CI: z
+		.string()
+		.min(1)
+		.transform((val) => val === 'true')
+		.optional(),
+	MOCKS: z
+		.string()
+		.min(1)
+		.transform((val) => val === 'true')
+		.optional(),
+	NODE_ENV: z.string().min(1).optional(),
+	APPLICATION_URL: z.string().min(1),
+	TURSO_DATABASE_URL: z.string().optional(),
+	TURSO_AUTH_TOKEN: z.string().optional(),
+	LOCAL_DATABASE_PATH: z.string().default('db.sqlite'),
+	GITHUB_CLIENT_ID: z.string().min(1).optional(),
+	GITHUB_CLIENT_SECRET: z.string().min(1).optional(),
+	SESSION_SECRET: z.string().min(1),
+	RESEND_API_KEY: z.string().min(1).optional(),
+	EMAIL_FROM: z.string().min(1).optional(),
+	ADMIN_USER_EMAILS: z
+		.string()
+		.min(1)
+		.transform((val) => val.split(',').map((s) => s.trim()))
+		.pipe(z.array(z.string().email()))
+		.optional(),
+	API_KEY: z.string().min(1).optional(),
+	ENABLE_ADMIN_APPROVAL: z
+		.string()
+		.min(1)
+		.transform((val) => val === 'true')
+		.optional(),
+	LOG_LEVEL: z.string().min(1).default('info'),
 })
 
 // Type inference
-export type Env = typeof environmentSchema.infer
+export type Env = z.infer<typeof environmentSchema>
 
 const parseEnv = () => {
-	const result = environmentSchema(process.env)
+	const result = environmentSchema.safeParse(process.env)
 
-	if (result instanceof type.errors) {
-		throw new Error(`🚨 Invalid environment variables.\n ${result.summary}`)
+	if (!result.success) {
+		throw new Error(
+			`🚨 Invalid environment variables.\n ${result.error.toString()}`,
+		)
 	}
 
-	return result
+	return result.data
 }
 
 // Cache for parsed env

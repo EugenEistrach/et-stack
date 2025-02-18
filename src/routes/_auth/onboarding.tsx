@@ -1,14 +1,11 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import { type } from 'arktype'
-
+import { z } from 'zod'
 import { OnboardingForm } from '@/features/_shared/user/ui/auth/onboarding-form.fullstack'
 
-const searchSchema = type({
-	'redirectTo?': 'string',
-})
-
 export const Route = createFileRoute('/_auth/onboarding')({
-	validateSearch: searchSchema,
+	validateSearch: z.object({
+		redirectTo: z.string().optional(),
+	}),
 	beforeLoad: async ({ context, search }) => {
 		if (!context.auth) {
 			throw redirect({

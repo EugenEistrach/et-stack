@@ -1,9 +1,9 @@
-import { arktypeResolver } from '@hookform/resolvers/arktype'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from '@tanstack/react-router'
-import { type } from 'arktype'
 import { CirclePlus, DatabaseZap } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
+import { z } from 'zod'
 import { GithubIcon } from '@/components/icons/github-icon'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -21,24 +21,22 @@ import {
 	useSocialSignInMutation,
 	EmailNotAvailableError,
 } from '@/features/_shared/user/api/auth.api'
-import * as m from '@/lib/paraglide/messages'
 
-const registerFormSchema = type({
-	name: 'string >= 1',
-	email: 'string.email >= 1',
-	password: 'string >= 8',
+const registerFormSchema = z.object({
+	name: z.string().min(1, 'Name is required'),
+	email: z.string().min(1, 'Email is required').email('Invalid email format'),
+	password: z.string().min(8, 'Password must be at least 8 characters'),
 })
 
 export function RegisterForm() {
 	const form = useForm({
-		resolver: arktypeResolver(registerFormSchema),
+		resolver: zodResolver(registerFormSchema),
 		defaultValues: {
 			name: '',
 			email: '',
 			password: '',
 		},
 	})
-
 	const { mutate: signUp, isPending: isEmailSignUpPending } =
 		useEmailSignUpMutation()
 	const { mutate: signInWithSocial, isPending: isSocialSignInPending } =
@@ -48,16 +46,16 @@ export function RegisterForm() {
 		void signUp(values, {
 			onSuccess: ([expectedError]) => {
 				if (expectedError === EmailNotAvailableError) {
-					form.setError('email', { type: EmailNotAvailableError })
+					form.setError('email', {
+						type: EmailNotAvailableError,
+					})
 				}
 			},
 		})
 	}
-
 	const isAnySignInPending = useSpinDelay(
 		isEmailSignUpPending || isSocialSignInPending,
 	)
-
 	return (
 		<Card className="w-full max-w-md">
 			<CardHeader>
@@ -67,19 +65,19 @@ export function RegisterForm() {
 					</div>
 				</div>
 				<CardTitle className="text-center text-2xl font-bold">
-					{m.soft_ago_pelican_hush()}
+					Create an Account
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="space-y-4">
 				<div className="text-center text-sm">
 					<span className="text-muted-foreground">
-						{m.level_every_marten_spark()}{' '}
+						{'Already have an account?'}{' '}
 					</span>
 					<Link
 						to="/login"
 						className="font-medium text-primary hover:underline"
 					>
-						{m.noble_acidic_niklas_tend()}
+						Sign in
 					</Link>
 				</div>
 				<LoadingButton
@@ -94,9 +92,7 @@ export function RegisterForm() {
 						})
 					}}
 				>
-					<span className="flex items-center">
-						{m.aloof_direct_worm_trim()}
-					</span>
+					<span className="flex items-center">GitHub</span>
 				</LoadingButton>
 
 				<Form {...form}>
@@ -106,7 +102,7 @@ export function RegisterForm() {
 						</div>
 						<div className="relative flex justify-center text-sm">
 							<span className="bg-card px-2 text-muted-foreground">
-								{m.warm_quick_mole_stare()}
+								Or create an account with email
 							</span>
 						</div>
 					</div>
@@ -120,14 +116,11 @@ export function RegisterForm() {
 							name="name"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>{m.giant_awake_crow_forgive()}</FormLabel>
+									<FormLabel>Full Name</FormLabel>
 									<FormControl>
-										<Input
-											placeholder={m.civil_late_poodle_race()}
-											{...field}
-										/>
+										<Input placeholder="Enter your full name" {...field} />
 									</FormControl>
-									<FormMessage>{m.gray_brief_pug_jump()}</FormMessage>
+									<FormMessage>This field is required</FormMessage>
 								</FormItem>
 							)}
 						/>
@@ -136,18 +129,18 @@ export function RegisterForm() {
 							name="email"
 							render={({ field, fieldState }) => (
 								<FormItem>
-									<FormLabel>{m.tame_next_lobster_succeed()}</FormLabel>
+									<FormLabel>Email</FormLabel>
 									<FormControl>
 										<Input
 											type="email"
-											placeholder={m.curly_fair_racoon_honor()}
+											placeholder="Enter your email"
 											{...field}
 										/>
 									</FormControl>
 									<FormMessage>
 										{fieldState.error?.type === EmailNotAvailableError
-											? m.wise_green_jackdaw_prosper()
-											: m.patchy_direct_ocelot_burn()}
+											? 'This email is already in use'
+											: 'Please enter a valid email address'}
 									</FormMessage>
 								</FormItem>
 							)}
@@ -157,15 +150,12 @@ export function RegisterForm() {
 							name="password"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>{m.bald_brief_otter_swim()}</FormLabel>
+									<FormLabel>Password</FormLabel>
 									<FormControl>
-										<PasswordInput
-											placeholder={m.factual_bold_lamb_arise()}
-											{...field}
-										/>
+										<PasswordInput placeholder="Create a password" {...field} />
 									</FormControl>
 									<FormMessage>
-										{m.close_mild_lemur_scoop({ length: 8 })}
+										{`Must be at least ${8} characters`}
 									</FormMessage>
 								</FormItem>
 							)}
@@ -178,9 +168,7 @@ export function RegisterForm() {
 								Icon={CirclePlus}
 								iconPosition="right"
 							>
-								<span className="flex items-center">
-									{m.least_raw_zebra_dine()}
-								</span>
+								<span className="flex items-center">Create Account</span>
 							</LoadingButton>
 						</div>
 					</form>

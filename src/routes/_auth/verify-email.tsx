@@ -1,12 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { type } from 'arktype'
+import { z } from 'zod'
 import { VerificationRequiredCard } from '@/features/_shared/user/ui/auth/verification-required-card'
 
-const searchType = type({
-	email: 'string.email',
-})
-
 export const Route = createFileRoute('/_auth/verify-email')({
-	validateSearch: searchType,
+	validateSearch: z.object({
+		email: z.string().email('Invalid email format'),
+	}),
 	component: VerificationRequiredCard,
 })

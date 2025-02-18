@@ -1,0 +1,72 @@
+---
+description: react-hook-form instructions and guidelines
+globs: *.tsx
+---
+
+guidelines:
+  core:
+    - Use react-hook-form for form state management
+    - Refer to @validation.mdc for validation instructions
+    - Use controlled components sparingly - prefer uncontrolled when possible
+    - Implement proper form submission handling with loading states
+    - Use [loading-button.tsx](mdc:src/components/ui/loading-button.tsx) for form submissions
+
+examples:
+  form: |
+    const formSchema = z.object({
+      email: z.string().email("Invalid email address"),
+      password: z.string().min(8, "Password must be at least 8 characters")
+    })
+
+    const Form = () => {
+      const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema)
+      })
+
+      const { mutate, isLoading } = useMutation()
+
+      return (
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(mutate)}>
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <LoadingButton type="submit" isLoading={isLoading}>
+              Submit
+            </LoadingButton>
+          </form>
+        </Form>
+      )
+    }
+
+key_points:
+  usage:
+    - Use for all form state management
+    - Prefer uncontrolled components
+    - Always handle loading states
+    - Use LoadingButton component
