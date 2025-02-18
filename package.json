@@ -8,7 +8,7 @@
     "dev": "vinxi dev",
     "dev:mocks": "cross-env MOCKS=true ENV=test vinxi dev",
     "dev:email": "email dev --port 3002 --dir ./src/email/templates",
-    "dev:trigger": "bunx trigger.dev@3.3.11 dev",
+    "dev:trigger": "bunx trigger.dev@3.3.16 dev",
     "build": "vinxi build",
     "start": "cross-env NODE_ENV=production node -r dotenv/config .output/server/index.mjs",
     "start:mocks": "cross-env NODE_ENV=production MOCKS=true node -r dotenv/config .output/server/index.mjs",
@@ -31,7 +31,7 @@
     "test:storybook:update-snapshots": "bun run build-storybook && docker run --rm -v $(pwd):/app -v $(pwd)/node_modules:/app/node_modules -w /app -e CI=true mcr.microsoft.com/playwright:v1.50.1 /bin/bash -c \"curl -fsSL https://bun.sh/install | bash && . ~/.bashrc && bunx http-server storybook-static -p 6006 & sleep 2 && PATH=\\\"./node_modules/.bin:$PATH\\\" cross-env TEST_PROJECT=storybook STORYBOOK_URL=http://localhost:6006 playwright test stories.spec.ts --project=storybook --update-snapshots\"",
     "test:storybook:base": "cross-env TEST_PROJECT=storybook STORYBOOK_URL=http://localhost:6006 playwright test stories.spec.ts --project=storybook",
     "verify": "bun run lint && bun run typecheck && bun run test && bun run test:e2e:run",
-    "deploy-trigger": "bunx trigger.dev@3.3.11 deploy --self-hosted --load-image --registry registry.perfux.dev --namespace perfux",
+    "deploy-trigger": "bunx trigger.dev@3.3.16 deploy --self-hosted --load-image --registry registry.perfux.dev --namespace perfux",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "new:route": "plop route"
