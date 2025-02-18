@@ -1,6 +1,6 @@
 import Headers from '@mjackson/headers'
 import { test as base } from '@playwright/test'
-import { setSignedCookie } from 'better-auth'
+import { serializeSignedCookie } from 'better-call'
 import { eq } from 'drizzle-orm'
 import { createUserAndSession, type UserOptions } from './test-utils'
 import { db } from '@/drizzle/db'
@@ -19,8 +19,8 @@ export const test = base.extend<{
 			const [newUser, newSession] = await createUserAndSession(options)
 			userId = newUser.id
 			const responseHeaders = new Headers()
-			await setSignedCookie(
-				responseHeaders,
+
+			const serializedCookie = await serializeSignedCookie(
 				'better-auth.session_token',
 				newSession.token,
 				env.SESSION_SECRET,
@@ -31,6 +31,8 @@ export const test = base.extend<{
 					httpOnly: true,
 				},
 			)
+
+			responseHeaders.append('Set-Cookie', serializedCookie)
 
 			const signedSessionCookie = responseHeaders.setCookie.find(
 				(cookie) => cookie.name === 'better-auth.session_token',

@@ -21,6 +21,7 @@ modern tooling and best practices.
 
 - **Tech Stack**
 
+  - [Bun](https://bun.sh) - All-in-one JavaScript runtime & package manager
   - [React 19](https://react.dev)
   - [TanStack](https://tanstack.com) ([Router](https://tanstack.com/router),
     [Query](https://tanstack.com/query), [Start](https://tanstack.com/start))
@@ -44,19 +45,42 @@ modern tooling and best practices.
   - [ESLint](https://eslint.org) + [Prettier](https://prettier.io)
   - [Playwright](https://playwright.dev) for E2E testing
 
-## Database Setup
+## Prerequisites
 
-This boilerplate uses a hybrid database approach:
+- [Bun](https://bun.sh) >= 1.0.0
 
-- **Local Development**:
+## Quick Start
 
-  - Direct SQLite file for simplicity and zero-config setup
-  - Built-in management UI via `bun run db:studio`
+```bash
+# Install dependencies
+bun install
 
-- **Production**:
-  - [Turso](https://turso.tech) - Distributed SQLite database
-  - Global data distribution with minimal latency
-  - Embedded database in Fly.io for super fast reads
+# Start development server
+bun dev
+```
+
+## Key Commands
+
+```bash
+# Development
+bun dev           # Start development server
+bun run build         # Build for production
+bun start         # Start production server
+
+# Database
+bun run db:migrate    # Run database migrations
+bun run db:studio     # Open database UI
+bun run db:reset      # Reset database (clear + migrate + seed)
+
+# Background Jobs
+bunx trigger.dev@latest dev   # Start Trigger.dev development server
+
+# Testing
+bun test          # Run tests
+bun run typecheck     # Run typecheck
+bun run lint          # Run lint
+bun run verify        # Run all checks (lint, typecheck, test)
+```
 
 ## Documentation
 

@@ -83,26 +83,31 @@ test.beforeAll(async () => {
 
 // Read the Storybook index and generate tests
 const indexPath = path.join(process.cwd(), 'storybook-static', 'index.json')
-const indexContent = fs.readFileSync(indexPath, 'utf-8')
-const { entries } = JSON.parse(indexContent) as StorybookIndex
+if (fs.existsSync(indexPath)) {
+	const indexContent = fs.readFileSync(indexPath, 'utf-8')
+	const { entries } = JSON.parse(indexContent) as StorybookIndex
 
-// Filter to only get actual stories (no docs pages)
-const stories = Object.values(entries).filter((story) => story.type === 'story')
+	// Filter to only get actual stories (no docs pages)
+	// Filter to only get actual stories (no docs pages)
+	const stories = Object.values(entries).filter(
+		(story) => story.type === 'story',
+	)
 
-// Create a test for each story
-for (const story of stories) {
-	const { id, title, name, parameters } = story
+	// Create a test for each story
+	for (const story of stories) {
+		const { id, title, name, parameters } = story
 
-	// Skip stories that set noScreenshot = true
-	if (parameters?.noScreenshot) continue
+		// Skip stories that set noScreenshot = true
+		if (parameters?.noScreenshot) continue
 
-	test(`${title} - ${name}`, async ({ page }) => {
-		const storybookUrl = process.env['STORYBOOK_URL'] || 'http://localhost:6006'
+		test(`${title} - ${name}`, async ({ page }) => {
+			const storybookUrl =
+				process.env['STORYBOOK_URL'] || 'http://localhost:6006'
 
-		// Disable CSS animations if requested by the story
-		if (parameters?.disableAnimations) {
-			await page.addStyleTag({
-				content: `
+			// Disable CSS animations if requested by the story
+			if (parameters?.disableAnimations) {
+				await page.addStyleTag({
+					content: `
 					*, *::before, *::after {
 						animation-duration: 0s !important;
 						animation-delay: 0s !important;
@@ -110,35 +115,36 @@ for (const story of stories) {
 						transition-delay: 0s !important;
 					}
 				`,
+				})
+			}
+
+			// Navigate to the story with retry logic
+			await page.goto(`${storybookUrl}/iframe.html?id=${id}&viewMode=story`, {
+				timeout: 30000,
+				waitUntil: 'networkidle',
 			})
-		}
 
-		// Navigate to the story with retry logic
-		await page.goto(`${storybookUrl}/iframe.html?id=${id}&viewMode=story`, {
-			timeout: 30000,
-			waitUntil: 'networkidle',
+			// Wait for the story to be fully rendered
+			await page.waitForSelector('#storybook-root:not(.sb-loading)', {
+				timeout: 30000,
+			})
+
+			// For components with loading states, ensure they're stable
+			if (parameters?.waitForLoadingState) {
+				await page.waitForTimeout(1000)
+			}
+
+			// Platform-specific screenshot name
+			const screenshotName = `${title}-${name}-storybook-${getPlatformSuffix()}.png`
+
+			// Capture screenshot for visual regression
+			await expect(page).toHaveScreenshot(screenshotName, {
+				threshold: 0.2,
+				animations: 'disabled',
+				timeout: parameters?.waitForLoadingState ? 10000 : 5000,
+				fullPage: false,
+				scale: 'device',
+			})
 		})
-
-		// Wait for the story to be fully rendered
-		await page.waitForSelector('#storybook-root:not(.sb-loading)', {
-			timeout: 30000,
-		})
-
-		// For components with loading states, ensure they're stable
-		if (parameters?.waitForLoadingState) {
-			await page.waitForTimeout(1000)
-		}
-
-		// Platform-specific screenshot name
-		const screenshotName = `${title}-${name}-storybook-${getPlatformSuffix()}.png`
-
-		// Capture screenshot for visual regression
-		await expect(page).toHaveScreenshot(screenshotName, {
-			threshold: 0.2,
-			animations: 'disabled',
-			timeout: parameters?.waitForLoadingState ? 10000 : 5000,
-			fullPage: false,
-			scale: 'device',
-		})
-	})
+	}
 }

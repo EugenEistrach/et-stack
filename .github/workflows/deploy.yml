@@ -60,6 +60,20 @@ jobs:
         if: matrix.check == 'test'
         run: cp .env.example .env
 
+      - name: 🗃️ Initialize test database
+        if: matrix.check == 'test'
+        run: |
+          mkdir -p src/tests/drizzle
+          echo "Current directory: $(pwd)"
+          echo "Directory contents before:"
+          ls -la src/tests/drizzle/
+          echo "Running db:reset..."
+          bun run db:reset
+          echo "Directory contents after:"
+          ls -la src/tests/drizzle/
+          echo "Database file permissions:"
+          ls -la src/tests/drizzle/base.sqlite || echo "base.sqlite not found"
+
       - name: 🏃 Run ${{ matrix.check }}
         run: bun run ${{ matrix.check }}
 
