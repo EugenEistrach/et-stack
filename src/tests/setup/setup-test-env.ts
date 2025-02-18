@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import './db-setup'
 import { vi, afterEach, beforeEach, type MockInstance } from 'vitest'
 

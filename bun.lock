@@ -45,6 +45,7 @@
         "cronstrue": "^2.54.0",
         "cross-env": "^7.0.3",
         "date-fns": "^4.1.0",
+        "dotenv": "^16.4.7",
         "downshift": "^9.0.8",
         "drizzle-orm": "^0.39.3",
         "filepond": "^4.32.7",

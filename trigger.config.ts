@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import { defineConfig, logger } from '@trigger.dev/sdk/v3'
 
 const APPLICATION_URL = process.env['APPLICATION_URL']
