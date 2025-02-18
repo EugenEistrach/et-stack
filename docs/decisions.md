@@ -27,3 +27,27 @@ even with explicit cursor rules. They work much better with Zod.
 
 Switch to Zod for all validation (forms, APIs, env vars, config) to work better
 with AI.
+
+## 2025-02-18: Switch from pnpm to Bun
+
+### Context
+
+While pnpm is great, Bun offers significant performance improvements and a more
+streamlined developer experience with its all-in-one toolkit approach.
+
+### Decision
+
+Switch to Bun as the primary package manager and runtime. Benefits include:
+
+- Faster installation and builds
+- Native TypeScript/JSX support without extra tooling
+- Built-in test runner and bundler
+- Simpler monorepo setup
+
+### Future Plans
+
+Evaluate migrating more tools to Bun's native alternatives:
+
+- Replace Vitest with Bun's test runner
+- Consider Bun's bundler for build optimization
+- Monitor ecosystem compatibility and stability

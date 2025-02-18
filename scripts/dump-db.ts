@@ -1,4 +1,3 @@
-import 'dotenv/config'
 import { spawn } from 'node:child_process'
 import { createWriteStream, type WriteStream } from 'node:fs'
 import fs from 'node:fs/promises'
