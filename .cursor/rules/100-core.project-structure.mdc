@@ -11,7 +11,7 @@ guidelines:
       - TanStack (Router, Query, Start)
       - SQLite/Turso with Drizzle ORM
     tooling:
-      - pnpm
+      - bun
       - Better-auth with GitHub SSO
       - react-hook-form
       - TailwindCSS 4 with shadcn/ui

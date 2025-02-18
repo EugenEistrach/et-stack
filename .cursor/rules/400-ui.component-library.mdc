@@ -35,7 +35,7 @@ examples:
   installation: |
     # You shouldn't need this - all components are installed
     # Only as reference if needed:
-    pnpm dlx shadcn@latest add button
+    bunx shadcn@latest add button
 
 key_points:
   components:

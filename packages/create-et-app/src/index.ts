@@ -7,6 +7,7 @@ import degit from 'degit'
 import { execa } from 'execa'
 import fs from 'fs-extra'
 
+import { transformWorkflow } from './features/workflow.js'
 import {
 	type CliDependencyName,
 	verifyCliDependencies,
@@ -23,7 +24,6 @@ import { turso } from '@/features/turso.js'
 import { ensureNotCanceled, validate, waitForAutomatedAction } from '@/utils.js'
 
 const repo = 'EugenEistrach/et-stack'
-const cliPath = 'packages/create-et-app/src'
 
 const features = {
 	githubRepo,
@@ -110,7 +110,7 @@ async function cloneAndSetupLocalProject() {
 			}
 
 			await fs.remove(path.join(projectDir, 'src/trigger'))
-			await fs.remove(path.join(projectDir, 'pnpm-workspace.yaml'))
+			await fs.remove(path.join(projectDir, 'bun-workspace.yaml'))
 
 			await fs.remove(path.join(projectDir, '.github/workflows/deploy.yml'))
 		},
@@ -121,7 +121,7 @@ async function cloneAndSetupLocalProject() {
 		successMessage: 'Dependencies installed ✅',
 		errorMessage: 'Failed to install dependencies ❌',
 		action: async () => {
-			await execa('pnpm', ['install'], {
+			await execa('bun', ['install'], {
 				cwd: projectDir,
 			})
 		},
@@ -204,6 +204,10 @@ async function askAppDisplayName() {
 }
 
 async function executeFlyPostActions(ctx: FeatureContext) {
+	if (!ctx.selectedFeatures.includes('fly')) {
+		return
+	}
+
 	if (!ctx.cliStatus.fly?.isLoggedIn) {
 		throw new Error('Fly CLI not available or not logged in')
 	}
@@ -239,6 +243,10 @@ async function executeFlyPostActions(ctx: FeatureContext) {
 }
 
 async function executeGitHubPostActions(ctx: FeatureContext) {
+	if (!ctx.selectedFeatures.includes('githubRepo')) {
+		return
+	}
+
 	if (!ctx.cliStatus.gh?.isLoggedIn) {
 		throw new Error('GitHub CLI not available or not logged in')
 	}
@@ -264,6 +272,10 @@ async function executeGitHubPostActions(ctx: FeatureContext) {
 }
 
 async function executeTriggerPostActions(ctx: FeatureContext) {
+	if (!ctx.selectedFeatures.includes('trigger')) {
+		return
+	}
+
 	if (!ctx.completedFeatures.includes('trigger')) {
 		return
 	}
@@ -314,34 +326,12 @@ async function applyTemplates(ctx: FeatureContext) {
 		successMessage: 'Templates applied successfully ✅',
 		errorMessage: 'Failed to apply templates ❌',
 		action: async () => {
-			if (
-				ctx.completedFeatures.includes('fly') &&
-				ctx.completedFeatures.includes('trigger')
-			) {
-				await fs.copy(
-					path.join(
-						ctx.projectDir,
-						`${cliPath}/templates/.github/workflows/deploy-with-fly-and-trigger.yml`,
-					),
-					path.join(ctx.projectDir, '.github/workflows/deploy.yml'),
-				)
-			} else if (ctx.completedFeatures.includes('fly')) {
-				await fs.copy(
-					path.join(
-						ctx.projectDir,
-						`${cliPath}/templates/.github/workflows/deploy-with-fly.yml`,
-					),
-					path.join(ctx.projectDir, '.github/workflows/deploy.yml'),
-				)
-			} else if (ctx.completedFeatures.includes('trigger')) {
-				await fs.copy(
-					path.join(
-						ctx.projectDir,
-						`${cliPath}/templates/.github/workflows/deploy-with-trigger.yml`,
-					),
-					path.join(ctx.projectDir, '.github/workflows/deploy.yml'),
-				)
-			}
+			// Transform and write the workflow file
+			const workflowContent = await transformWorkflow(ctx)
+			await fs.writeFile(
+				path.join(ctx.projectDir, '.github/workflows/deploy.yml'),
+				workflowContent,
+			)
 		},
 	})
 }
@@ -426,35 +416,36 @@ async function generateReadme(ctx: FeatureContext, appDisplayName: string) {
 	markdown += '## Quick Start\n\n'
 	markdown += '```bash\n'
 	markdown += '# Install dependencies\n'
-	markdown += 'pnpm install\n\n'
+	markdown += 'bun install\n\n'
 	markdown += '# Start development server\n'
-	markdown += 'pnpm dev\n'
+	markdown += 'bun dev\n'
 	markdown += '```\n\n'
 
 	// Key Commands section
 	markdown += '## Key Commands\n\n'
 	markdown += '```bash\n'
 	markdown += '# Development\n'
-	markdown += 'pnpm dev           # Start development server\n'
-	markdown += 'pnpm build         # Build for production\n'
-	markdown += 'pnpm start         # Start production server\n\n'
+	markdown += 'bun dev           # Start development server\n'
+	markdown += 'bun run build         # Build for production\n'
+	markdown += 'bun start         # Start production server\n\n'
 
 	markdown += '# Database\n'
-	markdown += 'pnpm db:migrate    # Run database migrations\n'
-	markdown += 'pnpm db:studio     # Open database UI\n'
-	markdown += 'pnpm db:reset      # Reset database (clear + migrate + seed)\n\n'
+	markdown += 'bun run db:migrate    # Run database migrations\n'
+	markdown += 'bun run db:studio     # Open database UI\n'
+	markdown +=
+		'bun run db:reset      # Reset database (clear + migrate + seed)\n\n'
 
 	if (ctx.selectedFeatures.includes('trigger')) {
 		markdown += '# Background Jobs\n'
 		markdown +=
-			'pnpm dlx trigger.dev@latest dev   # Start Trigger.dev development server\n\n'
+			'bunx trigger.dev@latest dev   # Start Trigger.dev development server\n\n'
 	}
 
 	markdown += '# Testing\n'
-	markdown += 'pnpm test          # Run tests\n'
-	markdown += 'pnpm typecheck     # Run typecheck\n'
-	markdown += 'pnpm lint          # Run lint\n'
-	markdown += 'pnpm verify        # Run all checks (lint, typecheck, test)\n'
+	markdown += 'bun test          # Run tests\n'
+	markdown += 'bun run typecheck     # Run typecheck\n'
+	markdown += 'bun run lint          # Run lint\n'
+	markdown += 'bun run verify        # Run all checks (lint, typecheck, test)\n'
 	markdown += '```\n\n'
 
 	// Add reference to production checklist if it exists
@@ -622,7 +613,7 @@ async function main() {
 
 	log.info('\nNext steps:')
 	log.info(`  1. cd ${context.projectName}`)
-	log.info('  2. pnpm dev    # Start development server')
+	log.info('  2. bun dev    # Start development server')
 	log.info('  3. Open http://localhost:3000 in your browser\n')
 }
 

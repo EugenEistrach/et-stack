@@ -76,7 +76,7 @@ test.beforeAll(async () => {
 		})()
 
 		if (needsBuild) {
-			execSync('pnpm build-storybook', { stdio: 'inherit' })
+			execSync('bun run build-storybook', { stdio: 'inherit' })
 		}
 	}
 })

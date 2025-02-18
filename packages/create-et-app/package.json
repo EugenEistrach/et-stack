@@ -31,7 +31,7 @@
     "dev": "tsup src/index.ts --format esm --dts --watch",
     "lint": "eslint src --ext .ts",
     "clean": "rm -rf dist",
-    "verify": "tsx scripts/verify.ts"
+    "verify": "bun scripts/verify.ts"
   },
   "keywords": [
     "create-app",
@@ -41,23 +41,26 @@
   ],
   "dependencies": {
     "@clack/prompts": "^0.7.0",
+    "@trigger.dev/sdk": "3.3.16",
     "@types/degit": "^2.8.6",
     "@types/fs-extra": "^11.0.4",
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^20.11.16",
     "arktype": "^2.0.4",
     "degit": "^2.8.4",
     "execa": "^8.0.1",
     "fs-extra": "^11.2.0",
+    "js-yaml": "^4.1.0",
     "open": "^10.1.0",
     "ora": "^8.0.1",
     "ts-morph": "^25.0.0",
     "tsup": "^8.0.1",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",
-    "v3": "link:@trigger.dev/sdk/v3"
+    "zod": "3.23.8"
   },
   "engines": {
-    "node": ">=22.0.0"
+    "bun": ">=1.0.0"
   },
   "publishConfig": {
     "access": "public"

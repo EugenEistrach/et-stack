@@ -1,7 +1,7 @@
 # et-stack
 
 ```bash
-pnpm create et-app
+bun create et-app
 ```
 
 An opinionated boilerplate project to jumpstart new React applications with
@@ -15,6 +15,7 @@ modern tooling and best practices.
 - 💾 Database integration with [Drizzle ORM](https://orm.drizzle.team)
 - 🎨 Beautiful UI with [shadcn/ui](https://ui.shadcn.com)
 - 🧪 Comprehensive testing setup
+- Built-in management UI via `bun run db:studio`
 
 ## Tech Stack
 
@@ -26,6 +27,7 @@ modern tooling and best practices.
   - [TailwindCSS](https://tailwindcss.com) with
     [shadcn/ui](https://ui.shadcn.com)
   - [Better-auth](https://better-auth.com) with [GitHub](https://github.com)
+  - [Zod](https://zod.dev) for schema validation
 
 - **Backend & Data**
 
@@ -49,7 +51,7 @@ This boilerplate uses a hybrid database approach:
 - **Local Development**:
 
   - Direct SQLite file for simplicity and zero-config setup
-  - Built-in management UI via `pnpm db:studio`
+  - Built-in management UI via `bun run db:studio`
 
 - **Production**:
   - [Turso](https://turso.tech) - Distributed SQLite database
@@ -58,16 +60,7 @@ This boilerplate uses a hybrid database approach:
 
 ## Documentation
 
-- [Project Structure](.cursor/project-structure.mdc) - Overview of the project
-  structure
-- [API Guidelines](.cursor/api-layer.mdc) - API development and integration
-- [Client Guidelines](.cursor/rules/client.mdc) - UI development
-- [Server Guidelines](.cursor/rules/server.mdc) - Server-side development
-- [Testing Guidelines](.cursor/rules/testing.mdc) - Testing practices
-- [Validation Guidelines](.cursor/rules/validation.mdc) - Data validation
-- [Routing Guidelines](.cursor/rules/routing.mdc) - Route creation and
-  navigation
-- [Commit Conventions](.cursor/rules/commit-conventions.mdc) - Git practices
+- [Check our cursor rules](.cursor/rules)
 
 ## License
 

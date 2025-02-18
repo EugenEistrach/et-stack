@@ -7,15 +7,12 @@ import { feature } from '@/features/index.js'
 import { ensureNotCanceled } from '@/utils.js'
 
 export const trigger = feature('trigger', {
-	label: 'Trigger.dev',
+	label: 'Trigger.dev Integration',
+	hint: 'Background jobs and scheduled tasks',
 	manualInstructions: [
-		'1. Create account at https://cloud.trigger.dev',
-		'2. Create new project in dashboard',
-		'3. Run: pnpm dlx trigger.dev@latest init',
-		'4. Get API key from Project Settings > API Keys',
-		'5. Set secrets:',
-		'   - TRIGGER_API_KEY in Fly.io',
-		'   - TRIGGER_ACCESS_TOKEN in GitHub (if using Actions)',
+		'1. Install Trigger.dev CLI: brew install triggerdotdev/tap/trigger',
+		'2. Login: trigger login',
+		'3. Run: bunx trigger.dev@latest init',
 	],
 	onSelected: async (ctx) => {
 		if (!ctx.cliStatus.trigger?.isLoggedIn) {
@@ -49,7 +46,7 @@ export const trigger = feature('trigger', {
 			'Make sure to keep the default trigger folder name. Otherwise you will need to do manual changes to fix CI linting',
 		)
 
-		await execa('pnpm', ['dlx', 'trigger.dev@latest', 'init'], {
+		await execa('bunx', ['trigger.dev@latest', 'init'], {
 			cwd: ctx.projectDir,
 			stdio: 'inherit',
 		})

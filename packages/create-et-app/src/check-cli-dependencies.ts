@@ -128,10 +128,10 @@ export const cliDependencies = {
 
 		async checkLoggedIn() {
 			try {
-				const { stdout } = await execa('pnpm', [
-					'dlx',
+				const { stdout } = await execa('bunx', [
 					'trigger.dev@latest',
 					'whoami',
+					'--json',
 				])
 				return !stdout.includes('failed')
 			} catch {
@@ -140,7 +140,7 @@ export const cliDependencies = {
 		},
 
 		async login() {
-			await execa('pnpm', ['dlx', 'trigger.dev@latest', 'login'], {
+			await execa('bunx', ['trigger.dev@latest', 'login'], {
 				stdio: 'inherit',
 			})
 		},

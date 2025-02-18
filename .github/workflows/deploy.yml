@@ -28,114 +28,90 @@ jobs:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
 
-      - name: 📥 Setup pnpm
-        uses: pnpm/action-setup@v2
+      - name: 🏃 Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          version: 9
+          bun-version: latest
 
       - name: ⎔ Setup node ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
-
-      - name: 📁 Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
 
       - name: 💾 Setup caches
         uses: actions/cache@v3
         with:
           path: |
-            ${{ steps.pnpm-cache.outputs.STORE_PATH }}
             node_modules
             ~/.cache/ms-playwright
           key: |
-            ${{ runner.os }}-cache-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**/package.json') }}
+            ${{ runner.os }}-cache-${{ hashFiles('**/bun.lockb') }}-${{ hashFiles('**/package.json') }}
           restore-keys: |
-            ${{ runner.os }}-cache-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**/package.json') }}
+            ${{ runner.os }}-cache-${{ hashFiles('**/bun.lockb') }}-${{ hashFiles('**/package.json') }}
 
       - name: 📦 Install dependencies
-        run: pnpm install --frozen-lockfile --prefer-offline
+        run: bun install --frozen-lockfile
 
       - name: 🎭 Install Playwright browsers
         if: matrix.check == 'test'
-        run: pnpm test:e2e:install
+        run: bun run test:e2e:install
 
       - name: 📄 Setup env file
         if: matrix.check == 'test'
         run: cp .env.example .env
 
       - name: 🏃 Run ${{ matrix.check }}
-        run: pnpm ${{ matrix.check }}
+        run: bun run ${{ matrix.check }}
 
-  playwright:
-    name: 🎭 Playwright
+  e2e:
+    name: 🎭 E2E Tests
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
 
-      - name: 📥 Setup pnpm
-        uses: pnpm/action-setup@v2
+      - name: 🏃 Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          version: 9
+          bun-version: latest
 
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
         with:
           node-version: 22
-          cache: 'pnpm'
-
-      - name: 📁 Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
 
       - name: 💾 Setup caches
         uses: actions/cache@v3
         with:
           path: |
-            ${{ steps.pnpm-cache.outputs.STORE_PATH }}
             node_modules
             ~/.cache/ms-playwright
-            storybook-static
           key: |
-            ${{ runner.os }}-cache-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**/package.json') }}
+            ${{ runner.os }}-cache-${{ hashFiles('**/bun.lockb') }}-${{ hashFiles('**/package.json') }}
           restore-keys: |
-            ${{ runner.os }}-cache-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**/package.json') }}
+            ${{ runner.os }}-cache-${{ hashFiles('**/bun.lockb') }}-${{ hashFiles('**/package.json') }}
 
       - name: 📦 Install dependencies
-        run: pnpm install --frozen-lockfile --prefer-offline
+        run: bun install --frozen-lockfile
 
       - name: 🎭 Install Playwright browsers
-        run: pnpm test:e2e:install
+        run: bun run test:e2e:install
 
       - name: 📄 Setup env file
         run: cp .env.example .env
 
       - name: 🗃️ Setup Database
-        run: pnpm db:reset
-
-      - name: 📚 Build Storybook
-        run: pnpm build-storybook
+        run: bun run db:reset
 
       - name: 🏗️ Build app
-        run: pnpm build
+        run: bun run build
 
       - name: 🎭 Run E2E Tests
-        run: pnpm test:e2e:run
+        run: bun run test:e2e:run
         env:
           CI: true
 
-      - name: 🎭 Run Storybook Tests
-        run: pnpm test:storybook
-        env:
-          CI: true
       - name: 📊 Upload test results
         if: always()
         uses: actions/upload-artifact@v4
@@ -144,12 +120,68 @@ jobs:
           path: |
             playwright-report/
             test-results/
+          retention-days: 30
+
+  storybook:
+    name: 📚 Storybook Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    continue-on-error: true
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: 🏃 Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: 💾 Setup caches
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            ~/.cache/ms-playwright
+            storybook-static
+          key: |
+            ${{ runner.os }}-cache-${{ hashFiles('**/bun.lockb') }}-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-cache-${{ hashFiles('**/bun.lockb') }}-${{ hashFiles('**/package.json') }}
+
+      - name: 📦 Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: 🎭 Install Playwright browsers
+        run: bun run test:e2e:install
+
+      - name: 📄 Setup env file
+        run: cp .env.example .env
+
+      - name: 📚 Build Storybook
+        run: bun run build-storybook
+
+      - name: 🎭 Run Storybook Tests
+        run: bun run test:storybook
+        env:
+          CI: true
+
+      - name: 📊 Upload Storybook snapshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: storybook-snapshots
+          path: |
             src/tests/storybook/stories.spec.ts-snapshots/
           retention-days: 30
 
   deploy:
     name: Deploy app
-    needs: [checks, playwright]
+    needs: [checks, e2e]
     runs-on: ubuntu-latest
     concurrency: deploy-group
     steps:
@@ -161,25 +193,24 @@ jobs:
 
   deploy-trigger:
     name: Deploy Trigger.dev
-    needs: [checks, playwright]
+    needs: [checks, e2e]
     runs-on: ubuntu-latest
     concurrency: trigger-deploy-group
     steps:
       - uses: actions/checkout@v4
 
-      - name: 📥 Setup pnpm
-        uses: pnpm/action-setup@v2
+      - name: 🏃 Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          version: 9
+          bun-version: latest
 
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
         with:
           node-version: 22
-          cache: 'pnpm'
 
       - name: 📦 Install dependencies
-        run: pnpm install
+        run: bun install
 
       - name: 🔑 Login to Custom Registry
         uses: docker/login-action@v3
@@ -196,7 +227,7 @@ jobs:
         run: |
           set -euxo pipefail
           # Capture exit code explicitly
-          pnpm deploy-trigger || DEPLOY_EXIT=$?
+          bun run deploy-trigger || DEPLOY_EXIT=$?
 
           # Always attempt to print logs if they exist
           echo "=== Trigger.dev Build Logs ==="

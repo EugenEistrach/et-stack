@@ -45,12 +45,7 @@ export async function setup() {
 
 	console.log('Rebuilding test database: ', BASE_DATABASE_PATH)
 
-	await execaCommand('pnpm db:reset', {
+	await execaCommand('bun run db:reset', {
 		stdio: 'inherit',
-		env: {
-			...process.env,
-			// we are using drizzle kit commands to reset the db and in the config we use LOCAL_DATABASE_PATH for the path
-			LOCAL_DATABASE_PATH: `${BASE_DATABASE_PATH}`,
-		},
 	})
 }

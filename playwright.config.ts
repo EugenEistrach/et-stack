@@ -67,9 +67,9 @@ export default defineConfig({
 	// Configure the appropriate web server based on the test project
 	webServer: isStorybookTest
 		? {
-				command: env.CI
-					? `pnpm dlx http-server storybook-static -p ${storybookPort}`
-					: 'pnpm storybook',
+				command: env['CI']
+					? `bunx http-server storybook-static -p ${storybookPort}`
+					: 'bun run storybook',
 				url: `http://localhost:${storybookPort}`,
 				reuseExistingServer: true,
 				timeout: 120000,

@@ -68,7 +68,7 @@ key_points:
     - Create feature schema file
     - Add to _exports.ts
     - Add to schema.ts with relations
-    - Run pnpm db:generate after changes
+    - Run bun run db:generate after changes
 
   patterns:
     - Use textId for PKs

@@ -71,8 +71,8 @@ async function cleanup(devServer?: ExecaChildProcess, port?: number) {
 
 		// Unlink global package
 		log.info('Unlinking package...')
-		await execa('pnpm', ['unlink'], { cwd: packageRoot }).catch((error) => {
-			log.error(`Unlink error: ${error.message}`)
+		await execa('bun', ['unlink'], { cwd: packageRoot }).catch(() => {
+			// Ignore errors from unlink
 		})
 	} catch (error) {
 		log.error(`Cleanup error: ${(error as Error).message}`)
@@ -129,12 +129,12 @@ async function verify() {
 
 		// Build the package
 		s.start('Building package')
-		await execa('pnpm', ['build'], { cwd: packageRoot })
+		await execa('bun', ['run', 'build'], { cwd: packageRoot })
 		s.stop('Package built')
 
 		// Link the package globally
 		s.start('Linking package')
-		await execa('pnpm', ['link', '--global'], { cwd: packageRoot })
+		await execa('bun', ['link', '--global'], { cwd: packageRoot })
 		s.stop('Package linked')
 
 		// Create a test directory
@@ -187,10 +187,9 @@ async function verify() {
 
 		// Start the dev server with custom port
 		s.start(`Starting dev server on port ${port}`)
-		devServer = execa('pnpm', ['dev', '--port', port.toString()], {
+		devServer = execa('bun', ['run', 'dev', '--port', port.toString()], {
 			cwd: projectDir,
-			stdio: 'pipe',
-			killSignal: 'SIGKILL',
+			stdio: 'inherit',
 		})
 
 		// Wait for server to start
