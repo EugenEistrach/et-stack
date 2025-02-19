@@ -5,8 +5,8 @@ const APPLICATION_URL = process.env['APPLICATION_URL']
 const API_KEY = process.env['API_KEY']
 
 export default defineConfig({
-	project: 'proj_tlgfryfhwprwupwefzie',
-	runtime: 'node',
+	project: 'proj_dzwxqwpvpstyscjcklvb',
+	runtime: 'bun',
 	maxDuration: 300,
 	retries: {
 		enabledInDev: true,
