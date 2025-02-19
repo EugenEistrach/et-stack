@@ -20,7 +20,7 @@
     "db:reset": "bun db:clear && bun db:migrate && bun db:seed",
     "db:dump": "bun -r dotenv/config ./scripts/dump-db.ts",
     "format": "bunx @biomejs/biome format . && prettier --write \"**/*.{html,md,mdx,yaml,yml}\"",
-    "format:check": "bunx @biomejs/biome format --check . && prettier --check \"**/*.{html,md,mdx,yaml,yml}\"",
+    "format:check": "bunx @biomejs/biome check --files-ignore-unknown=true . && prettier --check \"**/*.{html,md,mdx,yaml,yml}\"",
     "lint": "biome check .",
     "lint:fix": "biome check --apply-unsafe .",
     "typecheck": "tsc",
