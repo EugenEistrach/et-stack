@@ -24,7 +24,7 @@ test.skip('login with github ', async ({ page, baseURL }) => {
 		}
 	})
 
-	await page.goto(`/dashboard/settings`)
+	await page.goto('/dashboard/settings')
 	await page.waitForLoadState('networkidle')
 
 	await delayed(() => page.getByRole('button', { name: 'GitHub' }).click())
@@ -49,9 +49,9 @@ test.skip('login with github ', async ({ page, baseURL }) => {
 
 	await expect(page.getByText('Dashboard').first()).toBeVisible()
 
-	await page.goto(`/login`)
-	expect(page.url()).toContain(`/dashboard`)
+	await page.goto('/login')
+	expect(page.url()).toContain('/dashboard')
 
-	await page.goto(`/onboarding`)
-	expect(page.url()).toContain(`/dashboard`)
+	await page.goto('/onboarding')
+	expect(page.url()).toContain('/dashboard')
 })

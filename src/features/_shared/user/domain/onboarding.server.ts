@@ -1,8 +1,8 @@
-import { eq } from 'drizzle-orm'
 import { db } from '@/drizzle/db'
 import { UserTable } from '@/drizzle/schemas/auth-schema'
 import { OnboardingInfoTable } from '@/drizzle/schemas/onboarding-schema'
 import { env } from '@/lib/server/env.server'
+import { eq } from 'drizzle-orm'
 
 export async function getOnboardingInfo(userId: string) {
 	return (

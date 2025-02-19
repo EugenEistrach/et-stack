@@ -1,4 +1,3 @@
-import { createFileRoute } from '@tanstack/react-router'
 import { Separator } from '@/components/ui/separator'
 import { H1, H2, Subtitle } from '@/components/ui/typography'
 import {
@@ -9,6 +8,7 @@ import { ActiveSessionsCard } from '@/features/_shared/user/ui/settings/active-s
 import { PersonalInformationForm } from '@/features/_shared/user/ui/settings/personal-information-form'
 import { SetPasswordForm } from '@/features/_shared/user/ui/settings/set-password-form'
 import { UpdatePasswordForm } from '@/features/_shared/user/ui/settings/update-password-form'
+import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/dashboard/settings/')({
 	loader: async ({ context }) => {

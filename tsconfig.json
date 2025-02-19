@@ -1,49 +1,49 @@
 {
-	"compilerOptions": {
-		"allowJs": true,
-		"noEmit": true,
-		"jsx": "react-jsx",
-		"moduleResolution": "Bundler",
-		"module": "ESNext",
-		"target": "ES2022",
-		"skipLibCheck": true,
-		"strict": true,
-		"noUncheckedIndexedAccess": true,
-		"noImplicitOverride": true,
-		"useUnknownInCatchVariables": true,
-		"noPropertyAccessFromIndexSignature": true,
-		"noImplicitReturns": true,
-		"esModuleInterop": true,
-		"forceConsistentCasingInFileNames": true,
-		"baseUrl": ".",
-		"paths": {
-			"@/*": ["./src/*"]
-		}
-	},
-	"include": [
-		"src/**/*",
-		".storybook/**/*",
-		"lint-rules/**/*",
-		"scripts/**/*",
-		"*.ts",
-		"*.tsx",
-		"*.js",
-		"*.jsx",
-		"*.mjs",
-		"*.cjs"
-	],
-	"exclude": [
-		"node_modules",
-		".output",
-		".vinxi",
-		"coverage",
-		"playwright-report",
-		"test-results",
-		".history",
-		".trigger",
-		".cursor",
-		"dist",
-		"build",
-		"packages"
-	]
+  "compilerOptions": {
+    "allowJs": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "moduleResolution": "Bundler",
+    "module": "ESNext",
+    "target": "ES2022",
+    "skipLibCheck": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "useUnknownInCatchVariables": true,
+    "noPropertyAccessFromIndexSignature": false,
+    "noImplicitReturns": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "src/**/*",
+    ".storybook/**/*",
+    "lint-rules/**/*",
+    "scripts/**/*",
+    "*.ts",
+    "*.tsx",
+    "*.js",
+    "*.jsx",
+    "*.mjs",
+    "*.cjs"
+  ],
+  "exclude": [
+    "node_modules",
+    ".output",
+    ".vinxi",
+    "coverage",
+    "playwright-report",
+    "test-results",
+    ".history",
+    ".trigger",
+    ".cursor",
+    "dist",
+    "build",
+    "packages"
+  ]
 }

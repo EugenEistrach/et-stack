@@ -4,7 +4,7 @@ import fsExtra from 'fs-extra'
 
 export const BASE_DATABASE_PATH = path.join(
 	process.cwd(),
-	`./src/tests/drizzle/base.sqlite`,
+	'./src/tests/drizzle/base.sqlite',
 )
 
 export async function setup() {

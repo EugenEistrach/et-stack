@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @plugin 'tailwindcss-animate';
 @plugin '@tailwindcss/forms';
@@ -193,9 +193,8 @@
 	--radius-md: calc(var(--radius) - 2px);
 	--radius-sm: calc(var(--radius) - 4px);
 
-	--font-sans:
-		ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-		'Segoe UI Symbol', 'Noto Color Emoji';
+	--font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+		"Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
 	--animate-accordion-down: accordion-down 0.2s ease-out;
 	--animate-accordion-up: accordion-up 0.2s ease-out;
@@ -275,74 +274,74 @@
 }
 
 /* error state colors */
-.filepond--root [data-filepond-item-state*='invalid'] .filepond--item-panel,
+.filepond--root [data-filepond-item-state*="invalid"] .filepond--item-panel,
 .filepond--root
-	[data-filepond-item-state='load-invalid']
+	[data-filepond-item-state="load-invalid"]
 	.filepond--item-panel {
 	background-color: hsl(var(--destructive));
 }
 
-.filepond--root [data-filepond-item-state*='invalid'] .filepond--file,
-.filepond--root [data-filepond-item-state='load-invalid'] .filepond--file {
+.filepond--root [data-filepond-item-state*="invalid"] .filepond--file,
+.filepond--root [data-filepond-item-state="load-invalid"] .filepond--file {
 	color: hsl(var(--destructive-foreground));
 }
 
-.filepond--root [data-filepond-item-state*='invalid'] .filepond--file-info-main,
-.filepond--root [data-filepond-item-state*='invalid'] .filepond--file-info-sub,
+.filepond--root [data-filepond-item-state*="invalid"] .filepond--file-info-main,
+.filepond--root [data-filepond-item-state*="invalid"] .filepond--file-info-sub,
 .filepond--root
-	[data-filepond-item-state*='invalid']
+	[data-filepond-item-state*="invalid"]
 	.filepond--file-status-main,
 .filepond--root
-	[data-filepond-item-state*='invalid']
+	[data-filepond-item-state*="invalid"]
 	.filepond--file-status-sub,
 .filepond--root
-	[data-filepond-item-state='load-invalid']
+	[data-filepond-item-state="load-invalid"]
 	.filepond--file-info-main,
 .filepond--root
-	[data-filepond-item-state='load-invalid']
+	[data-filepond-item-state="load-invalid"]
 	.filepond--file-info-sub,
 .filepond--root
-	[data-filepond-item-state='load-invalid']
+	[data-filepond-item-state="load-invalid"]
 	.filepond--file-status-main,
 .filepond--root
-	[data-filepond-item-state='load-invalid']
+	[data-filepond-item-state="load-invalid"]
 	.filepond--file-status-sub {
 	color: hsl(var(--destructive-foreground));
 }
 
 /* success state colors */
 .filepond--root
-	[data-filepond-item-state='processing-complete']
+	[data-filepond-item-state="processing-complete"]
 	.filepond--item-panel,
-.filepond--root [data-filepond-item-state='idle'] .filepond--item-panel {
+.filepond--root [data-filepond-item-state="idle"] .filepond--item-panel {
 	background-color: hsl(var(--accent));
 }
 
 .filepond--root
-	[data-filepond-item-state='processing-complete']
+	[data-filepond-item-state="processing-complete"]
 	.filepond--file,
-.filepond--root [data-filepond-item-state='idle'] .filepond--file {
+.filepond--root [data-filepond-item-state="idle"] .filepond--file {
 	color: hsl(var(--accent-foreground));
 }
 
 .filepond--root
-	[data-filepond-item-state='processing-complete']
+	[data-filepond-item-state="processing-complete"]
 	.filepond--file-status,
 .filepond--root
-	[data-filepond-item-state='processing-complete']
+	[data-filepond-item-state="processing-complete"]
 	.filepond--file-info,
-.filepond--root [data-filepond-item-state='idle'] .filepond--file-status,
-.filepond--root [data-filepond-item-state='idle'] .filepond--file-info {
+.filepond--root [data-filepond-item-state="idle"] .filepond--file-status,
+.filepond--root [data-filepond-item-state="idle"] .filepond--file-info {
 	color: hsl(var(--accent-foreground));
 }
 
 /* uploading state */
-[data-filepond-item-state*='processing'] .filepond--item-panel {
+[data-filepond-item-state*="processing"] .filepond--item-panel {
 	background-color: hsl(var(--muted));
 }
 
-[data-filepond-item-state*='processing'] .filepond--file-status,
-[data-filepond-item-state*='processing'] .filepond--file-info {
+[data-filepond-item-state*="processing"] .filepond--file-status,
+[data-filepond-item-state*="processing"] .filepond--file-info {
 	color: hsl(var(--muted-foreground));
 }
 

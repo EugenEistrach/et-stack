@@ -1,27 +1,27 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Save } from 'lucide-react'
-import { useForm } from 'react-hook-form'
-import { useSpinDelay } from 'spin-delay'
-import { z } from 'zod'
 import {
 	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
 	CardHeader,
 	CardTitle,
-	CardDescription,
-	CardContent,
-	CardFooter,
 } from '@/components/ui/card'
 import {
 	Form,
+	FormControl,
 	FormField,
 	FormItem,
 	FormLabel,
-	FormControl,
 	FormMessage,
 } from '@/components/ui/form'
 import { LoadingButton } from '@/components/ui/loading-button'
 import PasswordInput from '@/components/ui/password-input'
 import { usePasswordUpdateMutation } from '@/features/_shared/user/api/auth.api'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Save } from 'lucide-react'
+import { useForm } from 'react-hook-form'
+import { useSpinDelay } from 'spin-delay'
+import { z } from 'zod'
 
 const updatePasswordSchema = z.object({
 	currentPassword: z.string().min(8, 'Password must be at least 8 characters'),

@@ -1,6 +1,6 @@
-import { confirm, note, log } from '@clack/prompts'
-import { execa } from 'execa'
 import { ensureNotCanceled, waitForCheck } from '@/utils.js'
+import { confirm, log, note } from '@clack/prompts'
+import { execa } from 'execa'
 
 export type VerificationResult = {
 	isInstalled: boolean

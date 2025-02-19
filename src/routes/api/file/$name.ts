@@ -1,7 +1,7 @@
-import { createAPIFileRoute } from '@tanstack/start/api'
-import { eq } from 'drizzle-orm'
 import { db } from '@/drizzle/db'
 import { FileTable } from '@/drizzle/schemas/files-schema'
+import { createAPIFileRoute } from '@tanstack/start/api'
+import { eq } from 'drizzle-orm'
 
 export const APIRoute = createAPIFileRoute('/api/file/$name')({
 	GET: async ({ request }) => {

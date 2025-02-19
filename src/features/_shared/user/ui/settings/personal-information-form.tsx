@@ -1,29 +1,29 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Save } from 'lucide-react'
-import { useForm } from 'react-hook-form'
-import { useSpinDelay } from 'spin-delay'
-import { z } from 'zod'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
 	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
 	CardHeader,
 	CardTitle,
-	CardDescription,
-	CardContent,
-	CardFooter,
 } from '@/components/ui/card'
 import {
 	Form,
+	FormControl,
 	FormField,
 	FormItem,
 	FormLabel,
-	FormControl,
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { LoadingButton } from '@/components/ui/loading-button'
 import { useAuth } from '@/features/_shared/user/api/auth.api'
 import { useUpdateNameMutation } from '@/features/_shared/user/api/settings.api'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Save } from 'lucide-react'
+import { useForm } from 'react-hook-form'
+import { useSpinDelay } from 'spin-delay'
+import { z } from 'zod'
 
 const personalInfoSchema = z.object({
 	name: z.string().min(1, 'Name is required'),

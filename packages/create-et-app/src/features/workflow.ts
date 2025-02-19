@@ -1,6 +1,6 @@
-import path from 'path'
+import path from 'node:path'
 import fs from 'fs-extra'
-import { type FeatureContext } from './index.js'
+import type { FeatureContext } from './index.js'
 
 export async function transformWorkflow(ctx: FeatureContext) {
 	// Read the base workflow file from the root project

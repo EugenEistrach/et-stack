@@ -1,5 +1,5 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
 import { ApprovalRequiredCard } from '@/features/_shared/user/ui/auth/approval-required-card'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_auth/approval-needed')({
 	beforeLoad: ({ context }) => {

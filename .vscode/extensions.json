@@ -1,9 +1,9 @@
 {
-	"recommendations": [
-		"inlang.vs-code-extension",
-		"dbaeumer.vscode-eslint",
-		"ms-playwright.playwright",
-		"vitest.explorer",
-		"bradlc.vscode-tailwindcss"
-	]
+  "recommendations": [
+    "inlang.vs-code-extension",
+    "dbaeumer.vscode-eslint",
+    "ms-playwright.playwright",
+    "vitest.explorer",
+    "bradlc.vscode-tailwindcss"
+  ]
 }

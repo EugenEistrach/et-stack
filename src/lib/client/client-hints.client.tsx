@@ -1,9 +1,9 @@
+import { themeCookie } from '@/lib/server/session.server'
 import { getHintUtils } from '@epic-web/client-hints'
 import { clientHint as colorSchemeHint } from '@epic-web/client-hints/color-scheme'
 import { clientHint as timeZoneHint } from '@epic-web/client-hints/time-zone'
 import { createServerFn } from '@tanstack/start'
 import { getWebRequest } from '@tanstack/start/server'
-import { themeCookie } from '@/lib/server/session.server'
 
 const hintsUtils = getHintUtils({
 	timeZone: timeZoneHint,
@@ -28,6 +28,7 @@ export const $getHintsAndPrefs = createServerFn({ method: 'GET' }).handler(
 export function ClientHintChecker() {
 	return (
 		<script
+			// biome-ignore lint/security/noDangerouslySetInnerHtml: this is needed as we have to inject a client side script
 			dangerouslySetInnerHTML={{
 				__html: hintsUtils.getClientHintCheckScript(),
 			}}

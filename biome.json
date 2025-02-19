@@ -1,0 +1,141 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+  "files": {
+    "ignoreUnknown": true,
+    "ignore": [
+      "**/node_modules/**",
+      "**/.next/**",
+      "**/build/**",
+      "**/dist/**",
+      "**/coverage/**",
+      "**/.history/**",
+      "**/.output/**",
+      "**/.vinxi/**",
+      "**/*.env",
+      "**/.DS_Store",
+      "test-results/",
+      "playwright-report/",
+      "**/storybook-static/",
+      "src/tests/storybook/**/*-snapshots/*",
+      "!src/tests/storybook/**/*-snapshots/*-linux.png",
+      "**/*.md",
+      "**/*.sql",
+      "**/*.yml",
+      "**/*.yaml",
+      "**/*.toml",
+      "**/*.lock",
+      "**/*.ico",
+      "**/*.mdc",
+      "**/*.hbs",
+      "**/*.gen.ts"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "tab",
+    "indentWidth": 2,
+    "lineWidth": 80,
+    "lineEnding": "lf",
+    "formatWithErrors": true
+  },
+  "organizeImports": {
+    "enabled": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "style": {
+        "useImportType": "warn",
+        "noNonNullAssertion": "off",
+        "useTemplate": "error",
+        "noUnusedTemplateLiteral": "error"
+      },
+      "suspicious": {
+        "noExplicitAny": "warn",
+        "noEmptyInterface": "error",
+        "noAssignInExpressions": "error"
+      },
+      "complexity": {
+        "noForEach": "warn",
+        "noBannedTypes": "error"
+      },
+      "correctness": {
+        "useExhaustiveDependencies": "warn",
+        "useHookAtTopLevel": "error",
+        "noUndeclaredVariables": "error",
+        "noUnusedVariables": "warn",
+        "useJsxKeyInIterable": "warn"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "jsxQuoteStyle": "double",
+      "quoteProperties": "asNeeded",
+      "trailingCommas": "all",
+      "semicolons": "asNeeded",
+      "arrowParentheses": "always",
+      "bracketSpacing": true,
+      "bracketSameLine": false
+    },
+    "globals": ["React"]
+  },
+  "json": {
+    "parser": {
+      "allowComments": true
+    },
+    "formatter": {
+      "enabled": true,
+      "indentStyle": "space",
+      "indentWidth": 2,
+      "lineWidth": 80
+    }
+  },
+  "overrides": [
+    {
+      "include": ["**/*.ts?(x)", "**/*.js?(x)"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "useExhaustiveDependencies": "warn",
+            "useHookAtTopLevel": "error"
+          }
+        }
+      }
+    },
+    {
+      "ignore": [
+        "**/tests/**",
+        "**/#tests/**",
+        "**/__tests__/**/*",
+        "**/*.test.*",
+        "**/*.spec.*"
+      ],
+      "include": ["**/*.ts?(x)", "**/*.js?(x)"]
+    },
+    {
+      "ignore": ["**/e2e/**"],
+      "include": [
+        "**/tests/**",
+        "**/#tests/**",
+        "**/__tests__/**/*",
+        "**/*.test.*",
+        "**/*.spec.*"
+      ]
+    },
+    {
+      "ignore": ["**/stories/**/*", "**/*.stories.tsx"],
+      "include": ["**/*.{js,jsx,ts,tsx}"]
+    },
+    {
+      "include": ["**/package.json"],
+      "formatter": {
+        "indentStyle": "space",
+        "indentWidth": 2
+      }
+    }
+  ]
+}

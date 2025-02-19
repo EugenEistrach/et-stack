@@ -1,6 +1,6 @@
+import { OnboardingForm } from '@/features/_shared/user/ui/auth/onboarding-form.fullstack'
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { z } from 'zod'
-import { OnboardingForm } from '@/features/_shared/user/ui/auth/onboarding-form.fullstack'
 
 export const Route = createFileRoute('/_auth/onboarding')({
 	validateSearch: z.object({

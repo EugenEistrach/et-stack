@@ -1,7 +1,7 @@
-import { select } from '@clack/prompts'
-import { execa } from 'execa'
 import { feature } from '@/features/index.js'
 import { ensureNotCanceled } from '@/utils.js'
+import { select } from '@clack/prompts'
+import { execa } from 'execa'
 
 export const githubRepo = feature('githubRepo', {
 	label: 'GitHub Repository',

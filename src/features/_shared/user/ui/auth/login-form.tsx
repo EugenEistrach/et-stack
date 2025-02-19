@@ -1,17 +1,11 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Link, useNavigate, useSearch } from '@tanstack/react-router'
-import { DatabaseZap, LockKeyholeOpen } from 'lucide-react'
-import { useForm } from 'react-hook-form'
-import { useSpinDelay } from 'spin-delay'
-import { z } from 'zod'
 import { GithubIcon } from '@/components/icons/github-icon'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
 	Form,
+	FormControl,
 	FormField,
 	FormItem,
 	FormLabel,
-	FormControl,
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -21,6 +15,12 @@ import {
 	useEmailSignInMutation,
 	useSocialSignInMutation,
 } from '@/features/_shared/user/api/auth.api'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Link, useNavigate, useSearch } from '@tanstack/react-router'
+import { DatabaseZap, LockKeyholeOpen } from 'lucide-react'
+import { useForm } from 'react-hook-form'
+import { useSpinDelay } from 'spin-delay'
+import { z } from 'zod'
 
 const loginFormSchema = z.object({
 	email: z.string().min(1, 'Email is required').email('Invalid email format'),

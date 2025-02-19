@@ -8,7 +8,6 @@ import { createServerFn } from '@tanstack/start'
 import { Moon, Sun } from 'lucide-react'
 import { useEffect } from 'react'
 
-import z from 'zod'
 import { Button } from '@/components/ui/button'
 import {
 	DropdownMenu,
@@ -16,6 +15,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import z from 'zod'
 
 import { themeCookie } from '@/lib/server/session.server'
 import { cn } from '@/lib/utils'

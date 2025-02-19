@@ -1,5 +1,5 @@
-import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
+import { Outlet, createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_auth')({
 	component: AuthLayout,

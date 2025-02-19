@@ -21,14 +21,12 @@ export function createFakeUser() {
 
 	const username = uniqueUsernameEnforcer
 		.enforce(() => {
-			return (
-				faker.string.alphanumeric({ length: 2 }) +
-				'_' +
-				faker.internet.username({
+			return `${faker.string.alphanumeric({ length: 2 })}_${faker.internet.username(
+				{
 					firstName: firstName.toLowerCase(),
 					lastName: lastName.toLowerCase(),
-				})
-			)
+				},
+			)}`
 		})
 		.slice(0, 20)
 		.toLowerCase()
@@ -92,42 +90,41 @@ export async function createUserAndSession(options: UserOptions = {}) {
 				.returning({ id: OnboardingInfoTable.id })
 				.get()
 			return [user, session] as const
-		} else {
-			const fakeUser = createFakeUser()
-			const user = tx
-				.insert(UserTable)
-				.values({
-					id: cuid(),
-					email: options.email ?? fakeUser.email,
-					name: options.name ?? fakeUser.name,
-					emailVerified: true,
-					hasAccess: true,
-					createdAt: new Date(),
-					updatedAt: new Date(),
-					role: options.role ?? 'user',
-				})
-				.returning()
-				.get()
-
-			const id = cuid()
-			const session = tx
-				.insert(SessionTable)
-				.values({
-					id,
-					expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
-					userId: user.id,
-					token: id,
-					createdAt: new Date(),
-					updatedAt: new Date(),
-				})
-				.returning()
-				.get()
-			tx.insert(OnboardingInfoTable)
-				.values({ id: cuid(), userId: user.id })
-				.returning({ id: OnboardingInfoTable.id })
-				.get()
-			return [user, session] as const
 		}
+		const fakeUser = createFakeUser()
+		const user = tx
+			.insert(UserTable)
+			.values({
+				id: cuid(),
+				email: options.email ?? fakeUser.email,
+				name: options.name ?? fakeUser.name,
+				emailVerified: true,
+				hasAccess: true,
+				createdAt: new Date(),
+				updatedAt: new Date(),
+				role: options.role ?? 'user',
+			})
+			.returning()
+			.get()
+
+		const id = cuid()
+		const session = tx
+			.insert(SessionTable)
+			.values({
+				id,
+				expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
+				userId: user.id,
+				token: id,
+				createdAt: new Date(),
+				updatedAt: new Date(),
+			})
+			.returning()
+			.get()
+		tx.insert(OnboardingInfoTable)
+			.values({ id: cuid(), userId: user.id })
+			.returning({ id: OnboardingInfoTable.id })
+			.get()
+		return [user, session] as const
 	})
 }
 

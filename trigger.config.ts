@@ -1,8 +1,8 @@
 import 'dotenv/config'
 import { defineConfig, logger } from '@trigger.dev/sdk/v3'
 
-const APPLICATION_URL = process.env['APPLICATION_URL']
-const API_KEY = process.env['API_KEY']
+const APPLICATION_URL = process.env.APPLICATION_URL
+const API_KEY = process.env.API_KEY
 
 export default defineConfig({
 	project: 'proj_dzwxqwpvpstyscjcklvb',

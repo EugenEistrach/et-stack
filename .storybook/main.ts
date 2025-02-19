@@ -1,4 +1,4 @@
-import { type StorybookConfig } from '@storybook/react-vite'
+import type { StorybookConfig } from '@storybook/react-vite'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 
 const config: StorybookConfig = {

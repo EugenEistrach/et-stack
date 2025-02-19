@@ -1,13 +1,12 @@
-import crypto from 'crypto'
-import path from 'path'
-import { multiselect, intro, text, log, confirm } from '@clack/prompts'
+import crypto from 'node:crypto'
+import path from 'node:path'
+import { confirm, intro, log, multiselect, text } from '@clack/prompts'
 import { configure, envvars } from '@trigger.dev/sdk/v3'
 import { type } from 'arktype'
 import degit from 'degit'
 import { execa } from 'execa'
 import fs from 'fs-extra'
 
-import { transformWorkflow } from './features/workflow.js'
 import {
 	type CliDependencyName,
 	verifyCliDependencies,
@@ -15,13 +14,11 @@ import {
 import { fly } from '@/features/fly.js'
 import { githubOauth } from '@/features/github-oauth.js'
 import { githubRepo } from '@/features/github-repo.js'
-import {
-	type AvailableFeatures,
-	type FeatureContext,
-} from '@/features/index.js'
+import type { AvailableFeatures, FeatureContext } from '@/features/index.js'
 import { trigger } from '@/features/trigger.js'
 import { turso } from '@/features/turso.js'
 import { ensureNotCanceled, validate, waitForAutomatedAction } from '@/utils.js'
+import { transformWorkflow } from './features/workflow.js'
 
 const repo = 'EugenEistrach/et-stack'
 
@@ -62,16 +59,16 @@ async function cloneAndSetupLocalProject() {
 			const packageJsonPath = path.join(projectDir, 'package.json')
 			const pkg = await fs.readJson(packageJsonPath)
 			pkg.name = projectName
-			delete pkg.author
-			delete pkg.license
+			pkg.author = undefined
+			pkg.license = undefined
 
 			// Remove trigger-related scripts
-			delete pkg.scripts['dev:trigger']
-			delete pkg.scripts['deploy-trigger']
+			pkg.scripts['dev:trigger'] = undefined
+			pkg.scripts['deploy-trigger'] = undefined
 
 			// Remove trigger-related dependencies
-			delete pkg.dependencies['@trigger.dev/sdk']
-			delete pkg.devDependencies['@trigger.dev/build']
+			pkg.dependencies['@trigger.dev/sdk'] = undefined
+			pkg.devDependencies['@trigger.dev/build'] = undefined
 			await fs.writeJson(packageJsonPath, pkg, { spaces: 2 })
 
 			// update env
@@ -311,7 +308,10 @@ async function executeTriggerPostActions(ctx: FeatureContext) {
 			})
 
 			for (const [name, value] of Object.entries(ctx.triggerSecretsToSet)) {
-				await envvars.create(ctx.triggerProjectId!, 'prod', {
+				if (!ctx.triggerProjectId) {
+					throw new Error('Trigger project id not found')
+				}
+				await envvars.create(ctx.triggerProjectId, 'prod', {
 					name,
 					value,
 				})
@@ -368,14 +368,11 @@ async function generateProductionChecklist(ctx: FeatureContext) {
 			const feature = features[featureCode]
 			if (feature.manualInstructions) {
 				markdown += `### ${feature.label}\n\n`
-				feature.manualInstructions
-					.filter(
-						(instruction) =>
-							!instruction.includes('Set') || !instruction.includes('secret'),
-					)
-					.forEach((instruction) => {
+				for (const instruction of feature.manualInstructions) {
+					if (!instruction.includes('Set') || !instruction.includes('secret')) {
 						markdown += `- [ ] ${instruction}\n`
-					})
+					}
+				}
 				markdown += '\n'
 			}
 		}
@@ -602,7 +599,9 @@ async function main() {
 
 	if (links.length > 0) {
 		log.info('\nQuick Links:')
-		links.forEach((link) => log.info(`  ${link}`))
+		for (const link of links) {
+			log.info(`  ${link}`)
+		}
 	}
 
 	if (checklistGenerated) {

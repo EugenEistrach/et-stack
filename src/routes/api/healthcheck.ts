@@ -1,8 +1,8 @@
-import { createAPIFileRoute } from '@tanstack/start/api'
-import { count } from 'drizzle-orm'
 import { db } from '@/drizzle/db'
 import { UserTable } from '@/drizzle/schemas/auth-schema'
 import { logger } from '@/lib/server/logger.server'
+import { createAPIFileRoute } from '@tanstack/start/api'
+import { count } from 'drizzle-orm'
 
 export const APIRoute = createAPIFileRoute('/api/healthcheck')({
 	GET: async ({ request }) => {

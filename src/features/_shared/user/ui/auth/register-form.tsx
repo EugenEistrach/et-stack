@@ -1,27 +1,27 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Link } from '@tanstack/react-router'
-import { CirclePlus, DatabaseZap } from 'lucide-react'
-import { useForm } from 'react-hook-form'
-import { useSpinDelay } from 'spin-delay'
-import { z } from 'zod'
 import { GithubIcon } from '@/components/icons/github-icon'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
 	Form,
+	FormControl,
 	FormField,
 	FormItem,
 	FormLabel,
-	FormControl,
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { LoadingButton } from '@/components/ui/loading-button'
 import PasswordInput from '@/components/ui/password-input'
 import {
+	EmailNotAvailableError,
 	useEmailSignUpMutation,
 	useSocialSignInMutation,
-	EmailNotAvailableError,
 } from '@/features/_shared/user/api/auth.api'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Link } from '@tanstack/react-router'
+import { CirclePlus, DatabaseZap } from 'lucide-react'
+import { useForm } from 'react-hook-form'
+import { useSpinDelay } from 'spin-delay'
+import { z } from 'zod'
 
 const registerFormSchema = z.object({
 	name: z.string().min(1, 'Name is required'),
@@ -155,9 +155,7 @@ export function RegisterForm() {
 									<FormControl>
 										<PasswordInput placeholder="Create a password" {...field} />
 									</FormControl>
-									<FormMessage>
-										{`Must be at least ${8} characters`}
-									</FormMessage>
+									<FormMessage>{`Must be at least ${8} characters`}</FormMessage>
 								</FormItem>
 							)}
 						/>

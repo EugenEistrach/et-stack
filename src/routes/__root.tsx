@@ -1,13 +1,3 @@
-import { type QueryClient } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import {
-	createRootRouteWithContext,
-	HeadContent,
-	Outlet,
-	Scripts,
-} from '@tanstack/react-router'
-import filePondCss from 'filepond/dist/filepond.min.css?url'
-import * as React from 'react'
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { $getSession } from '@/features/_shared/user/api/auth.api'
@@ -15,13 +5,23 @@ import {
 	$getHintsAndPrefs,
 	ClientHintChecker,
 } from '@/lib/client/client-hints.client'
+import type { QueryClient } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import {
+	HeadContent,
+	Outlet,
+	Scripts,
+	createRootRouteWithContext,
+} from '@tanstack/react-router'
+import filePondCss from 'filepond/dist/filepond.min.css?url'
+import * as React from 'react'
 
 import { ThemeProvider } from '@/lib/client/theme.client'
 import { TimezoneContext } from '@/lib/client/timezone.client'
 import appCss from '@/styles/globals.css?url'
 
 const TanStackRouterDevtools =
-	process.env['NODE_ENV'] === 'production'
+	process.env.NODE_ENV === 'production'
 		? () => null // Render nothing in production
 		: React.lazy(() =>
 				// Lazy load in development
@@ -118,7 +118,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 	const { hints, theme } = Route.useLoaderData()
 
 	return (
-		<html className="font-sans">
+		<html lang="en" className="font-sans">
 			<head>
 				<HeadContent />
 			</head>

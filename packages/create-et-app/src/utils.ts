@@ -1,5 +1,5 @@
 import { isCancel, spinner } from '@clack/prompts'
-import { type, type Type } from 'arktype'
+import { type Type, type } from 'arktype'
 
 const s = spinner()
 
@@ -42,10 +42,9 @@ export async function waitForCheck({
 		if (result) {
 			s.stop(successMessage)
 			return true
-		} else {
-			s.stop(errorMessage, 1)
-			return false
 		}
+		s.stop(errorMessage, 1)
+		return false
 	} catch (error) {
 		s.stop(errorMessage, 1)
 		if (error instanceof Error) {

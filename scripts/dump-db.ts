@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process'
-import { createWriteStream, type WriteStream } from 'node:fs'
+import { type WriteStream, createWriteStream } from 'node:fs'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import Database from 'better-sqlite3'
@@ -124,7 +124,7 @@ async function dumpTableData(table: string, writeStream: WriteStream) {
 					.join('\n--> statement-breakpoint\n')
 
 				if (statements) {
-					writeStream.write(statements + '\n')
+					writeStream.write(`${statements}\n`)
 				}
 				resolve(void 0)
 			} else {
@@ -148,7 +148,7 @@ async function dumpDb() {
 
 		// Copy current database to temp location
 		const currentDbPath =
-			process.env['LOCAL_DATABASE_PATH']?.replace('file:', '') || 'db.sqlite'
+			process.env.LOCAL_DATABASE_PATH?.replace('file:', '') || 'db.sqlite'
 		await fs.copyFile(currentDbPath, TEMP_DB_PATH)
 
 		// Get database structure

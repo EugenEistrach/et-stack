@@ -3,13 +3,13 @@ import { resolve } from 'node:path'
 
 console.log('Clearing local database...')
 console.log('Environment:', {
-	LOCAL_DATABASE_PATH: process.env['LOCAL_DATABASE_PATH'],
-	NODE_ENV: process.env['NODE_ENV'],
-	CI: process.env['CI'],
+	LOCAL_DATABASE_PATH: process.env.LOCAL_DATABASE_PATH,
+	NODE_ENV: process.env.NODE_ENV,
+	CI: process.env.CI,
 	PWD: process.cwd(),
 })
 
-const databaseUrl = process.env['LOCAL_DATABASE_PATH']
+const databaseUrl = process.env.LOCAL_DATABASE_PATH
 if (!databaseUrl) {
 	console.error('LOCAL_DATABASE_PATH environment variable is not set.')
 	process.exit(1)

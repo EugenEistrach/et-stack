@@ -56,7 +56,7 @@ const parseEnv = () => {
 let parsedEnv: Env | null = null
 
 export const env = new Proxy({} as Env, {
-	get(target, prop) {
+	get(_target, prop) {
 		if (typeof window !== 'undefined') {
 			throw new Error(
 				'❌ Attempted to access server-side environment variable on the client',

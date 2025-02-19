@@ -1,4 +1,4 @@
-import { type CliVerificationResults } from '@/check-cli-dependencies.js'
+import type { CliVerificationResults } from '@/check-cli-dependencies.js'
 
 export type AvailableFeatures =
 	| 'githubRepo'
@@ -47,7 +47,7 @@ export type Feature<T extends AvailableFeatures> = {
 	code: T
 	label: string
 	hint?: string
-	onSelected: (ctx: FeatureContext) => Promise<Result | undefined | void>
+	onSelected: (ctx: FeatureContext) => Promise<Result | undefined | undefined>
 	onSkipped?: (ctx: FeatureContext) => Promise<void>
 	manualInstructions?: string[]
 }

@@ -1,8 +1,8 @@
-import { render } from '@react-email/components'
-import { type ReactElement } from 'react'
-import { Resend, type CreateEmailResponse } from 'resend'
 import { env } from '@/lib/server/env.server'
 import { logger } from '@/lib/server/logger.server'
+import { render } from '@react-email/components'
+import type { ReactElement } from 'react'
+import { type CreateEmailResponse, Resend } from 'resend'
 
 let resend: Resend | undefined
 
@@ -29,13 +29,13 @@ export async function sendEmail({
 
 	if (!env.RESEND_API_KEY && !env.MOCKS) {
 		logger.error(`RESEND_API_KEY not set and we're not in mocks mode.`)
-		logger.error(`To send emails, set the RESEND_API_KEY environment variable.`)
+		logger.error('To send emails, set the RESEND_API_KEY environment variable.')
 		logger.error(
 			{
 				email,
 				operation: 'sendEmail',
 			},
-			`Would have sent the following email`,
+			'Would have sent the following email',
 		)
 		return {
 			data: { id: 'mocked' },
@@ -51,10 +51,10 @@ export async function sendEmail({
 		if (result.error) {
 			throw result.error
 		}
-		logger.debug({ email, operation: 'sendEmail', result }, `Email sent`)
+		logger.debug({ email, operation: 'sendEmail', result }, 'Email sent')
 		return result
 	} catch (err) {
-		logger.error({ email, operation: 'sendEmail', err }, `Failed to send email`)
+		logger.error({ email, operation: 'sendEmail', err }, 'Failed to send email')
 		return {
 			data: { id: 'mocked' },
 			error: {

@@ -8,9 +8,7 @@
   "bin": {
     "create-et-app": "./dist/index.js"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -33,12 +31,7 @@
     "clean": "rm -rf dist",
     "verify": "bun scripts/verify.ts"
   },
-  "keywords": [
-    "create-app",
-    "tanstack",
-    "boilerplate",
-    "cli"
-  ],
+  "keywords": ["create-app", "tanstack", "boilerplate", "cli"],
   "dependencies": {
     "@clack/prompts": "^0.7.0",
     "@trigger.dev/sdk": "3.3.16",

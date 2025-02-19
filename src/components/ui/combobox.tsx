@@ -1,11 +1,11 @@
 'use client'
 
-import { Command as CommandPrimitive } from 'cmdk'
-import { X } from 'lucide-react'
-import * as React from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Command, CommandGroup, CommandItem } from '@/components/ui/command'
 import { cn } from '@/lib/utils'
+import { Command as CommandPrimitive } from 'cmdk'
+import { X } from 'lucide-react'
+import * as React from 'react'
 
 type Option = {
 	label: string
@@ -77,6 +77,7 @@ export function Combobox({
 						>
 							{item}
 							<button
+								type="button"
 								className="ring-offset-background focus:ring-ring ml-1 rounded-full outline-hidden focus:ring-2 focus:ring-offset-2"
 								onKeyDown={(e) => {
 									if (e.key === 'Enter') {

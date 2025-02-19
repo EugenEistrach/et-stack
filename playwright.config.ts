@@ -1,22 +1,22 @@
 import 'dotenv/config'
-import { defineConfig, devices } from '@playwright/test'
 import { env } from '@/lib/server/env.server'
+import { defineConfig, devices } from '@playwright/test'
 
 // Default ports
-const port = process.env['PORT'] ?? '3000'
-const storybookPort = process.env['STORYBOOK_PORT'] ?? '6006'
+const port = process.env.PORT ?? '3000'
+const storybookPort = process.env.STORYBOOK_PORT ?? '6006'
 
 // For E2E tests, fall back to a local database path if TEST_DB_PATH isn't set
-if (!process.env['TEST_DB_PATH']) {
-	process.env['TEST_DB_PATH'] = env.LOCAL_DATABASE_PATH
+if (!process.env.TEST_DB_PATH) {
+	process.env.TEST_DB_PATH = env.LOCAL_DATABASE_PATH
 }
 
-if (!process.env['TEST_DB_PATH']) {
+if (!process.env.TEST_DB_PATH) {
 	throw new Error('TEST_DB_PATH is required.')
 }
 
 // Determine which server to start based on the test project
-const isStorybookTest = process.env['TEST_PROJECT'] === 'storybook'
+const isStorybookTest = process.env.TEST_PROJECT === 'storybook'
 
 export default defineConfig({
 	// Centralize all test outputs and screenshots in one folder
@@ -66,7 +66,7 @@ export default defineConfig({
 	// Configure the appropriate web server based on the test project
 	webServer: isStorybookTest
 		? {
-				command: env['CI']
+				command: env.CI
 					? `bunx http-server storybook-static -p ${storybookPort}`
 					: 'bun run storybook',
 				url: `http://localhost:${storybookPort}`,
@@ -80,7 +80,7 @@ export default defineConfig({
 				env: {
 					PORT: port,
 					NODE_ENV: 'test',
-					TEST_DB_PATH: process.env['TEST_DB_PATH'] as string,
+					TEST_DB_PATH: process.env.TEST_DB_PATH as string,
 				},
 			},
 })

@@ -1,20 +1,20 @@
-import { readFileSync, writeFileSync } from 'fs'
-import { resolve, dirname } from 'path'
-import { fileURLToPath } from 'url'
+import { readFileSync, writeFileSync } from 'node:fs'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import _generate from '@babel/generator'
 import * as parser from '@babel/parser'
 import _traverse, { type NodePath } from '@babel/traverse'
 import {
+	type CallExpression,
+	type Expression,
+	type File,
 	type ImportDeclaration,
 	type MemberExpression,
-	type CallExpression,
-	type File,
-	type Expression,
 	type ObjectProperty,
-	stringLiteral,
-	templateLiteral,
-	templateElement,
 	identifier,
+	stringLiteral,
+	templateElement,
+	templateLiteral,
 } from '@babel/types'
 import chalk from 'chalk'
 import { glob } from 'glob'
@@ -29,7 +29,10 @@ const __dirname = dirname(__filename)
 
 // Read and parse en.json
 const enJsonPath = resolve(__dirname, '../messages/en.json')
-const translations = JSON.parse(readFileSync(enJsonPath, 'utf-8'))
+const translations = JSON.parse(readFileSync(enJsonPath, 'utf-8')) as Record<
+	string,
+	string
+>
 
 interface TranslationUsage {
 	key: string
@@ -46,16 +49,22 @@ interface TranslationUsage {
 function splitWithDelimiters(str: string, delimiter: RegExp) {
 	const parts: string[] = []
 	let lastIndex = 0
-	let match
+	let match: RegExpExecArray | null
 
-	while ((match = delimiter.exec(str)) !== null) {
+	match = delimiter.exec(str)
+
+	while (match !== null) {
 		// Add the text before the match
 		if (match.index > lastIndex) {
 			parts.push(str.slice(lastIndex, match.index))
 		}
+
 		// Add the match itself
 		parts.push(match[0])
 		lastIndex = match.index + match[0].length
+
+		// Get next match
+		match = delimiter.exec(str)
 	}
 
 	// Add any remaining text
@@ -156,7 +165,7 @@ async function processFile(filePath: string) {
 
 					translationCount++
 					console.log(
-						chalk.yellow(`  Found translation:`),
+						chalk.yellow('  Found translation:'),
 						chalk.cyan(key),
 						'→',
 						chalk.white(value),
@@ -189,7 +198,8 @@ async function processFile(filePath: string) {
 							// Process each part and ensure proper quasis
 							for (let i = 0; i < parts.length; i++) {
 								const part = parts[i]
-								if (part.startsWith('{') && part.endsWith('}')) {
+								if (!part) continue
+								if (part?.startsWith('{') && part?.endsWith('}')) {
 									// This is a parameter
 									const paramName = part.slice(1, -1)
 									expressions.push(
@@ -325,12 +335,12 @@ async function main() {
 	}
 
 	// Print final summary
-	console.log('\n' + chalk.blue('─'.repeat(80)))
+	console.log(`\n${chalk.blue('─'.repeat(80))}`)
 	console.log(chalk.blue('\nFinal Summary:'))
 	console.log(chalk.white(`Total files processed: ${filesProcessed}`))
 	console.log(chalk.green(`Files with translations: ${filesWithTranslations}`))
 	console.log(chalk.green(`Total translations replaced: ${totalTranslations}`))
-	console.log('\n' + chalk.blue('─'.repeat(80)))
+	console.log(`\n${chalk.blue('─'.repeat(80))}`)
 }
 
 // Run the script

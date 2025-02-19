@@ -16,7 +16,7 @@ eugeneistrach.com/blog/paraglide-tanstack-start.
 
 May add i18n setup via CLI later.
 
-## 2025-02-19: Replace arktype with Zod
+## 2025-02-18: Replace arktype with Zod
 
 ### Context
 
@@ -51,3 +51,26 @@ Evaluate migrating more tools to Bun's native alternatives:
 - Replace Vitest with Bun's test runner
 - Consider Bun's bundler for build optimization
 - Monitor ecosystem compatibility and stability
+
+## 2025-02-19: Switch from ESLint/Prettier to Biome
+
+### Context
+
+ESLint's performance was becoming an issue in development, especially with the
+growing codebase. While ESLint provided comprehensive safety checks, the slow
+performance was impacting developer experience.
+
+### Decision
+
+Move to Biome for linting and formatting, keeping Prettier only for non-Biome
+supported files (HTML, MD, YAML). Benefits include:
+
+- Significantly faster performance
+- Single tool for both linting and formatting
+- Better IDE integration
+- Simpler configuration
+
+### Future Plans
+
+Monitor for any safety issues that ESLint previously caught. May reconsider
+decision if critical safety checks are missed frequently.

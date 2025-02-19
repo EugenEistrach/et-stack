@@ -1,5 +1,3 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
-import { Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
 	Card,
@@ -10,6 +8,8 @@ import {
 	CardTitle,
 } from '@/components/ui/card'
 import { useOptionalAuth } from '@/features/_shared/user/api/auth.api'
+import { Link, createFileRoute } from '@tanstack/react-router'
+import { Check } from 'lucide-react'
 export const Route = createFileRoute('/_marketing/')({
 	component: LandingPage,
 })

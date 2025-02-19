@@ -1,3 +1,0 @@
-packages:
-  - '.' # Root project
-  - 'packages/*' # Additional packages

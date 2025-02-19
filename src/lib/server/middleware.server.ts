@@ -1,6 +1,6 @@
+import { logger } from '@/lib/server/logger.server'
 import { createMiddleware, registerGlobalMiddleware } from '@tanstack/start'
 import { getWebRequest } from '@tanstack/start/server'
-import { logger } from '@/lib/server/logger.server'
 
 export const loggingMiddleware = createMiddleware().server(
 	async ({ next, data }) => {

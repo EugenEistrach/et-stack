@@ -1,6 +1,6 @@
-import { execa } from 'execa'
 import { feature } from '@/features/index.js'
 import { waitForAutomatedAction } from '@/utils.js'
+import { execa } from 'execa'
 
 export const turso = feature('turso', {
 	label: 'Turso Database',

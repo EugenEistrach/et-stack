@@ -1,12 +1,12 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import useEmblaCarousel, {
 	type UseEmblaCarouselType,
 } from 'embla-carousel-react'
 import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react'
 import * as React from 'react'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
 
 type CarouselApi = UseEmblaCarouselType[1]
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>
@@ -120,6 +120,7 @@ function Carousel({
 			<div
 				onKeyDownCapture={handleKeyDown}
 				className={cn('relative', className)}
+				// biome-ignore lint/a11y/useSemanticElements: shadcn has his reasons
 				role="region"
 				aria-roledescription="carousel"
 				data-slot="carousel"
@@ -180,6 +181,7 @@ function CarouselPrevious({
 
 	return (
 		<Button
+			type="button"
 			data-slot="carousel-previous"
 			variant={variant}
 			size={size}
@@ -210,6 +212,7 @@ function CarouselNext({
 
 	return (
 		<Button
+			type="button"
 			data-slot="carousel-next"
 			variant={variant}
 			size={size}

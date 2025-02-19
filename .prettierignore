@@ -1,0 +1,14 @@
+**/*.js
+**/*.jsx
+**/*.ts
+**/*.tsx
+**/*.json
+**/*.css
+**/*.graphql
+
+# Let Prettier handle only these:
+!**/*.html
+!**/*.md
+!**/*.mdx
+!**/*.yaml
+!**/*.yml

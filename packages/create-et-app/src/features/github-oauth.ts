@@ -1,8 +1,8 @@
 import { log, password } from '@clack/prompts'
 
-import open from 'open'
 import { feature } from '@/features/index.js'
 import { ensureNotCanceled } from '@/utils.js'
+import open from 'open'
 
 export const githubOauth = feature('githubOauth', {
 	label: 'GitHub OAuth',

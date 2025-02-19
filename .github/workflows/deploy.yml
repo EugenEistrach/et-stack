@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        check: [typecheck, lint, test]
+        check: [typecheck, lint, test, format:check]
         node-version: [22]
       fail-fast: false
     steps:
@@ -44,8 +44,9 @@ jobs:
           path: |
             node_modules
             ~/.cache/ms-playwright
+            .biome
           key: |
-            ${{ runner.os }}-cache-${{ hashFiles('**/bun.lockb') }}-${{ hashFiles('**/package.json') }}
+            ${{ runner.os }}-cache-${{ hashFiles('**/bun.lockb') }}-${{ hashFiles('**/package.json') }}-${{ hashFiles('**/biome.json') }}
           restore-keys: |
             ${{ runner.os }}-cache-${{ hashFiles('**/bun.lockb') }}-${{ hashFiles('**/package.json') }}
 

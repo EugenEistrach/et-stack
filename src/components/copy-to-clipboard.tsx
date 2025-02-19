@@ -1,6 +1,6 @@
-import { Copy, Check } from 'lucide-react'
-import React, { useState, useCallback } from 'react'
 import { cn } from '@/lib/utils'
+import { Check, Copy } from 'lucide-react'
+import React, { useState, useCallback } from 'react'
 
 interface CopyToClipboardProps {
 	children: React.ReactNode

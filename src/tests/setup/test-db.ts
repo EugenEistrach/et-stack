@@ -1,10 +1,10 @@
-import { drizzle } from 'drizzle-orm/better-sqlite3'
 import { schema } from '@/drizzle/schemas/schema'
+import { drizzle } from 'drizzle-orm/better-sqlite3'
 
 type DrizzleDB = ReturnType<typeof drizzle<typeof schema>>
 let drizzleDb: DrizzleDB | null = null
 
-const testDbPath = process.env['TEST_DB_PATH']
+const testDbPath = process.env.TEST_DB_PATH
 
 if (!testDbPath) {
 	throw new Error('TEST_DB_PATH is not set')

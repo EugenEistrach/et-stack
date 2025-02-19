@@ -7,9 +7,9 @@ import {
 } from '@tanstack/start/server'
 import { migrate } from 'drizzle-orm/libsql/migrator'
 
+import { env } from '@/lib/server/env.server'
 import { db } from './drizzle/db'
 import { createRouter } from './router'
-import { env } from '@/lib/server/env.server'
 
 import { logger } from '@/lib/server/logger.server'
 

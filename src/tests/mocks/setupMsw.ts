@@ -9,7 +9,7 @@ server.listen({
 	onUnhandledRequest: 'error',
 })
 
-if (process.env['NODE_ENV'] !== 'test') {
+if (process.env.NODE_ENV !== 'test') {
 	console.info('🔶 Mock server installed')
 
 	closeWithGrace(() => {

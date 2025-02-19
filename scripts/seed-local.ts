@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { sql } from 'drizzle-orm'
 import { db } from '@/drizzle/db'
+import { sql } from 'drizzle-orm'
 
 // ES modules equivalent of __dirname
 const __filename = fileURLToPath(import.meta.url)
@@ -34,7 +34,7 @@ const main = async () => {
 		for (const statement of statements) {
 			console.log(
 				'⚡️ Executing:',
-				statement.slice(0, 100).replace(/\s+/g, ' ') + '...',
+				`${statement.slice(0, 100).replace(/\s+/g, ' ')}...`,
 			)
 			await db.run(sql.raw(statement))
 		}

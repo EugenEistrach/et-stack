@@ -1,7 +1,7 @@
-import { execSync } from 'child_process'
-import fs from 'fs'
-import path from 'path'
-import { test, expect } from '@playwright/test'
+import { execSync } from 'node:child_process'
+import fs from 'node:fs'
+import path from 'node:path'
+import { expect, test } from '@playwright/test'
 
 interface StorybookStory {
 	id: string
@@ -40,7 +40,7 @@ test.beforeAll(async () => {
 	const indexPath = path.join(process.cwd(), 'storybook-static', 'index.json')
 
 	// Only build if needed and not in CI (CI should already have built it)
-	if (!process.env['CI']) {
+	if (!process.env.CI) {
 		const needsBuild = (() => {
 			try {
 				if (!fs.existsSync(indexPath)) {
@@ -51,7 +51,7 @@ test.beforeAll(async () => {
 				const buildTime = fs.statSync(indexPath).mtimeMs
 				const command =
 					process.platform === 'win32'
-						? `dir /s /b src\\**\\*.stories.tsx`
+						? 'dir /s /b src\\**\\*.stories.tsx'
 						: `find src -name "*.stories.tsx"`
 
 				const storyFiles = execSync(command, { encoding: 'utf-8' })
@@ -101,8 +101,7 @@ if (fs.existsSync(indexPath)) {
 		if (parameters?.noScreenshot) continue
 
 		test(`${title} - ${name}`, async ({ page }) => {
-			const storybookUrl =
-				process.env['STORYBOOK_URL'] || 'http://localhost:6006'
+			const storybookUrl = process.env.STORYBOOK_URL || 'http://localhost:6006'
 
 			// Disable CSS animations if requested by the story
 			if (parameters?.disableAnimations) {

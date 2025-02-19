@@ -1,4 +1,4 @@
-import { type LucideProps, Loader2 } from 'lucide-react'
+import { Loader2, type LucideProps } from 'lucide-react'
 import * as React from 'react'
 
 import { Button } from './button'

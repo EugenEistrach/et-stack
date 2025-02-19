@@ -1,10 +1,10 @@
+import { requireAuthSession } from '@/features/_shared/user/domain/auth.server'
+import { updateName } from '@/features/_shared/user/domain/settings.server'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/start'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import { requireAuthSession } from '@/features/_shared/user/domain/auth.server'
-import { updateName } from '@/features/_shared/user/domain/settings.server'
 
 export const useUpdateNameMutation = () => {
 	const router = useRouter()

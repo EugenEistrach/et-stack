@@ -1,8 +1,8 @@
 import { Loader2 } from 'lucide-react'
-import { motion, AnimatePresence } from 'motion/react'
+import { AnimatePresence, motion } from 'motion/react'
 
-import React from 'react'
 import { cn } from '@/lib/utils'
+import React from 'react'
 
 interface LoadingProps extends React.HTMLAttributes<HTMLDivElement> {
 	loading: boolean

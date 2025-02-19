@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-import crypto from 'crypto'
-import net from 'net'
-import os from 'os'
-import path from 'path'
-import { fileURLToPath } from 'url'
-import { intro, outro, spinner, log, isCancel } from '@clack/prompts'
-import { execa, type ExecaChildProcess } from 'execa'
+import crypto from 'node:crypto'
+import net from 'node:net'
+import os from 'node:os'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { intro, isCancel, log, outro, spinner } from '@clack/prompts'
+import { type ExecaChildProcess, execa } from 'execa'
 import fs from 'fs-extra'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -226,7 +226,7 @@ async function verify() {
 		s.stop('Cleanup complete')
 
 		// Show completion message with next steps
-		outro(`✅ Verification completed successfully!`)
+		outro('✅ Verification completed successfully!')
 		process.exit(0)
 	} catch (error) {
 		if (isCancel(error)) {

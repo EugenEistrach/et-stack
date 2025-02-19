@@ -7,7 +7,7 @@ export const NavLink = forwardRef<HTMLAnchorElement, LinkProps>(
 		return (
 			<Link
 				{...props}
-				ref={ref as any}
+				ref={ref}
 				activeProps={{
 					'data-active': true,
 					...props.activeProps,

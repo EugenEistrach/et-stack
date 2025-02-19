@@ -1,10 +1,10 @@
-import { type FilePondErrorDescription, type FilePondFile } from 'filepond'
+import type { FilePondErrorDescription, FilePondFile } from 'filepond'
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size'
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import { useCallback, useRef } from 'react'
 import { FilePond, registerPlugin } from 'react-filepond'
 import 'filepond/dist/filepond.min.css'
-import { type FileTable } from '@/drizzle/schemas/files-schema'
+import type { FileTable } from '@/drizzle/schemas/files-schema'
 
 registerPlugin(FilePondPluginFileValidateSize)
 registerPlugin(FilePondPluginFileValidateType)
@@ -66,7 +66,7 @@ export function FileUpload({
 	)
 
 	const handleRemoveFile = useCallback(
-		(error: FilePondErrorDescription | null, file: FilePondFile) => {
+		(_error: FilePondErrorDescription | null, file: FilePondFile) => {
 			processingFiles.current.delete(file.id)
 			updateUploadingState()
 			onChange?.(null)

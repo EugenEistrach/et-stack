@@ -1,9 +1,9 @@
-import { createAPIFileRoute } from '@tanstack/start/api'
 import {
-	handleFileUpload,
 	handleFileDelete,
+	handleFileUpload,
 } from '@/features/_shared/uploads/domain/upload-handler.server'
 import { requireAuthSessionApi } from '@/features/_shared/user/domain/auth.server'
+import { createAPIFileRoute } from '@tanstack/start/api'
 
 export const APIRoute = createAPIFileRoute('/api/upload')({
 	POST: async ({ request }) => {

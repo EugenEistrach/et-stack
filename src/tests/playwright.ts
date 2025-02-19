@@ -1,11 +1,11 @@
+import { db } from '@/drizzle/db'
+import { SessionTable, UserTable } from '@/drizzle/schemas/auth-schema'
+import { OnboardingInfoTable } from '@/drizzle/schemas/onboarding-schema'
 import Headers from '@mjackson/headers'
 import { test as base } from '@playwright/test'
 import { serializeSignedCookie } from 'better-call'
 import { eq } from 'drizzle-orm'
-import { createUserAndSession, type UserOptions } from './test-utils'
-import { db } from '@/drizzle/db'
-import { SessionTable, UserTable } from '@/drizzle/schemas/auth-schema'
-import { OnboardingInfoTable } from '@/drizzle/schemas/onboarding-schema'
+import { type UserOptions, createUserAndSession } from './test-utils'
 
 import { env } from '@/lib/server/env.server'
 

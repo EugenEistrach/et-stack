@@ -1,17 +1,11 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Link, useSearch } from '@tanstack/react-router'
-import { CheckCircle2, DatabaseZap, KeyRound, Send } from 'lucide-react'
-import { useForm } from 'react-hook-form'
-import { useSpinDelay } from 'spin-delay'
-import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
 	Form,
+	FormControl,
 	FormField,
 	FormItem,
 	FormLabel,
-	FormControl,
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -21,6 +15,12 @@ import {
 	usePasswordResetMutation,
 	usePasswordResetRequestMutation,
 } from '@/features/_shared/user/api/auth.api'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Link, useSearch } from '@tanstack/react-router'
+import { CheckCircle2, DatabaseZap, KeyRound, Send } from 'lucide-react'
+import { useForm } from 'react-hook-form'
+import { useSpinDelay } from 'spin-delay'
+import { z } from 'zod'
 
 function ResetPasswordSuccess() {
 	return (

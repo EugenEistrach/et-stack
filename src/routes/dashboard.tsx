@@ -1,16 +1,3 @@
-import { createFileRoute, Link, Outlet, redirect } from '@tanstack/react-router'
-import { createServerFn, useServerFn } from '@tanstack/start'
-import {
-	HomeIcon,
-	Box,
-	UploadIcon,
-	ChevronsUpDown,
-	LogOut,
-	Settings,
-	UsersIcon,
-} from 'lucide-react'
-import { useState } from 'react'
-import { z } from 'zod'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Breadcrumbs } from '@/components/ui/breadcrumbs'
 import {
@@ -26,24 +13,37 @@ import { NavLink } from '@/components/ui/nav-link'
 import { Separator } from '@/components/ui/separator'
 import {
 	Sidebar,
-	SidebarProvider,
-	SidebarHeader,
-	SidebarMenu,
-	SidebarMenuItem,
-	SidebarMenuButton,
 	SidebarContent,
+	SidebarFooter,
 	SidebarGroup,
 	SidebarGroupLabel,
-	SidebarFooter,
-	SidebarRail,
+	SidebarHeader,
 	SidebarInset,
+	SidebarMenu,
+	SidebarMenuButton,
+	SidebarMenuItem,
+	SidebarProvider,
+	SidebarRail,
 	SidebarTrigger,
 	useSidebar,
 } from '@/components/ui/sidebar'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
-import { useAuth, $logout } from '@/features/_shared/user/api/auth.api'
+import { $logout, useAuth } from '@/features/_shared/user/api/auth.api'
 import { AdminOnly } from '@/features/_shared/user/ui/admin-only'
 import { sidebarOpenCookie } from '@/lib/server/session.server'
+import { Link, Outlet, createFileRoute, redirect } from '@tanstack/react-router'
+import { createServerFn, useServerFn } from '@tanstack/start'
+import {
+	Box,
+	ChevronsUpDown,
+	HomeIcon,
+	LogOut,
+	Settings,
+	UploadIcon,
+	UsersIcon,
+} from 'lucide-react'
+import { useState } from 'react'
+import { z } from 'zod'
 const $getSidebarState = createServerFn({
 	method: 'GET',
 }).handler(async () => {

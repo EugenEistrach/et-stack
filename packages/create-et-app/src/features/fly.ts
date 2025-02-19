@@ -1,9 +1,9 @@
-import crypto from 'crypto'
+import crypto from 'node:crypto'
+import { feature } from '@/features/index.js'
+import { ensureNotCanceled, validate } from '@/utils.js'
 import { text } from '@clack/prompts'
 import { type } from 'arktype'
 import { execa } from 'execa'
-import { feature } from '@/features/index.js'
-import { ensureNotCanceled, validate } from '@/utils.js'
 
 export const fly = feature('fly', {
 	label: 'Fly.io',

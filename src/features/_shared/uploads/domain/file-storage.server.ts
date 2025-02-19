@@ -1,8 +1,12 @@
-import { type FileStorage, type ListResult } from '@mjackson/file-storage'
-import { eq } from 'drizzle-orm'
 import { db } from '@/drizzle/db'
 import { FileTable } from '@/drizzle/schemas/files-schema'
 import { cuid } from '@/lib/utils'
+import type {
+	FileStorage,
+	ListOptions,
+	ListResult,
+} from '@mjackson/file-storage'
+import { eq } from 'drizzle-orm'
 
 export class SQLiteFileStorage implements FileStorage {
 	private userId: string
@@ -78,7 +82,9 @@ export class SQLiteFileStorage implements FileStorage {
 		}
 	}
 
-	async list(_opts: any): Promise<ListResult<any>> {
+	list<T extends ListOptions>(
+		_opts: T | undefined,
+	): ListResult<T> | Promise<ListResult<T>> {
 		throw new Error('Not implemented')
 	}
 

@@ -1,15 +1,5 @@
 'use client'
 
-import { useOverlayPosition } from '@react-aria/overlays'
-import { useCombobox } from 'downshift'
-import { Check, Trash, X } from 'lucide-react'
-import * as React from 'react'
-import {
-	useController,
-	type Control,
-	type FieldValues,
-	type Path,
-} from 'react-hook-form'
 import { Badge } from '@/components/ui/badge'
 import {
 	Tooltip,
@@ -17,6 +7,16 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { useOverlayPosition } from '@react-aria/overlays'
+import { useCombobox } from 'downshift'
+import { Check, Trash, X } from 'lucide-react'
+import * as React from 'react'
+import {
+	type Control,
+	type FieldValues,
+	type Path,
+	useController,
+} from 'react-hook-form'
 
 import { cn } from '@/lib/utils'
 
@@ -121,7 +121,8 @@ export function TagInput<
 			fieldOnChange(newTags)
 			onChange?.(newTags)
 			return true
-		} else if (onCreateTag) {
+		}
+		if (onCreateTag) {
 			const newTag = await onCreateTag(actualText)
 			const newTags = [...value, newTag]
 			fieldOnChange(newTags)
@@ -359,6 +360,7 @@ export function TagInput<
 													>
 														<TooltipTrigger asChild>
 															<button
+																type="button"
 																onClick={(e) => {
 																	e.preventDefault()
 																	e.stopPropagation()

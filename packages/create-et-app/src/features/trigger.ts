@@ -1,10 +1,10 @@
-import path from 'path'
+import path from 'node:path'
+import { feature } from '@/features/index.js'
+import { ensureNotCanceled } from '@/utils.js'
 import { confirm, log, note, password } from '@clack/prompts'
 import { execa } from 'execa'
 import open from 'open'
 import { Project, SyntaxKind } from 'ts-morph'
-import { feature } from '@/features/index.js'
-import { ensureNotCanceled } from '@/utils.js'
 
 export const trigger = feature('trigger', {
 	label: 'Trigger.dev Integration',

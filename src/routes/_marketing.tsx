@@ -1,8 +1,8 @@
-import { createFileRoute, Link, Outlet } from '@tanstack/react-router'
-import { Box, CircleCheck } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
+import { Link, Outlet, createFileRoute } from '@tanstack/react-router'
+import { Box, CircleCheck } from 'lucide-react'
 export const Route = createFileRoute('/_marketing')({
 	component: MarketingPage,
 })

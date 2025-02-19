@@ -59,7 +59,7 @@
 
 /* Error state */
 .file-pond-custom
-	.filepond--file-wrapper[data-filepond-item-state*='error']
+	.filepond--file-wrapper[data-filepond-item-state*="error"]
 	.filepond--file {
 	background-color: hsl(var(--destructive) / 0.1);
 	color: hsl(var(--destructive));
@@ -67,7 +67,7 @@
 
 /* Processing state */
 .file-pond-custom
-	.filepond--file-wrapper[data-filepond-item-state*='processing']
+	.filepond--file-wrapper[data-filepond-item-state*="processing"]
 	.filepond--file {
 	background-color: hsl(var(--primary) / 0.1);
 	color: hsl(var(--primary));
@@ -75,7 +75,7 @@
 
 /* Success state */
 .file-pond-custom
-	.filepond--file-wrapper[data-filepond-item-state*='success']
+	.filepond--file-wrapper[data-filepond-item-state*="success"]
 	.filepond--file {
 	background-color: hsl(var(--background));
 	color: hsl(var(--foreground));

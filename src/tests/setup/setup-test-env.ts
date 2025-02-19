@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import './db-setup'
-import { vi, afterEach, beforeEach, type MockInstance } from 'vitest'
+import { type MockInstance, afterEach, beforeEach, vi } from 'vitest'
 
 import { server } from '@/tests/mocks/setupMsw'
 
@@ -25,7 +25,7 @@ vi.mock('@/lib/server/env.server', async (importOriginal) => {
 			acc[key] = mod.env[key as keyof typeof mod.env]
 			return acc
 		},
-		{} as Record<string, any>,
+		{} as Record<string, unknown>,
 	)
 
 	return {

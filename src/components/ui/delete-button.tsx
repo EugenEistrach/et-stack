@@ -1,12 +1,12 @@
-import { TooltipProvider } from '@radix-ui/react-tooltip'
-import { Loader2, X } from 'lucide-react'
-import * as React from 'react'
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
+import { TooltipProvider } from '@radix-ui/react-tooltip'
+import { Loader2, X } from 'lucide-react'
+import * as React from 'react'
 
 interface DeleteButtonProps
 	extends React.ButtonHTMLAttributes<HTMLButtonElement> {

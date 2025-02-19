@@ -1,8 +1,8 @@
 import { createClient } from '@libsql/client'
 import { drizzle } from 'drizzle-orm/libsql'
 
-import { schema } from './schemas/schema'
 import { env } from '@/lib/server/env.server'
+import { schema } from './schemas/schema'
 
 const getDbClient = () => {
 	// Case 1: Remote Turso DB with auth

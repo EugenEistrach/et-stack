@@ -1,8 +1,5 @@
 'use client'
 
-import { format } from 'date-fns'
-import { Calendar as CalendarIcon } from 'lucide-react'
-import * as React from 'react'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
@@ -10,6 +7,9 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/ui/popover'
+import { format } from 'date-fns'
+import { Calendar as CalendarIcon } from 'lucide-react'
+import * as React from 'react'
 
 import { cn } from '@/lib/utils'
 
@@ -32,6 +32,7 @@ export function DatePicker({ date, onSelect, className }: DatePickerProps) {
 			<PopoverTrigger asChild>
 				<Button
 					variant="outline"
+					// biome-ignore lint/a11y/useSemanticElements: shadcn has his reasons
 					role="combobox"
 					aria-expanded={open}
 					tabIndex={0}

@@ -1,13 +1,4 @@
 import {
-	type ColumnDef,
-	flexRender,
-	getCoreRowModel,
-	useReactTable,
-	getPaginationRowModel,
-	type Table,
-} from '@tanstack/react-table'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
-import {
 	Select,
 	SelectContent,
 	SelectItem,
@@ -15,14 +6,23 @@ import {
 	SelectValue,
 } from '@/components/ui/select'
 import {
-	Table as UITable,
 	TableBody,
 	TableCell,
 	TableHead,
 	TableHeader,
 	TableRow,
+	Table as UITable,
 } from '@/components/ui/table'
 import { cn } from '@/lib/utils'
+import {
+	type ColumnDef,
+	type Table,
+	flexRender,
+	getCoreRowModel,
+	getPaginationRowModel,
+	useReactTable,
+} from '@tanstack/react-table'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
 	data: TData[]
@@ -35,6 +35,7 @@ function PaginationControl<TData>({ table }: { table: Table<TData> }) {
 	return (
 		<div className="flex items-center gap-2">
 			<button
+				type="button"
 				onClick={() => table.previousPage()}
 				disabled={!table.getCanPreviousPage()}
 				className={cn(
@@ -62,7 +63,7 @@ function PaginationControl<TData>({ table }: { table: Table<TData> }) {
 							length: totalPages,
 						},
 						(_, i) => (
-							<SelectItem key={i} value={i.toString()}>
+							<SelectItem key={`page-${i + 1}`} value={i.toString()}>
 								{`Page ${(i + 1).toString()}`}
 							</SelectItem>
 						),
@@ -70,11 +71,10 @@ function PaginationControl<TData>({ table }: { table: Table<TData> }) {
 				</SelectContent>
 			</Select>
 
-			<div className="text-muted-foreground text-sm">
-				{`of ${totalPages.toString()}`}
-			</div>
+			<div className="text-muted-foreground text-sm">{`of ${totalPages.toString()}`}</div>
 
 			<button
+				type="button"
 				onClick={() => table.nextPage()}
 				disabled={!table.getCanNextPage()}
 				className={cn(

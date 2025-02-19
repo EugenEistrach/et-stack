@@ -1,9 +1,3 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useSearch } from '@tanstack/react-router'
-import { CircleArrowRight } from 'lucide-react'
-import { useForm } from 'react-hook-form'
-import { useSpinDelay } from 'spin-delay'
-import { z } from 'zod'
 import {
 	Card,
 	CardContent,
@@ -13,17 +7,23 @@ import {
 	CardTitle,
 } from '@/components/ui/card'
 import {
+	Form,
+	FormControl,
 	FormField,
 	FormItem,
 	FormLabel,
-	FormControl,
 	FormMessage,
-	Form,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { LoadingButton } from '@/components/ui/loading-button'
 import { useAuth } from '@/features/_shared/user/api/auth.api'
 import { useCompleteOnboardingMutation } from '@/features/_shared/user/api/onboarding.api'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useSearch } from '@tanstack/react-router'
+import { CircleArrowRight } from 'lucide-react'
+import { useForm } from 'react-hook-form'
+import { useSpinDelay } from 'spin-delay'
+import { z } from 'zod'
 
 const onboardingFormSchema = z.object({
 	name: z.string().min(1, 'Name is required'),

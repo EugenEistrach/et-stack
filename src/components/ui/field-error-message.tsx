@@ -1,5 +1,5 @@
-import { motion, AnimatePresence } from 'motion/react'
-import { type FieldError } from 'react-hook-form'
+import { AnimatePresence, motion } from 'motion/react'
+import type { FieldError } from 'react-hook-form'
 
 export const FieldErrorMessage = ({
 	error,

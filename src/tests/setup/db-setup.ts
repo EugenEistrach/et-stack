@@ -4,12 +4,12 @@ import { afterEach, beforeEach } from 'vitest'
 import { BASE_DATABASE_PATH } from './global-setup'
 
 // SQLite just needs the path, not file: prefix
-const databaseFile = `./src/tests/drizzle/data.${process.env['VITEST_POOL_ID'] || 0}.sqlite`
+const databaseFile = `./src/tests/drizzle/data.${process.env.VITEST_POOL_ID || 0}.sqlite`
 const databasePath = path.join(process.cwd(), databaseFile)
-process.env['TEST_DB_PATH'] = databasePath
+process.env.TEST_DB_PATH = databasePath
 
 beforeEach(async () => {
-	process.env['TEST_DB_PATH'] = databasePath
+	process.env.TEST_DB_PATH = databasePath
 	await ensureNoDatabaseFiles()
 	console.log(`Copying ${BASE_DATABASE_PATH} database to ${databasePath}`)
 	await fsExtra.copyFile(BASE_DATABASE_PATH, databasePath)

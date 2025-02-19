@@ -1,6 +1,6 @@
-import { expect, test } from 'vitest'
 import { env } from '@/lib/server/env.server'
 import { mockEnvOverrides } from '@/tests/mocks/vitest.mocks'
+import { expect, test } from 'vitest'
 
 test('basic env validation', () => {
 	expect(env.APPLICATION_URL).toBe('http://localhost:3000')

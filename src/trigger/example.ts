@@ -1,7 +1,7 @@
-import { logger, schemaTask } from '@trigger.dev/sdk/v3'
-import { z } from 'zod'
 import { db } from '@/drizzle/db'
 import { UserTable } from '@/drizzle/schemas/auth-schema'
+import { logger, schemaTask } from '@trigger.dev/sdk/v3'
+import { z } from 'zod'
 
 const taskSchema = z.object({
 	email: z.string(),

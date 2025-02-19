@@ -1,4 +1,3 @@
-import { ClockIcon, RefreshCwIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
 	Card,
@@ -8,6 +7,7 @@ import {
 	CardTitle,
 } from '@/components/ui/card'
 import { useAuth } from '@/features/_shared/user/api/auth.api'
+import { ClockIcon, RefreshCwIcon } from 'lucide-react'
 
 export function ApprovalRequiredCard() {
 	const { user } = useAuth()
